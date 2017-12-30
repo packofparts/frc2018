@@ -27,9 +27,9 @@ that Mac/Linux style commands work without format changes. However, if you
 insist on using CMD, any commands with a `./` (i.e. `./gradlew build`) would 
 have the `./` removed (i.e. `gradlew build`).
 
-Setup Eclipse: `./gradlew eclipse`
-
 Setup IntelliJ IDEA: `./gradlew idea`
+
+Setup Eclipse: `./gradlew eclipse`
 
 Launch SmartDashboard: `./gradlew smartDashboard`
 
@@ -39,5 +39,16 @@ Deploy JARs to roboRIO & Raspberry Pi: `.gradlew deploy`
 
 View RioLog Output: `./gradlew riolog`
 
-***Run commands with the `--ofline` flag when connected to the robot, or if
- you otherwise don't have internet!***
+> Eclipse is _technically_ supported, but IntelliJ IDEA has superior support
+> for multi-project builds in Gradle, used for the `robot` and `coprocessor`
+> projects.
+>
+> From the [coprocessor example `build.gradle`](https://github.com/Open-RIO/GradleRIO/blob/2018-beta/examples/coprocessor_java/build.gradle#L12-L14):
+> 
+> ```
+> IntelliJ works out-of-the-box with multiproject builds and so it's very, very
+> easy to integrate with GradleRIO and EmbeddedTools.
+> ```
+
+
+***Run commands with the `--ofline` flag when connected to the robot, or if you otherwise don't have internet!***
