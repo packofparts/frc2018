@@ -31,11 +31,13 @@ Setup IntelliJ IDEA: `./gradlew idea`
 
 Setup Eclipse: `./gradlew eclipse`
 
+Launch ShuffleBoard (new SmartDashboard): `./gradlew shuffleboard`
+
 Launch SmartDashboard: `./gradlew smartDashboard`
 
 Build Robot & Coprocessor JARs: `./gradlew build`
 
-Deploy JARs to roboRIO & Raspberry Pi: `.gradlew deploy`
+Deploy to roboRIO & Raspberry Pi: `./gradlew deploy`
 
 View RioLog Output: `./gradlew riolog`
 
