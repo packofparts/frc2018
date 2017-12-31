@@ -26,5 +26,5 @@ dependencies {
 
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest('gradlerio.RobotExample')
+    manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest('org.team1294.firstpowerup.robot.Robot')
 }
