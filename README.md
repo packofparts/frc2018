@@ -1,4 +1,4 @@
-# frc2018
+# frc2018 [![Build Status](https://travis-ci.org/FRC-1294/frc2018.svg?branch=master)](https://travis-ci.org/FRC-1294/frc2018) [![CodeFactor](https://www.codefactor.io/repository/github/frc-1294/frc2018/badge)](https://www.codefactor.io/repository/github/frc-1294/frc2018)
 
 This repository contains the code for FRC team 1294, Top Gun, for the 2018 _FIRST_ Robotics Competition game, _FIRST_ POWER UP :arrow_upper_right:.
 
