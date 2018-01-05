@@ -2,8 +2,7 @@ package org.team1294.firstpowerup.coprocessor;
 
 import static org.junit.Assert.*;
 
-import static org.team1294.firstpowerup.coprocessor.CoprocessorExample
-        .exampleAdd;
+import static org.team1294.firstpowerup.coprocessor.CoprocessorExample.exampleAdd;
 
 /**
  * @author Austin Jenchi (timtim17)
