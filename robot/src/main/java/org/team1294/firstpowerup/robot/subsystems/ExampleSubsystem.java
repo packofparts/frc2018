@@ -12,19 +12,19 @@ import org.team1294.firstpowerup.robot.commands.ExampleCommand;
  * to manipulate the hardware through methods.
  */
 public class ExampleSubsystem extends Subsystem {
-    private Spark exampleTalon;
+    private Spark exampleMotor;
 
     public ExampleSubsystem() {
         super("Example Subsystem");
-        exampleTalon = new Spark(RobotMap.EXAMPLE_MOTOR_CONTROLLER);
+        exampleMotor = new Spark(RobotMap.EXAMPLE_MOTOR_CONTROLLER);
     }
 
     public void exampleRunForwardFullSpeed() {
-        exampleTalon.set(1.0);
+        exampleMotor.set(1.0);
     }
 
     public void exampleStop() {
-        exampleTalon.set(0.0);
+        exampleMotor.set(0.0);
     }
 
     @Override
