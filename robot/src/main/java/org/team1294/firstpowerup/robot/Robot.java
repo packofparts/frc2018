@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotPeriodic() {
-        // TODO: Method stub
+        Scheduler.getInstance().run();
     }
 
     @Override
