@@ -1,6 +1,7 @@
 package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team1294.firstpowerup.robot.subsystems.ExampleSubsystem;
 
 /**
