@@ -1,5 +1,6 @@
 package org.team1294.firstpowerup.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,5 +25,13 @@ public class OI {
         exampleButton = new JoystickButton(driveJoystick,
                 RobotMap.EXAMPLE_BUTTON);
         exampleButton.toggleWhenPressed(new ExampleCommand());
+    }
+
+    public double getDriveLeftX() {
+        return driveJoystick.getX(GenericHID.Hand.kLeft);
+    }
+
+    public double getDriveLeftY() {
+        return driveJoystick.getY(GenericHID.Hand.kLeft);
     }
 }
