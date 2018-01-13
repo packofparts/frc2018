@@ -3,7 +3,6 @@ package org.team1294.firstpowerup.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.ExampleSubsystem;
 
 /**
  * The main class for the Robot. This handles the creation of the various
@@ -13,7 +12,6 @@ import org.team1294.firstpowerup.robot.subsystems.ExampleSubsystem;
  * event happens every time a packet is received from the DS (~20 ms).
  */
 public class Robot extends IterativeRobot {
-    public static ExampleSubsystem exampleSubsystem;
     public static DriveSubsystem driveSubsystem;
 
     public static OI oi;
@@ -24,7 +22,6 @@ public class Robot extends IterativeRobot {
      * {@link OI} should be initialized.
      */
     public Robot() {
-        exampleSubsystem = new ExampleSubsystem();
         driveSubsystem = new DriveSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has

@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
-import org.team1294.firstpowerup.robot.commands.ExampleCommand;
 
 /**
  * The class representing the OI, or operator's interface. This class contains
@@ -22,9 +21,9 @@ public class OI {
     public OI() {
         driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
 
-        exampleButton = new JoystickButton(driveJoystick,
-                RobotMap.EXAMPLE_BUTTON);
-        exampleButton.toggleWhenPressed(new ExampleCommand());
+//        exampleButton = new JoystickButton(driveJoystick,
+//                RobotMap.EXAMPLE_BUTTON);
+//        exampleButton.toggleWhenPressed(new ExampleCommand());
     }
 
     public double getDriveLeftX() {
