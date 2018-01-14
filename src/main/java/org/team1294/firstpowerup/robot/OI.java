@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class OI {
     private XboxController driveJoystick;
 
-    private Button exampleButton;
+//    private Button exampleButton;
 
     public OI() {
         driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
@@ -31,6 +31,6 @@ public class OI {
     }
 
     public double getDriveLeftY() {
-        return driveJoystick.getY(GenericHID.Hand.kLeft);
+        return -driveJoystick.getY(GenericHID.Hand.kLeft);
     }
 }
