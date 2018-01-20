@@ -1,6 +1,8 @@
 package org.team1294.firstpowerup.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -16,6 +18,7 @@ public class DriveSubsystem extends Subsystem {
     private WPI_TalonSRX rightFront;
     private WPI_TalonSRX rightRear;
     private DifferentialDrive drive;
+    private final AHRS navX;
 
     public DriveSubsystem() {
         super("Drivetrain Subsystem");
@@ -30,6 +33,7 @@ public class DriveSubsystem extends Subsystem {
                 rightRear);
 
         drive = new DifferentialDrive(left, right);
+        navX = new AHRS(SPI.Port.kMXP);
     }
 
     public void arcadeDrive(double forward, double turn) {
@@ -44,4 +48,40 @@ public class DriveSubsystem extends Subsystem {
     protected void initDefaultCommand() {
         setDefaultCommand(new ArcadeDriveCommand());
     }
+
+    public double getEncoderPositionLeft(){
+        return leftFront.getSelectedSensorPosition(0);
+    }
+
+    public double getEncoderPositionRight(){
+        return rightFront.getSelectedSensorPosition(0);
+    }
+
+    public double getEncoderVelocityLeft(){
+        return leftFront.getSelectedSensorVelocity(0);
+    }
+
+    public double getEncoderVeloityRight(){
+        return rightFront.getSelectedSensorVelocity(0);
+    }
+
+    public double getHeading(){
+        double angle = navX.getAngle() % 360;
+        return angle;
+    }
+
+    public double getTurnRate(){
+        return navX.getRate();
+    }
+
+    public void resetGyro(){
+        navX.reset();
+    }
+
+    public void resetEncoders(){
+        leftFront.setSelectedSensorPosition(0,0,10);
+        rightFront.setSelectedSensorPosition(0,0,10);
+    }
+
+
 }
