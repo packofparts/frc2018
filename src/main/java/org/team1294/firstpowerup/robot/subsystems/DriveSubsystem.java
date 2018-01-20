@@ -84,4 +84,8 @@ public class DriveSubsystem extends Subsystem {
     }
 
 
+    public double getEncoderPositionAverage() {
+        return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;
+    }
+
 }
