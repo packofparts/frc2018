@@ -61,7 +61,7 @@ public class DriveSubsystem extends Subsystem {
         return leftFront.getSelectedSensorVelocity(0);
     }
 
-    public double getEncoderVeloityRight(){
+    public double getEncoderVelocityRight(){
         return rightFront.getSelectedSensorVelocity(0);
     }
 
