@@ -40,6 +40,11 @@ public class DriveSubsystem extends Subsystem {
     }
 
     @Override
+    public void periodic() {
+        // TODO: Method stub
+    }
+
+    @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new ArcadeDriveCommand());
     }
