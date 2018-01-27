@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.DriveStraightCommand;
 import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
+import org.team1294.firstpowerup.robot.subsystems.CelescoPotTestSubsystem;
+import org.team1294.firstpowerup.robot.subsystems.ClimbSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 
 /**
@@ -18,6 +20,8 @@ import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
  */
 public class Robot extends IterativeRobot {
     public static DriveSubsystem driveSubsystem;
+    public static ClimbSubsystem climbSubsystem;
+    public static CelescoPotTestSubsystem celescoPotTestSubsystem;
 
     public static OI oi;
 
@@ -28,6 +32,8 @@ public class Robot extends IterativeRobot {
      */
     public Robot() {
         driveSubsystem = new DriveSubsystem();
+        climbSubsystem = new ClimbSubsystem();
+        celescoPotTestSubsystem = new CelescoPotTestSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has
         // Buttons which reference Commands which use the Subsystems
