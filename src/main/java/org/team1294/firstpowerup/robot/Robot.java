@@ -1,5 +1,6 @@
 package org.team1294.firstpowerup.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(driveSubsystem);
         SmartDashboard.putData(new ResetEncoderCommand());
+        CameraServer.getInstance().startAutomaticCapture();
     }
 
     @Override
