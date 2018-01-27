@@ -23,6 +23,10 @@ public class ArmSubsystem extends Subsystem {
         motor.set(ControlMode.PercentOutput, output);
     }
 
+    public void stop() {
+        driveTalon(0);
+    }
+
     public double getPotOutput() {
         return potentiometer.get();
     }
