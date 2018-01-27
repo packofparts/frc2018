@@ -1,6 +1,7 @@
 package org.team1294.firstpowerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.team1294.firstpowerup.robot.Robot;
 
 public class DriveStraightCommand extends CommandGroup{
     private final DriveStraightDriveCommand driveStraightDriveCommand;
@@ -10,6 +11,10 @@ public class DriveStraightCommand extends CommandGroup{
     private double turnRate;
 
     public DriveStraightCommand(final double distance){
+        super("Drive straight " + distance + "m");
+
+        requires(Robot.driveSubsystem);
+
         driveStraightDriveCommand = new DriveStraightDriveCommand();
         driveStraightForwardCommand = new DriveStraightForwardCommand(distance);
         driveStraightTurnCommand = new DriveStraightTurnCommand();
@@ -23,12 +28,12 @@ public class DriveStraightCommand extends CommandGroup{
 
     @Override
     protected void initialize() {
-        super.initialize();
+        // do nothing
     }
 
     @Override
     protected void end() {
-        super.end();
+        // do nothing
     }
 
     @Override

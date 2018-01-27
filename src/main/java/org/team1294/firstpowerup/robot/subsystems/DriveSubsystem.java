@@ -1,11 +1,10 @@
 package org.team1294.firstpowerup.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +15,8 @@ import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
  *
  */
 public class DriveSubsystem extends Subsystem {
+    private static final double kEncoderScale = 0.00026093732850;
+
     private final WPI_TalonSRX leftFront;
     private final WPI_TalonSRX leftRear;
     private final WPI_TalonSRX rightFront;
@@ -36,11 +37,11 @@ public class DriveSubsystem extends Subsystem {
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
                 0);
-        leftFront.setSensorPhase(false);
+        leftFront.setSensorPhase(true);
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
                 0);
-        rightFront.setSensorPhase(true);
+        rightFront.setSensorPhase(false);
 
         navX = new AHRS(SPI.Port.kMXP);
 
@@ -52,6 +53,7 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("Left Encoder", getEncoderPositionLeft());
         SmartDashboard.putNumber("Right Encoder", getEncoderPositionRight());
         SmartDashboard.putNumber("Average Encoder", getEncoderPositionAverage());
+        SmartDashboard.putNumber("Gyro Angle", getHeading());
     }
 
     public void arcadeDrive(double forward, double turn) {
@@ -73,24 +75,23 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getEncoderPositionLeft(){
-        return leftFront.getSelectedSensorPosition(0);
+        return leftFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
     public double getEncoderPositionRight(){
-        return rightFront.getSelectedSensorPosition(0);
+        return rightFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
     public double getEncoderVelocityLeft(){
-        return leftFront.getSelectedSensorVelocity(0);
+        return leftFront.getSelectedSensorVelocity(0) * kEncoderScale;
     }
 
     public double getEncoderVelocityRight(){
-        return rightFront.getSelectedSensorVelocity(0);
+        return rightFront.getSelectedSensorVelocity(0) * kEncoderScale;
     }
 
     public double getHeading(){
-        double angle = navX.getAngle() % 360;
-        return angle;
+        return navX.getAngle() % 360;
     }
 
     public double getTurnRate(){

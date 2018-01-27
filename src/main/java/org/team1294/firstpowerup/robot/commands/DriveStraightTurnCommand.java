@@ -12,6 +12,7 @@ public class DriveStraightTurnCommand extends PIDCommand{
     private static final double MAX_RATE = 0.5;
 
     private boolean hasRunPIDOnce = false;
+    private DriveStraightCommand group;
 
     public DriveStraightTurnCommand(){
         super("Drive Straight Turn Command", p, i, d);
@@ -23,6 +24,12 @@ public class DriveStraightTurnCommand extends PIDCommand{
     @Override
     protected void initialize() {
         getPIDController().setSetpoint(Robot.driveSubsystem.getHeading());
+        CommandGroup group = getGroup();
+        if (group instanceof DriveStraightCommand) {
+            this.group = (DriveStraightCommand) group;
+        } else {
+            this.group = null;
+        }
     }
 
     @Override
@@ -33,9 +40,8 @@ public class DriveStraightTurnCommand extends PIDCommand{
 
     @Override
     protected void usePIDOutput(double output) {
-        CommandGroup group = getGroup();
-        if(group instanceof DriveStraightCommand){
-            ((DriveStraightCommand) group).setTurnRate(output);
+        if(group != null){
+            group.setTurnRate(output);
         }
     }
 

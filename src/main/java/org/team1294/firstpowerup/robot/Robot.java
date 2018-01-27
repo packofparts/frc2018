@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team1294.firstpowerup.robot.commands.DriveStraightCommand;
 import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
+import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 
 /**
@@ -34,9 +36,10 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
-        SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(driveSubsystem);
         SmartDashboard.putData(new ResetEncoderCommand());
+        SmartDashboard.putData(new ResetGyroCommand());
+        SmartDashboard.putData(new DriveStraightCommand(1.0));
         CameraServer.getInstance().startAutomaticCapture();
     }
 
@@ -62,6 +65,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putData(Scheduler.getInstance());
         Scheduler.getInstance().run();
     }
 
