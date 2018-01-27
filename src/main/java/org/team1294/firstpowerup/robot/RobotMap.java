@@ -13,6 +13,8 @@ public class RobotMap {
     public static final int TALON_LEFT_REAR = 4;
     public static final int TALON_CLIMB = 5;
     public static final int TALON_ARM = 6;
+    public static final int TALON_INTAKE_LEFT = 7;
+    public static final int TALON_INTAKE_RIGHT = 8;
 
     public static final int SENSOR_POT = 0;
 }
