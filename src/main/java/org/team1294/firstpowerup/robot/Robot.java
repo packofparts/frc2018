@@ -10,6 +10,7 @@ import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
 import org.team1294.firstpowerup.robot.commands.TurnToHeadingCommand;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
+import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
 /**
  * The main class for the Robot. This handles the creation of the various
@@ -20,6 +21,7 @@ import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
  */
 public class Robot extends IterativeRobot {
     public static DriveSubsystem driveSubsystem;
+    public static VisionSubsystem visionSubsystem;
 
     public static OI oi;
 
@@ -30,6 +32,7 @@ public class Robot extends IterativeRobot {
      */
     public Robot() {
         driveSubsystem = new DriveSubsystem();
+        visionSubsystem = new VisionSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has
         // Buttons which reference Commands which use the Subsystems
