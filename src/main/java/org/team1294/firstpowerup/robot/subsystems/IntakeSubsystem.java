@@ -33,6 +33,19 @@ public class IntakeSubsystem extends Subsystem {
         driveIntake(0);
     }
 
+    public double getLeftEncoder() {
+        return leftTalon.getSelectedSensorPosition(0);
+    }
+
+    public double getRightEncoder() {
+        return rightTalon.getSelectedSensorPosition(0);
+    }
+
+    public void resetEncoders() {
+        leftTalon.setSelectedSensorPosition(0, 0, 0);
+        rightTalon.setSelectedSensorPosition(0, 0, 0);
+    }
+
     @Override
     protected void initDefaultCommand() {
 //        setDefaultCommand();

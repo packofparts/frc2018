@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.DriveStraightCommand;
 import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
-import org.team1294.firstpowerup.robot.subsystems.CelescoPotTestSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.ClimbSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
+import org.team1294.firstpowerup.robot.subsystems.*;
 
 /**
  * The main class for the Robot. This handles the creation of the various
@@ -22,6 +20,8 @@ public class Robot extends IterativeRobot {
     public static DriveSubsystem driveSubsystem;
     public static ClimbSubsystem climbSubsystem;
     public static CelescoPotTestSubsystem celescoPotTestSubsystem;
+    public static ArmSubsystem armSubsystem;
+    public static IntakeSubsystem intakeSubsystem;
 
     public static OI oi;
 
@@ -34,6 +34,8 @@ public class Robot extends IterativeRobot {
         driveSubsystem = new DriveSubsystem();
         climbSubsystem = new ClimbSubsystem();
         celescoPotTestSubsystem = new CelescoPotTestSubsystem();
+        armSubsystem = new ArmSubsystem();
+        intakeSubsystem = new IntakeSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has
         // Buttons which reference Commands which use the Subsystems
@@ -47,6 +49,10 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetGyroCommand());
         SmartDashboard.putData(new DriveStraightCommand(1.0));
         CameraServer.getInstance().startAutomaticCapture();
+
+        Robot.driveSubsystem.resetGyro();
+        Robot.driveSubsystem.resetEncoders();
+        Robot.intakeSubsystem.resetEncoders();
     }
 
     @Override
