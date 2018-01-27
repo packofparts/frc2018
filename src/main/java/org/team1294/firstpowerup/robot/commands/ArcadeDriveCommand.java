@@ -1,6 +1,7 @@
 package org.team1294.firstpowerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.Robot;
 
 /**
@@ -22,6 +23,9 @@ public class ArcadeDriveCommand extends Command {
         double forward = Robot.oi.getDriveLeftY();
         double turn = Robot.oi.getDriveLeftX();
         Robot.driveSubsystem.arcadeDrive(forward, turn);
+        SmartDashboard.putNumber("Encoder Left", Robot.driveSubsystem.getEncoderVelocityLeft());
+        SmartDashboard.putNumber("Encoder Right", Robot.driveSubsystem.getEncoderVelocityRight());
+        SmartDashboard.putNumber("Heading", Robot.driveSubsystem.getHeading());
     }
 
     @Override
