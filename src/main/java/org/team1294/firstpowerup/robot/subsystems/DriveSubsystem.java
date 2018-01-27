@@ -3,6 +3,9 @@ package org.team1294.firstpowerup.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,11 +16,12 @@ import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
  *
  */
 public class DriveSubsystem extends Subsystem {
-    private WPI_TalonSRX leftFront;
-    private WPI_TalonSRX leftRear;
-    private WPI_TalonSRX rightFront;
-    private WPI_TalonSRX rightRear;
-    private DifferentialDrive drive;
+    private final WPI_TalonSRX leftFront;
+    private final WPI_TalonSRX leftRear;
+    private final WPI_TalonSRX rightFront;
+    private final WPI_TalonSRX rightRear;
+    private final DifferentialDrive drive;
+    private final AHRS navX;
 
     public DriveSubsystem() {
         super("Drivetrain Subsystem");
@@ -38,15 +42,16 @@ public class DriveSubsystem extends Subsystem {
                 0);
         rightFront.setSensorPhase(true);
 
+        navX = new AHRS(SPI.Port.kMXP);
+
         drive = new DifferentialDrive(leftFront, rightFront);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Left Encoder", leftFront
-                .getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("Right Encoder", rightFront
-                .getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Left Encoder", getEncoderPositionLeft());
+        SmartDashboard.putNumber("Right Encoder", getEncoderPositionRight());
+        SmartDashboard.putNumber("Average Encoder", getEncoderPositionAverage());
     }
 
     public void arcadeDrive(double forward, double turn) {
@@ -66,4 +71,38 @@ public class DriveSubsystem extends Subsystem {
     protected void initDefaultCommand() {
         setDefaultCommand(new ArcadeDriveCommand());
     }
+
+    public double getEncoderPositionLeft(){
+        return leftFront.getSelectedSensorPosition(0);
+    }
+
+    public double getEncoderPositionRight(){
+        return rightFront.getSelectedSensorPosition(0);
+    }
+
+    public double getEncoderVelocityLeft(){
+        return leftFront.getSelectedSensorVelocity(0);
+    }
+
+    public double getEncoderVelocityRight(){
+        return rightFront.getSelectedSensorVelocity(0);
+    }
+
+    public double getHeading(){
+        double angle = navX.getAngle() % 360;
+        return angle;
+    }
+
+    public double getTurnRate(){
+        return navX.getRate();
+    }
+
+    public void resetGyro(){
+        navX.reset();
+    }
+
+    public double getEncoderPositionAverage() {
+        return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;
+    }
+
 }

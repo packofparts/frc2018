@@ -33,6 +33,8 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
+        SmartDashboard.putData(Scheduler.getInstance());
+        SmartDashboard.putData(driveSubsystem);
         SmartDashboard.putData(new ResetEncoderCommand());
     }
 
