@@ -2,6 +2,8 @@ package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 
 /**
@@ -31,7 +33,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
-        // TODO: Method stub
+        SmartDashboard.putData(new ResetEncoderCommand());
     }
 
     @Override
