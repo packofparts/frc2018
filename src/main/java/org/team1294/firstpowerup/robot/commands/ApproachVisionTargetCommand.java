@@ -9,12 +9,12 @@ public class ApproachVisionTargetCommand extends CommandGroup {
   private double turnRate;
   private boolean visionTargetAcquired;
 
-  public ApproachVisionTargetCommand() {
+  public ApproachVisionTargetCommand(double distance) {
     requires(Robot.driveSubsystem);
 
     addParallel(new ApproachVisionTargetDriveCommand());
     addParallel(new ApproachVisionTargetTurnCommand(this));
-    addParallel(new ApproachVisionTargetForwardCommand(1.0));
+    addParallel(new ApproachVisionTargetForwardCommand(distance));
   }
 
   public double getForwardRate() {

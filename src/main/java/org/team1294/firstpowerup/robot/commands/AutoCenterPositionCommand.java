@@ -29,7 +29,7 @@ public class AutoCenterPositionCommand extends CommandGroup {
     addSequential(new DriveStraightCommand(0.5));
 
     // engage the vision system approach
-    // todo
+    addSequential(new ApproachVisionTargetCommand(1.0));
 
     // deliver the crate
     // todo
