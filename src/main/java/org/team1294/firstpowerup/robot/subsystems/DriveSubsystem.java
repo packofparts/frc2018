@@ -1,8 +1,8 @@
 package org.team1294.firstpowerup.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,10 +21,14 @@ public class DriveSubsystem extends Subsystem {
 
     public DriveSubsystem() {
         super("Drivetrain Subsystem");
+
         leftFront = new WPI_TalonSRX(RobotMap.TALON_LEFT_FRONT);
         leftRear = new WPI_TalonSRX(RobotMap.TALON_LEFT_REAR);
         rightFront = new WPI_TalonSRX(RobotMap.TALON_RIGHT_FRONT);
         rightRear = new WPI_TalonSRX(RobotMap.TALON_RIGHT_REAR);
+
+        leftRear.set(ControlMode.Follower, RobotMap.TALON_LEFT_FRONT);
+        rightRear.set(ControlMode.Follower, RobotMap.TALON_RIGHT_FRONT);
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
                 0);
@@ -34,12 +38,7 @@ public class DriveSubsystem extends Subsystem {
                 0);
         rightFront.setSensorPhase(true);
 
-        SpeedControllerGroup left = new SpeedControllerGroup(leftFront,
-                leftRear);
-        SpeedControllerGroup right = new SpeedControllerGroup(rightFront,
-                rightRear);
-
-        drive = new DifferentialDrive(left, right);
+        drive = new DifferentialDrive(leftFront, rightFront);
     }
 
     @Override

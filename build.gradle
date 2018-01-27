@@ -1,25 +1,12 @@
 plugins {
-    id "idea"
-    id "eclipse"
-    id "jaci.openrio.gradle.GradleRIO" version "2018.01.06b"
-    id "java"
+    id 'idea'
+    id 'eclipse'
+    id 'jaci.openrio.gradle.GradleRIO' version '2018.01.06b'
+    id 'java'
 }
 
 def TEAM = 1294
 def ROBOT_CLASS = 'org.team1294.firstpowerup.robot.Robot'
-
-deploy {
-    targets {
-        target("roborio", jaci.openrio.gradle.frc.RoboRIO) {
-            team = TEAM
-        }
-    }
-    artifacts {
-        artifact('robotCode', jaci.openrio.gradle.frc.FRCJavaArtifact) {
-            targets << "roborio"
-        }
-    }
-}
 
 dependencies {
     compile wpilib()
@@ -32,7 +19,19 @@ jar {
     manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
 }
 
+deploy {
+    targets {
+        target('roborio', jaci.openrio.gradle.frc.RoboRIO) {
+            team = TEAM
+        }
+    }
+    artifacts {
+        artifact('robotCode', jaci.openrio.gradle.frc.FRCJavaArtifact) {
+            targets << 'roborio'
+        }
+    }
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.2.1'
 }
-
