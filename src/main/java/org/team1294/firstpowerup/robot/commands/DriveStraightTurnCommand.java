@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import org.team1294.firstpowerup.robot.Robot;
 
-public class DriveStraightTurnCommand extends PIDCommand{
+public class DriveStraightTurnCommand extends PIDCommand {
     private static final double p = 0.1;
     private static final double i = 0.0;
     private static final double d = 0.0;
@@ -14,10 +14,10 @@ public class DriveStraightTurnCommand extends PIDCommand{
     private boolean hasRunPIDOnce = false;
     private DriveStraightCommand group;
 
-    public DriveStraightTurnCommand(){
+    public DriveStraightTurnCommand() {
         super("Drive Straight Turn Command", p, i, d);
         getPIDController().setAbsoluteTolerance(TOLERANCE);
-        getPIDController().setInputRange(0,360);
+        getPIDController().setInputRange(0, 360);
         getPIDController().setOutputRange(-MAX_RATE, MAX_RATE);
     }
 
@@ -40,7 +40,7 @@ public class DriveStraightTurnCommand extends PIDCommand{
 
     @Override
     protected void usePIDOutput(double output) {
-        if(group != null){
+        if (group != null) {
             group.setTurnRate(output);
         }
     }

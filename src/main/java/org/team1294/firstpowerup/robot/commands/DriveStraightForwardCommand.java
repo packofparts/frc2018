@@ -1,9 +1,8 @@
 package org.team1294.firstpowerup.robot.commands;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team1294.firstpowerup.robot.Robot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.PIDCommand;
+import org.team1294.firstpowerup.robot.Robot;
 
 public class DriveStraightForwardCommand extends PIDCommand {
     private static final double p = 1.0;
@@ -17,8 +16,8 @@ public class DriveStraightForwardCommand extends PIDCommand {
     private DriveStraightCommand group;
 
 
-    public DriveStraightForwardCommand(final double distance){
-        super("Drive Straight Forward Command",p, i, d);
+    public DriveStraightForwardCommand(final double distance) {
+        super("Drive Straight Forward Command", p, i, d);
 
         this.distance = distance;
         getPIDController().setAbsoluteTolerance(TOLERANCE);
@@ -45,7 +44,7 @@ public class DriveStraightForwardCommand extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        if(group != null){
+        if (group != null) {
             group.setForwardRate(output);
         }
     }

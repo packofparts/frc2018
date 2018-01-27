@@ -3,14 +3,14 @@ package org.team1294.firstpowerup.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.team1294.firstpowerup.robot.Robot;
 
-public class DriveStraightCommand extends CommandGroup{
+public class DriveStraightCommand extends CommandGroup {
     private final DriveStraightDriveCommand driveStraightDriveCommand;
     private final DriveStraightForwardCommand driveStraightForwardCommand;
     private final DriveStraightTurnCommand driveStraightTurnCommand;
     private double forwardRate;
     private double turnRate;
 
-    public DriveStraightCommand(final double distance){
+    public DriveStraightCommand(final double distance) {
         super("Drive straight " + distance + "m");
 
         requires(Robot.driveSubsystem);
