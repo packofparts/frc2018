@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.DriveStraightCommand;
 import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
+import org.team1294.firstpowerup.robot.commands.TurnToHeadingCommand;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 
 /**
@@ -40,6 +41,12 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
         SmartDashboard.putData(new DriveStraightCommand(1.0));
+
+        SmartDashboard.putData(new TurnToHeadingCommand(0));
+        SmartDashboard.putData(new TurnToHeadingCommand(90));
+        SmartDashboard.putData(new TurnToHeadingCommand(180));
+        SmartDashboard.putData(new TurnToHeadingCommand(270));
+
         CameraServer.getInstance().startAutomaticCapture();
     }
 
