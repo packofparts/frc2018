@@ -1,32 +1,38 @@
 package org.team1294.firstpowerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.Robot;
 
 public class TurnToHeadingCommand extends PIDCommand {
 
-  private static final double p = 0.1;
-  private static final double i = 0.0;
-  private static final double d = 0.0;
-  private static final double TOLERANCE = 0.1;
-  private static final double MAX_RATE = 0.5;
   private final int desiredHeading;
-
   private boolean hasRunPIDOnce = false;
 
   public TurnToHeadingCommand(final int desiredHeading) {
-    super(p, i, d);
+    super("Turn to heading " + desiredHeading + " degrees", 1.0, 0.0, 0.0);
 
     requires(Robot.driveSubsystem);
-
-    getPIDController().setAbsoluteTolerance(TOLERANCE);
-    getPIDController().setInputRange(0,360);
-    getPIDController().setOutputRange(-MAX_RATE, MAX_RATE);
-    getPIDController().setContinuous(true);
 
     setTimeout(15);
 
     this.desiredHeading = desiredHeading;
+
+    double p = SmartDashboard.getNumber("TurnToHeadingCommand.p", 1.0);
+    double i = SmartDashboard.getNumber("TurnToHeadingCommand.i", 0.0);
+    double d = SmartDashboard.getNumber("TurnToHeadingCommand.d", 0.0);
+    double tolerance = SmartDashboard.getNumber("TurnToHeadingCommand.tolerance", 5.0);
+    double maxOutput = SmartDashboard.getNumber("TurnToHeadingCommand.maxOutput", 0.08);
+
+    getPIDController().setP(p);
+    getPIDController().setI(i);
+    getPIDController().setD(d);
+    getPIDController().setAbsoluteTolerance(tolerance);
+    getPIDController().setOutputRange(-maxOutput, maxOutput);
+
+    getPIDController().setAbsoluteTolerance(tolerance);
+    getPIDController().setInputRange(0,360);
+    getPIDController().setOutputRange(-maxOutput, maxOutput);
   }
 
   @Override
