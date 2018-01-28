@@ -44,4 +44,8 @@ public class VisionProcessingResult {
   public void setTargetRect(Rect targetRect) {
     this.targetRect = targetRect;
   }
+
+  public double getHeadingToTurn() {
+    return headingWhenImageTaken + degreesOffCenter;
+  }
 }

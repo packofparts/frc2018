@@ -143,9 +143,7 @@ public class ApproachVisionTargetCommand extends CommandGroup {
 
       // if the target was acquired, adjust the setpoint
       if (visionProcessingResult.isTargetAcquired()) {
-        getPIDController().setSetpoint(
-            visionProcessingResult.getHeadingWhenImageTaken() + visionProcessingResult
-                .getDegreesOffCenter());
+        getPIDController().setSetpoint(visionProcessingResult.getHeadingToTurn());
       }
 
       // periodically save an image
