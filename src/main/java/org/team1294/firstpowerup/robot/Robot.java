@@ -54,8 +54,6 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new TurnToHeadingCommand(270));
 
         SmartDashboard.putData(new AutoCenterPositionCommand());
-
-        CameraServer.getInstance().startAutomaticCapture();
     }
 
     @Override
