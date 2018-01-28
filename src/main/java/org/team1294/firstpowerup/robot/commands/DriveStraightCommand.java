@@ -10,177 +10,183 @@ import java.util.Optional;
 
 public class DriveStraightCommand extends CommandGroup {
 
-  private final DriveCommand driveCommand;
-  private final ForwardPIDCommand forwardPIDCommand;
-  private final TurnPIDCommand turnPIDCommand;
+    private final DriveCommand driveCommand;
+    private final ForwardPIDCommand forwardPIDCommand;
+    private final TurnPIDCommand turnPIDCommand;
 
-  private final Optional<Double> desiredHeading;
+    private final Optional<Double> desiredHeading;
 
-  private double forwardRate;
-  private double turnRate;
+    private double forwardRate;
+    private double turnRate;
 
-  public DriveStraightCommand(final double distance) {
-    super("Drive current heading " + distance + "m");
+    public DriveStraightCommand(final double distance) {
+        super("Drive current heading " + distance + "m");
 
-    desiredHeading = Optional.empty();
+        desiredHeading = Optional.empty();
 
-    driveCommand = new DriveCommand();
-    forwardPIDCommand = new ForwardPIDCommand(distance);
-    turnPIDCommand = new TurnPIDCommand();
+        driveCommand = new DriveCommand();
+        forwardPIDCommand = new ForwardPIDCommand(distance);
+        turnPIDCommand = new TurnPIDCommand();
 
-    addParallel(driveCommand);
-    addParallel(forwardPIDCommand);
-    addParallel(turnPIDCommand);
+        addParallel(driveCommand);
+        addParallel(forwardPIDCommand);
+        addParallel(turnPIDCommand);
 
-    setTimeout(15);
-  }
-
-  public DriveStraightCommand(final double distance, final double heading) {
-    super("Drive " + heading + " degrees " + distance + " meters");
-
-    desiredHeading = Optional.of(heading);
-
-    driveCommand = new DriveCommand();
-    forwardPIDCommand = new ForwardPIDCommand(distance);
-    turnPIDCommand = new TurnPIDCommand();
-
-    addParallel(driveCommand);
-    addParallel(forwardPIDCommand);
-    addParallel(turnPIDCommand);
-
-    setTimeout(15);
-  }
-
-  @Override
-  protected void initialize() {
-    // do nothing
-  }
-
-  @Override
-  protected void end() {
-    // do nothing
-  }
-
-  @Override
-  protected boolean isFinished() {
-    return isTimedOut() || (forwardPIDCommand.onTarget() && turnPIDCommand.onTarget());
-  }
-
-
-  private class DriveCommand extends Command {
-    public DriveCommand() {
-      requires(Robot.driveSubsystem);
+        setTimeout(15);
     }
 
-    @Override
-    protected void execute() {
-      Robot.driveSubsystem.arcadeDrive(forwardRate, turnRate);
-    }
+    public DriveStraightCommand(final double distance, final double heading) {
+        super("Drive " + heading + " degrees " + distance + " meters");
 
-    @Override
-    protected boolean isFinished() {
-      return false;
-    }
-  }
+        desiredHeading = Optional.of(heading);
 
-  private class ForwardPIDCommand extends PIDCommand {
+        driveCommand = new DriveCommand();
+        forwardPIDCommand = new ForwardPIDCommand(distance);
+        turnPIDCommand = new TurnPIDCommand();
 
-    private final double distance;
-    private boolean hasRunPIDOnce = false;
+        addParallel(driveCommand);
+        addParallel(forwardPIDCommand);
+        addParallel(turnPIDCommand);
 
-    public ForwardPIDCommand(final double distance) {
-      super(1.0, 0.1, 0.0);
-
-      this.distance = distance;
-
-      double p = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.p", 1.0);
-      double i = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.i", 0.1);
-      double d = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.d", 0.0);
-      double tolerance = SmartDashboard
-          .getNumber("DriveStraightCommand.ForwardPID.tolerance", 0.01);
-      double maxOutput = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.maxOutput", 0.5);
-
-      getPIDController().setP(p);
-      getPIDController().setI(i);
-      getPIDController().setD(d);
-      getPIDController().setAbsoluteTolerance(tolerance);
-      getPIDController().setOutputRange(-maxOutput, maxOutput);
+        setTimeout(15);
     }
 
     @Override
     protected void initialize() {
-      getPIDController().setSetpoint(Robot.driveSubsystem.getEncoderPositionAverage() + distance);
+        // do nothing
     }
 
     @Override
-    protected double returnPIDInput() {
-      hasRunPIDOnce = true;
-      return Robot.driveSubsystem.getEncoderPositionAverage();
-    }
-
-    @Override
-    protected void usePIDOutput(double output) {
-      forwardRate = output;
+    protected void end() {
+        // do nothing
     }
 
     @Override
     protected boolean isFinished() {
-      return false;
+        return isTimedOut() || (forwardPIDCommand.onTarget() && turnPIDCommand.onTarget());
     }
 
-    public boolean onTarget() {
-      return hasRunPIDOnce && getPIDController().onTarget();
-    }
-  }
 
-  public class TurnPIDCommand extends PIDCommand {
+    private class DriveCommand extends Command {
 
-    private boolean hasRunPIDOnce = false;
+        public DriveCommand() {
+            requires(Robot.driveSubsystem);
+        }
 
-    public TurnPIDCommand() {
-      super(1.0, 0.0, 0.0);
+        @Override
+        protected void execute() {
+            Robot.driveSubsystem.arcadeDrive(forwardRate, turnRate);
+        }
 
-      double p = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.p", 1.0);
-      double i = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.i", 0.0);
-      double d = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.d", 0.0);
-      double tolerance = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.tolerance", 5.0);
-      double maxOutput = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.maxOutput", 0.08);
-
-      getPIDController().setP(p);
-      getPIDController().setI(i);
-      getPIDController().setD(d);
-      getPIDController().setAbsoluteTolerance(tolerance);
-      getPIDController().setOutputRange(-maxOutput, maxOutput);
-
-      getPIDController().setAbsoluteTolerance(tolerance);
-      getPIDController().setInputRange(0, 360);
-      getPIDController().setContinuous(true);
-      getPIDController().setOutputRange(-maxOutput, maxOutput);
+        @Override
+        protected boolean isFinished() {
+            return false;
+        }
     }
 
-    @Override
-    protected void initialize() {
-      getPIDController().setSetpoint(desiredHeading.orElse(Robot.driveSubsystem.getHeading()));
+    private class ForwardPIDCommand extends PIDCommand {
+
+        private final double distance;
+        private boolean hasRunPIDOnce = false;
+
+        public ForwardPIDCommand(final double distance) {
+            super(1.0, 0.1, 0.0);
+
+            this.distance = distance;
+
+            double p = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.p", 1.0);
+            double i = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.i", 0.1);
+            double d = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.d", 0.0);
+            double tolerance = SmartDashboard
+                .getNumber("DriveStraightCommand.ForwardPID.tolerance", 0.01);
+            double maxOutput = SmartDashboard
+                .getNumber("DriveStraightCommand.ForwardPID.maxOutput", 0.5);
+
+            getPIDController().setP(p);
+            getPIDController().setI(i);
+            getPIDController().setD(d);
+            getPIDController().setAbsoluteTolerance(tolerance);
+            getPIDController().setOutputRange(-maxOutput, maxOutput);
+        }
+
+        @Override
+        protected void initialize() {
+            getPIDController()
+                .setSetpoint(Robot.driveSubsystem.getEncoderPositionAverage() + distance);
+        }
+
+        @Override
+        protected double returnPIDInput() {
+            hasRunPIDOnce = true;
+            return Robot.driveSubsystem.getEncoderPositionAverage();
+        }
+
+        @Override
+        protected void usePIDOutput(double output) {
+            forwardRate = output;
+        }
+
+        @Override
+        protected boolean isFinished() {
+            return false;
+        }
+
+        public boolean onTarget() {
+            return hasRunPIDOnce && getPIDController().onTarget();
+        }
     }
 
-    @Override
-    protected double returnPIDInput() {
-      hasRunPIDOnce = true;
-      return Robot.driveSubsystem.getHeading();
-    }
+    public class TurnPIDCommand extends PIDCommand {
 
-    @Override
-    protected void usePIDOutput(double output) {
-      turnRate = output;
-    }
+        private boolean hasRunPIDOnce = false;
 
-    @Override
-    protected boolean isFinished() {
-      return false;
-    }
+        public TurnPIDCommand() {
+            super(1.0, 0.0, 0.0);
 
-    public boolean onTarget() {
-      return hasRunPIDOnce && getPIDController().onTarget();
+            double p = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.p", 1.0);
+            double i = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.i", 0.0);
+            double d = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.d", 0.0);
+            double tolerance = SmartDashboard
+                .getNumber("DriveStraightCommand.TurnPID.tolerance", 5.0);
+            double maxOutput = SmartDashboard
+                .getNumber("DriveStraightCommand.TurnPID.maxOutput", 0.08);
+
+            getPIDController().setP(p);
+            getPIDController().setI(i);
+            getPIDController().setD(d);
+            getPIDController().setAbsoluteTolerance(tolerance);
+            getPIDController().setOutputRange(-maxOutput, maxOutput);
+
+            getPIDController().setAbsoluteTolerance(tolerance);
+            getPIDController().setInputRange(0, 360);
+            getPIDController().setContinuous(true);
+            getPIDController().setOutputRange(-maxOutput, maxOutput);
+        }
+
+        @Override
+        protected void initialize() {
+            getPIDController()
+                .setSetpoint(desiredHeading.orElse(Robot.driveSubsystem.getHeading()));
+        }
+
+        @Override
+        protected double returnPIDInput() {
+            hasRunPIDOnce = true;
+            return Robot.driveSubsystem.getHeading();
+        }
+
+        @Override
+        protected void usePIDOutput(double output) {
+            turnRate = output;
+        }
+
+        @Override
+        protected boolean isFinished() {
+            return false;
+        }
+
+        public boolean onTarget() {
+            return hasRunPIDOnce && getPIDController().onTarget();
+        }
     }
-  }
 }

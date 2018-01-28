@@ -20,32 +20,31 @@ import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
  */
 public class Robot extends IterativeRobot {
 
-  public static DriveSubsystem driveSubsystem;
-  public static VisionSubsystem visionSubsystem;
+    public static DriveSubsystem driveSubsystem;
+    public static VisionSubsystem visionSubsystem;
     public static ClimbSubsystem climbSubsystem;
     public static CelescoPotTestSubsystem celescoPotTestSubsystem;
     public static ArmSubsystem armSubsystem;
     public static IntakeSubsystem intakeSubsystem;
 
-  public static OI oi;
+    public static OI oi;
 
     /**
-     * Constructor for Robot(). This is where
-     * {@link edu.wpi.first.wpilibj.command.Subsystem Subsystems} and the
-     * {@link OI} should be initialized.
+     * Constructor for Robot(). This is where {@link edu.wpi.first.wpilibj.command.Subsystem
+     * Subsystems} and the {@link OI} should be initialized.
      */
     public Robot() {
-      visionSubsystem = new VisionSubsystem();
-      driveSubsystem = new DriveSubsystem();
+        visionSubsystem = new VisionSubsystem();
+        driveSubsystem = new DriveSubsystem();
         climbSubsystem = new ClimbSubsystem();
         celescoPotTestSubsystem = new CelescoPotTestSubsystem();
         armSubsystem = new ArmSubsystem();
         intakeSubsystem = new IntakeSubsystem();
 
-    // OI has to be initialized AFTER the Subsystems, because the OI has
-    // Buttons which reference Commands which use the Subsystems
-    oi = new OI();
-  }
+        // OI has to be initialized AFTER the Subsystems, because the OI has
+        // Buttons which reference Commands which use the Subsystems
+        oi = new OI();
+    }
 
     @Override
     public void robotInit() {
@@ -54,60 +53,61 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetGyroCommand());
         SmartDashboard.putData(new DriveStraightCommand(1.0));
         SmartDashboard.putData(new TurnToHeadingCommand(0));
-    SmartDashboard.putData(new TurnToHeadingCommand(90));
-    SmartDashboard.putData(new TurnToHeadingCommand(180));
-    SmartDashboard.putData(new TurnToHeadingCommand(270));
+        SmartDashboard.putData(new TurnToHeadingCommand(90));
+        SmartDashboard.putData(new TurnToHeadingCommand(180));
+        SmartDashboard.putData(new TurnToHeadingCommand(270));
 
-    SmartDashboard.putData(new AutoCenterPositionCommand());
-    SmartDashboard.putData(new AutoSidePositionCommand("L"));
-    SmartDashboard.putData(new AutoSidePositionCommand("R"));
-  Robot.driveSubsystem.resetGyro();
+        SmartDashboard.putData(new AutoCenterPositionCommand());
+        SmartDashboard.putData(new AutoSidePositionCommand("L"));
+        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+        Robot.driveSubsystem.resetGyro();
         Robot.driveSubsystem.resetEncoders();
-        Robot.intakeSubsystem.resetEncoders();  }
+        Robot.intakeSubsystem.resetEncoders();
+    }
 
-  @Override
-  public void disabledInit() {
-    // TODO: Method stub
-  }
+    @Override
+    public void disabledInit() {
+        // TODO: Method stub
+    }
 
-  @Override
-  public void autonomousInit() {
-    // TODO: Method stub
-  }
+    @Override
+    public void autonomousInit() {
+        // TODO: Method stub
+    }
 
-  @Override
-  public void teleopInit() {
-    // TODO: Method stub
-  }
+    @Override
+    public void teleopInit() {
+        // TODO: Method stub
+    }
 
-  @Override
-  public void testInit() {
-    // TODO: Method stub
-  }
+    @Override
+    public void testInit() {
+        // TODO: Method stub
+    }
 
-  @Override
-  public void robotPeriodic() {
-    SmartDashboard.putData(Scheduler.getInstance());
-    Scheduler.getInstance().run();
-  }
+    @Override
+    public void robotPeriodic() {
+        SmartDashboard.putData(Scheduler.getInstance());
+        Scheduler.getInstance().run();
+    }
 
-  @Override
-  public void disabledPeriodic() {
-    // TODO: Method stub
-  }
+    @Override
+    public void disabledPeriodic() {
+        // TODO: Method stub
+    }
 
-  @Override
-  public void autonomousPeriodic() {
-    // TODO: Method stub
-  }
+    @Override
+    public void autonomousPeriodic() {
+        // TODO: Method stub
+    }
 
-  @Override
-  public void teleopPeriodic() {
-    // TODO: Method stub
-  }
+    @Override
+    public void teleopPeriodic() {
+        // TODO: Method stub
+    }
 
-  @Override
-  public void testPeriodic() {
-    // TODO: Method stub
-  }
+    @Override
+    public void testPeriodic() {
+        // TODO: Method stub
+    }
 }

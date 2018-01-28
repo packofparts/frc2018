@@ -5,17 +5,17 @@ import org.team1294.firstpowerup.robot.Robot;
 
 public class DefaultVisionCommand extends Command {
 
-  public DefaultVisionCommand() {
-    requires(Robot.visionSubsystem);
-  }
+    public DefaultVisionCommand() {
+        requires(Robot.visionSubsystem);
+    }
 
-  @Override
-  protected void execute() {
-    Robot.visionSubsystem.detectNothing();
-  }
+    @Override
+    protected void execute() {
+        Robot.visionSubsystem.detectNothing();
+    }
 
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 }
