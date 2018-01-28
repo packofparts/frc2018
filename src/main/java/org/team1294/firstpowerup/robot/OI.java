@@ -32,4 +32,8 @@ public class OI {
     public double getDriveLeftY() {
         return -driveJoystick.getY(GenericHID.Hand.kLeft);
     }
+
+    public double getClimbY() {
+        return driveJoystick.getY(GenericHID.Hand.kRight);
+    }
 }

@@ -1,6 +1,5 @@
 package org.team1294.firstpowerup.robot;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,7 +9,7 @@ import org.team1294.firstpowerup.robot.commands.DriveStraightCommand;
 import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
 import org.team1294.firstpowerup.robot.commands.TurnToHeadingCommand;
-import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
+import org.team1294.firstpowerup.robot.subsystems.*;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
 /**
@@ -23,32 +22,38 @@ public class Robot extends IterativeRobot {
 
   public static DriveSubsystem driveSubsystem;
   public static VisionSubsystem visionSubsystem;
+    public static ClimbSubsystem climbSubsystem;
+    public static CelescoPotTestSubsystem celescoPotTestSubsystem;
+    public static ArmSubsystem armSubsystem;
+    public static IntakeSubsystem intakeSubsystem;
 
   public static OI oi;
 
-  /**
-   * Constructor for Robot(). This is where {@link edu.wpi.first.wpilibj.command.Subsystem
-   * Subsystems} and the {@link OI} should be initialized.
-   */
-  public Robot() {
-    driveSubsystem = new DriveSubsystem();
-    visionSubsystem = new VisionSubsystem();
+    /**
+     * Constructor for Robot(). This is where
+     * {@link edu.wpi.first.wpilibj.command.Subsystem Subsystems} and the
+     * {@link OI} should be initialized.
+     */
+    public Robot() {
+      visionSubsystem = new VisionSubsystem();
+      driveSubsystem = new DriveSubsystem();
+        climbSubsystem = new ClimbSubsystem();
+        celescoPotTestSubsystem = new CelescoPotTestSubsystem();
+        armSubsystem = new ArmSubsystem();
+        intakeSubsystem = new IntakeSubsystem();
 
     // OI has to be initialized AFTER the Subsystems, because the OI has
     // Buttons which reference Commands which use the Subsystems
     oi = new OI();
   }
 
-  @Override
-  public void robotInit() {
-    SmartDashboard.putData(driveSubsystem);
-
-    SmartDashboard.putData(new ResetEncoderCommand());
-    SmartDashboard.putData(new ResetGyroCommand());
-
-    SmartDashboard.putData(new DriveStraightCommand(1.0));
-
-    SmartDashboard.putData(new TurnToHeadingCommand(0));
+    @Override
+    public void robotInit() {
+        SmartDashboard.putData(driveSubsystem);
+        SmartDashboard.putData(new ResetEncoderCommand());
+        SmartDashboard.putData(new ResetGyroCommand());
+        SmartDashboard.putData(new DriveStraightCommand(1.0));
+        SmartDashboard.putData(new TurnToHeadingCommand(0));
     SmartDashboard.putData(new TurnToHeadingCommand(90));
     SmartDashboard.putData(new TurnToHeadingCommand(180));
     SmartDashboard.putData(new TurnToHeadingCommand(270));
@@ -56,7 +61,9 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putData(new AutoCenterPositionCommand());
     SmartDashboard.putData(new AutoSidePositionCommand("L"));
     SmartDashboard.putData(new AutoSidePositionCommand("R"));
-  }
+  Robot.driveSubsystem.resetGyro();
+        Robot.driveSubsystem.resetEncoders();
+        Robot.intakeSubsystem.resetEncoders();  }
 
   @Override
   public void disabledInit() {
