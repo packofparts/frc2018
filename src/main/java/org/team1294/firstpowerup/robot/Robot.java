@@ -42,8 +42,10 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         SmartDashboard.putData(driveSubsystem);
+
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
+
         SmartDashboard.putData(new DriveStraightCommand(1.0));
 
         SmartDashboard.putData(new TurnToHeadingCommand(0));
