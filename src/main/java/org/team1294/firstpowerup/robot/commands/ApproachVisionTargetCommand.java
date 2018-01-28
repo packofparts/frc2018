@@ -129,7 +129,7 @@ public class ApproachVisionTargetCommand extends CommandGroup {
     @Override
     protected void execute() {
       // do vision processing
-      VisionProcessingResult visionProcessingResult = Robot.visionSubsystem.grabFrameAndDetectVisionTarget();
+      VisionProcessingResult visionProcessingResult = Robot.visionSubsystem.detectSwitch();
 
       // if the target was acquired, adjust the setpoint
       if (visionProcessingResult.isTargetAcquired()) {
