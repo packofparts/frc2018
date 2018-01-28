@@ -44,4 +44,30 @@ public class PairOfRect {
   public Rect getB() {
     return b;
   }
+
+  public Rect getCombined() {
+    return new Rect(topLeft(), bottomRight());
+  }
+
+  public Double fitnessScore() {
+    double score = 0;
+
+    // difference in height
+    score += Math.abs(a.height - b.height);
+
+    // difference in width
+    score += Math.abs(a.width - b.width);
+
+    // difference in center Y
+    double rect1CenterY = a.y + a.height / 2;
+    double rect2CenterY = b.y + b.height / 2;
+    score += Math.abs(rect1CenterY - rect2CenterY);
+
+    // difference between combined rect width:height ratio and the ideal of 2.05
+    double combinedRatio = getCombined().width / getCombined().height;
+    // todo figure out ideal ratio for this years vision target
+    score += Math.abs(combinedRatio - 2.05);
+
+    return score;
+  }
 }

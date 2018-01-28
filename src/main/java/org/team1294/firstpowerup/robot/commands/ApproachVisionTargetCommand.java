@@ -21,8 +21,6 @@ public class ApproachVisionTargetCommand extends CommandGroup {
   public ApproachVisionTargetCommand(double distance) {
     super("Drive towards vision target " + distance + "m");
 
-    requires(Robot.driveSubsystem);
-
     forwardPIDCommand = new ForwardPIDCommand(distance);
     turnPIDCommand = new TurnPIDCommand();
     driveCommand = new DriveCommand();
@@ -40,6 +38,9 @@ public class ApproachVisionTargetCommand extends CommandGroup {
   }
 
   private class DriveCommand extends Command {
+    public DriveCommand() {
+      requires(Robot.driveSubsystem);
+    }
 
     @Override
     protected void execute() {
@@ -108,6 +109,7 @@ public class ApproachVisionTargetCommand extends CommandGroup {
 
     public TurnPIDCommand() {
       super(1.0, 0, 0);
+      requires(Robot.visionSubsystem);
 
       timer = new Timer();
 

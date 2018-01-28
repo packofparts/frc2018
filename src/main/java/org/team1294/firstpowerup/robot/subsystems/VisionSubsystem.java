@@ -1,14 +1,17 @@
 package org.team1294.firstpowerup.robot.subsystems;
 
 import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.team1294.firstpowerup.robot.Robot;
+import org.team1294.firstpowerup.robot.commands.DefaultVisionCommand;
 import org.team1294.firstpowerup.robot.vision.CratePipeline;
 import org.team1294.firstpowerup.robot.vision.PairOfRect;
 import org.team1294.firstpowerup.robot.vision.SwitchTargetPipeline;
@@ -24,38 +27,68 @@ public class VisionSubsystem extends Subsystem {
   private static final int IMG_WIDTH = 320;
   private static final int IMG_HEIGHT = 240;
   private final CvSink cvSink;
+  private final CvSource cvSource;
   private final UsbCamera usbCamera;
   private final CameraServer cameraServer;
   private final Mat frame = new Mat();
   private final SwitchTargetPipeline switchTargetPipeline;
   private final CratePipeline cratePipeline;
 
+  private VisionProcessingResult visionProcessingResult;
+
   public VisionSubsystem() {
+    switchTargetPipeline = new SwitchTargetPipeline();
+    cratePipeline = new CratePipeline();
+
     cameraServer = CameraServer.getInstance();
+
     usbCamera = cameraServer.startAutomaticCapture(0);
     usbCamera.setResolution(IMG_WIDTH, IMG_HEIGHT);
     usbCamera.setFPS(30);
-    usbCamera.setBrightness(7);
-    usbCamera.setExposureManual(30);
-    cvSink = cameraServer.getVideo(usbCamera);
 
-    switchTargetPipeline = new SwitchTargetPipeline();
-    cratePipeline = new CratePipeline();
+    cvSink = cameraServer.getVideo(usbCamera);
+    cvSource = cameraServer.putVideo("VisionSystem", IMG_WIDTH, IMG_HEIGHT);
+
+    //https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio
+    new Thread(() -> {
+      // grab a frame from the camera
+      cvSink.grabFrame(frame);
+
+      // draw on the frame if we have a vision target
+      if (visionProcessingResult != null && visionProcessingResult.isTargetAcquired()) {
+        final Rect targetRect = visionProcessingResult.getTargetRect();
+        Imgproc.rectangle(frame, targetRect.tl(), targetRect.br(), new Scalar(0, 0, 255), 2);
+      }
+
+      // output the frame to the stream
+      cvSource.putFrame(frame);
+    }).start();
   }
 
 
   @Override
   protected void initDefaultCommand() {
+    setDefaultCommand(new DefaultVisionCommand());
+  }
 
+  public VisionProcessingResult detectNothing() {
+    // set the camera to take normal images
+    setCameraNormal();
+
+    // create and return a negative result
+    final VisionProcessingResult result = new VisionProcessingResult();
+    this.visionProcessingResult = result;
+    return result;
   }
 
   public VisionProcessingResult detectSwitch() {
     VisionProcessingResult result = new VisionProcessingResult();
     try {
-      double heading = Robot.driveSubsystem.getHeading();
+      // set the camera to take vision target images
+      setCameraForVisionTarget();
 
-      // grab a frame
-      cvSink.grabFrame(frame);
+      // remember the heading before we do lengthy processing
+      double heading = Robot.driveSubsystem.getHeading();
 
       // run the grip pipeline
       switchTargetPipeline.process(frame);
@@ -70,7 +103,7 @@ public class VisionSubsystem extends Subsystem {
 
       // get the best (lowest) scoring pair
       Optional<PairOfRect> bestPair = pairs
-          .min((a, b) -> scoreSwitchContourPair(b).compareTo(scoreSwitchContourPair(a)));
+          .min((a, b) -> b.fitnessScore().compareTo(a.fitnessScore()));
 
       if (bestPair.isPresent()) {
         result.setTargetAcquired(true);
@@ -83,6 +116,7 @@ public class VisionSubsystem extends Subsystem {
             percentOffCenter * 30; // todo: validate this years field of view for the camera
         result.setDegreesOffCenter(degreesOffCenter);
         result.setHeadingWhenImageTaken(heading);
+        result.setTargetRect(bestPair.get().getCombined());
       } else {
         result.setTargetAcquired(false);
       }
@@ -96,16 +130,18 @@ public class VisionSubsystem extends Subsystem {
       result.setTargetAcquired(false);
     }
 
+    this.visionProcessingResult = result;
     return result;
   }
 
   public VisionProcessingResult detectCrate() {
     VisionProcessingResult result = new VisionProcessingResult();
     try {
-      double heading = Robot.driveSubsystem.getHeading();
+      // set the camera to take normal images
+      setCameraNormal();
 
-      // grab a frame
-      cvSink.grabFrame(frame);
+      // remember the heading before we do lengthy processing
+      double heading = Robot.driveSubsystem.getHeading();
 
       // run the grip pipeline
       cratePipeline.process(frame);
@@ -124,47 +160,28 @@ public class VisionSubsystem extends Subsystem {
       result.setTargetAcquired(false);
     }
 
+    this.visionProcessingResult = result;
     return result;
+  }
+
+  private void setCameraNormal() {
+    // todo turn the green led ring OFF
+
+    // set the brightness and exposure to bright auto
+    usbCamera.setBrightness(100);
+    usbCamera.setExposureAuto();
+  }
+
+  private void setCameraForVisionTarget() {
+    // todo turn the green led ring ON
+
+    // set the brightness and exposure to dark manual
+    usbCamera.setBrightness(7);
+    usbCamera.setExposureManual(30);
   }
 
 
   public void saveLastImage() {
-
-  }
-
-
-  public Double scoreSwitchContourPair(PairOfRect pair) {
-    double score = 0;
-
-    // difference in height
-    score += Math.abs(pair.getA().height - pair.getB().height);
-
-    // difference in width
-    score += Math.abs(pair.getA().width - pair.getB().width);
-
-    // difference in center Y
-    double rect1CenterY = pair.getA().y + pair.getA().height / 2;
-    double rect2CenterY = pair.getB().y + pair.getB().height / 2;
-    score += Math.abs(rect1CenterY - rect2CenterY);
-
-    // difference between combined rect width:height ratio and the ideal of 2.05
-    // todo figure out ideal ratio for this years vision target
-    double combinedWidth;
-    double combinedHeight;
-    if (pair.getA().x < pair.getB().x) {
-      combinedWidth = pair.getA().x + pair.getB().x + pair.getB().width;
-    } else {
-      combinedWidth = pair.getB().x + pair.getA().x + pair.getA().width;
-    }
-    if (pair.getA().y < pair.getB().y) {
-      combinedHeight = pair.getA().y + pair.getB().y + pair.getB().height;
-    } else {
-      combinedHeight = pair.getB().y + pair.getA().y + pair.getA().height;
-    }
-
-    double combinedRatio = combinedWidth / combinedHeight;
-    score += Math.abs(combinedRatio - 2.05);
-
-    return score;
+    // todo save an image somehow
   }
 }

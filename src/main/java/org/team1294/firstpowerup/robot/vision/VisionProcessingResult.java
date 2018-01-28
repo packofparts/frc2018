@@ -1,20 +1,16 @@
 package org.team1294.firstpowerup.robot.vision;
 
+import org.opencv.core.Rect;
+
 public class VisionProcessingResult {
 
   private boolean targetAcquired;
   private double degreesOffCenter;
   private double headingWhenImageTaken;
+  private Rect targetRect;
 
   public VisionProcessingResult() {
-
-  }
-
-  public VisionProcessingResult(boolean targetAcquired, double degreesOffCenter,
-      double headingWhenImageTaken) {
-    this.targetAcquired = targetAcquired;
-    this.degreesOffCenter = degreesOffCenter;
-    this.headingWhenImageTaken = headingWhenImageTaken;
+    targetAcquired = false;
   }
 
   public boolean isTargetAcquired() {
@@ -39,5 +35,13 @@ public class VisionProcessingResult {
 
   public void setHeadingWhenImageTaken(double headingWhenImageTaken) {
     this.headingWhenImageTaken = headingWhenImageTaken;
+  }
+
+  public Rect getTargetRect() {
+    return targetRect;
+  }
+
+  public void setTargetRect(Rect targetRect) {
+    this.targetRect = targetRect;
   }
 }

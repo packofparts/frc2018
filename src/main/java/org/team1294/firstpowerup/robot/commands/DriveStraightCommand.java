@@ -18,8 +18,6 @@ public class DriveStraightCommand extends CommandGroup {
   public DriveStraightCommand(final double distance) {
     super("Drive straight " + distance + "m");
 
-    requires(Robot.driveSubsystem);
-
     driveCommand = new DriveCommand();
     forwardPIDCommand = new ForwardPIDCommand(distance);
     turnPIDCommand = new TurnPIDCommand();
@@ -48,6 +46,9 @@ public class DriveStraightCommand extends CommandGroup {
 
 
   private class DriveCommand extends Command {
+    public DriveCommand() {
+      requires(Robot.driveSubsystem);
+    }
 
     @Override
     protected void execute() {
