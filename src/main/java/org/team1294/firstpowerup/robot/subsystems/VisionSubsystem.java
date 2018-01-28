@@ -66,7 +66,28 @@ public class VisionSubsystem extends Subsystem {
   }
 
   public VisionProcessingResult grabFrameAndDetectCrate() {
-    return null;
+    VisionProcessingResult result;
+    try {
+      double heading = Robot.driveSubsystem.getHeading();
+
+      // grab a frame
+      cvSink.grabFrame(frame);
+
+      // do the processing
+      result = visionProcessing
+          .processCrateFrame(frame);
+      result.setHeadingWhenImageTaken(heading);
+
+      SmartDashboard.putBoolean("VisionSubsystem.SwitchTargetAcquired", result.isTargetAcquired());
+      SmartDashboard.putNumber("VisionSubsystem.SwitchTargetDegreesOffCenter", result.getDegreesOffCenter());
+    } catch (Exception ex) {
+      System.out.println("Failed to do vision processing.");
+      ex.printStackTrace();
+      result = new VisionProcessingResult();
+      result.setTargetAcquired(false);
+    }
+
+    return result;
   }
 
   public void saveLastImage() {

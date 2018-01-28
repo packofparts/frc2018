@@ -12,9 +12,11 @@ import java.util.stream.Stream;
 public class VisionProcessing {
 
   private final SwitchTargetPipeline switchTargetPipeline;
+  private final CratePipeline cratePipeline;
 
   public VisionProcessing() {
     switchTargetPipeline = new SwitchTargetPipeline();
+    cratePipeline = new CratePipeline();
   }
 
   public VisionProcessingResult processSwitchTargetFrame(Mat frame) {
@@ -54,6 +56,18 @@ public class VisionProcessing {
     return result;
   }
 
+  public VisionProcessingResult processCrateFrame(Mat frame) {
+    // run the grip pipeline
+    cratePipeline.process(frame);
+
+    // todo bunch of stuff here
+
+    VisionProcessingResult result = new VisionProcessingResult();
+    result.setTargetAcquired(false);
+    result.setDegreesOffCenter(0);
+    return result;
+  }
+
   public Double scoreSwitchContourPair(PairOfRect pair) {
     double score = 0;
 
@@ -88,4 +102,6 @@ public class VisionProcessing {
 
     return score;
   }
+
+
 }
