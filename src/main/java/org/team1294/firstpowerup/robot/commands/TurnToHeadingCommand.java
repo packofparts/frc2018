@@ -32,6 +32,7 @@ public class TurnToHeadingCommand extends PIDCommand {
 
     getPIDController().setAbsoluteTolerance(tolerance);
     getPIDController().setInputRange(0, 360);
+    getPIDController().setContinuous(true);
     getPIDController().setOutputRange(-maxOutput, maxOutput);
   }
 

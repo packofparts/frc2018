@@ -126,6 +126,7 @@ public class ApproachVisionTargetCommand extends CommandGroup {
       getPIDController().setD(d);
       getPIDController().setAbsoluteTolerance(tolerance);
       getPIDController().setInputRange(0, 360);
+      getPIDController().setContinuous(true);
       getPIDController().setOutputRange(-maxOutput, maxOutput);
     }
 

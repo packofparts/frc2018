@@ -133,6 +133,7 @@ public class DriveStraightCommand extends CommandGroup {
 
       getPIDController().setAbsoluteTolerance(tolerance);
       getPIDController().setInputRange(0, 360);
+      getPIDController().setContinuous(true);
       getPIDController().setOutputRange(-maxOutput, maxOutput);
     }
 
