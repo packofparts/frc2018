@@ -6,46 +6,45 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.Robot;
 
-public class DriveStraightCommand extends CommandGroup{
+public class DriveStraightCommand extends CommandGroup {
 
-    private final DriveCommand driveCommand;
-    private final ForwardPIDCommand forwardPIDCommand;
-    private final TurnPIDCommand turnPIDCommand;
+  private final DriveCommand driveCommand;
+  private final ForwardPIDCommand forwardPIDCommand;
+  private final TurnPIDCommand turnPIDCommand;
 
-    private double forwardRate;
-    private double turnRate;
+  private double forwardRate;
+  private double turnRate;
 
-    public DriveStraightCommand(final double distance){
-        super("Drive straight " + distance + "m");
+  public DriveStraightCommand(final double distance) {
+    super("Drive straight " + distance + "m");
 
-        requires(Robot.driveSubsystem);
+    requires(Robot.driveSubsystem);
 
-        driveCommand = new DriveCommand();
-        forwardPIDCommand = new ForwardPIDCommand(distance);
-        turnPIDCommand = new TurnPIDCommand();
+    driveCommand = new DriveCommand();
+    forwardPIDCommand = new ForwardPIDCommand(distance);
+    turnPIDCommand = new TurnPIDCommand();
 
-        addParallel(driveCommand);
-        addParallel(forwardPIDCommand);
-        addParallel(turnPIDCommand);
+    addParallel(driveCommand);
+    addParallel(forwardPIDCommand);
+    addParallel(turnPIDCommand);
 
-        setTimeout(15);
-    }
+    setTimeout(15);
+  }
 
-    @Override
-    protected void initialize() {
-        // do nothing
-    }
+  @Override
+  protected void initialize() {
+    // do nothing
+  }
 
-    @Override
-    protected void end() {
-        // do nothing
-    }
+  @Override
+  protected void end() {
+    // do nothing
+  }
 
-    @Override
-    protected boolean isFinished() {
-        return isTimedOut() || (forwardPIDCommand.onTarget() && turnPIDCommand.onTarget());
-    }
-
+  @Override
+  protected boolean isFinished() {
+    return isTimedOut() || (forwardPIDCommand.onTarget() && turnPIDCommand.onTarget());
+  }
 
 
   private class DriveCommand extends Command {
@@ -62,18 +61,20 @@ public class DriveStraightCommand extends CommandGroup{
   }
 
   private class ForwardPIDCommand extends PIDCommand {
+
     private final double distance;
     private boolean hasRunPIDOnce = false;
 
-    public ForwardPIDCommand(final double distance){
-      super(1.0,0.1, 0.0);
+    public ForwardPIDCommand(final double distance) {
+      super(1.0, 0.1, 0.0);
 
       this.distance = distance;
 
       double p = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.p", 1.0);
       double i = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.i", 0.1);
       double d = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.d", 0.0);
-      double tolerance = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.tolerance", 0.01);
+      double tolerance = SmartDashboard
+          .getNumber("DriveStraightCommand.ForwardPID.tolerance", 0.01);
       double maxOutput = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.maxOutput", 0.5);
 
       getPIDController().setP(p);
@@ -109,11 +110,12 @@ public class DriveStraightCommand extends CommandGroup{
     }
   }
 
-  public class TurnPIDCommand extends PIDCommand{
+  public class TurnPIDCommand extends PIDCommand {
+
     private boolean hasRunPIDOnce = false;
     private DriveStraightCommand group;
 
-    public TurnPIDCommand(){
+    public TurnPIDCommand() {
       super(1.0, 0.0, 0.0);
 
       double p = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.p", 1.0);
@@ -129,7 +131,7 @@ public class DriveStraightCommand extends CommandGroup{
       getPIDController().setOutputRange(-maxOutput, maxOutput);
 
       getPIDController().setAbsoluteTolerance(tolerance);
-      getPIDController().setInputRange(0,360);
+      getPIDController().setInputRange(0, 360);
       getPIDController().setOutputRange(-maxOutput, maxOutput);
     }
 

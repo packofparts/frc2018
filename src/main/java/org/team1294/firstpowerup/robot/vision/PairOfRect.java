@@ -4,6 +4,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
 public class PairOfRect {
+
   private final Rect a;
   private final Rect b;
 

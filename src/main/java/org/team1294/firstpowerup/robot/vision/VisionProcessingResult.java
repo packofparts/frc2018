@@ -1,6 +1,7 @@
 package org.team1294.firstpowerup.robot.vision;
 
 public class VisionProcessingResult {
+
   private boolean targetAcquired;
   private double degreesOffCenter;
   private double headingWhenImageTaken;

@@ -40,6 +40,7 @@ public class ApproachVisionTargetCommand extends CommandGroup {
   }
 
   private class DriveCommand extends Command {
+
     @Override
     protected void execute() {
       Robot.driveSubsystem.arcadeDrive(forwardRate, turnRate);
@@ -52,11 +53,12 @@ public class ApproachVisionTargetCommand extends CommandGroup {
   }
 
   private class ForwardPIDCommand extends PIDCommand {
+
     private final double distance;
     private boolean hasRunPIDOnce = false;
 
     public ForwardPIDCommand(double distance) {
-      super(1.0,0.1,0);
+      super(1.0, 0.1, 0);
       this.distance = distance;
     }
 
@@ -65,8 +67,10 @@ public class ApproachVisionTargetCommand extends CommandGroup {
       double p = SmartDashboard.getNumber("ApproachVisionTargetCommand.ForwardPID.p", 1.0);
       double i = SmartDashboard.getNumber("ApproachVisionTargetCommand.ForwardPID.i", 0.1);
       double d = SmartDashboard.getNumber("ApproachVisionTargetCommand.ForwardPID.d", 0.0);
-      double tolerance = SmartDashboard.getNumber("ApproachVisionTargetCommand.ForwardPID.tolerance", 0.01);
-      double maxOutput = SmartDashboard.getNumber("ApproachVisionTargetCommand.ForwardPID.maxOutput", 1.0);
+      double tolerance = SmartDashboard
+          .getNumber("ApproachVisionTargetCommand.ForwardPID.tolerance", 0.01);
+      double maxOutput = SmartDashboard
+          .getNumber("ApproachVisionTargetCommand.ForwardPID.maxOutput", 1.0);
 
       getPIDController().setP(p);
       getPIDController().setI(i);
@@ -98,25 +102,28 @@ public class ApproachVisionTargetCommand extends CommandGroup {
   }
 
   private class TurnPIDCommand extends PIDCommand {
+
     private final Timer timer;
     private boolean hasRunPIDOnce = false;
 
     public TurnPIDCommand() {
-      super(1.0,0,0);
+      super(1.0, 0, 0);
 
       timer = new Timer();
 
       double p = SmartDashboard.getNumber("ApproachVisionTargetCommand.TurnPID.p", 1.0);
       double i = SmartDashboard.getNumber("ApproachVisionTargetCommand.TurnPID.i", 0.0);
       double d = SmartDashboard.getNumber("ApproachVisionTargetCommand.TurnPID.d", 0.0);
-      double tolerance = SmartDashboard.getNumber("ApproachVisionTargetCommand.TurnPID.tolerance", 5.0);
-      double maxOutput = SmartDashboard.getNumber("ApproachVisionTargetCommand.TurnPID.maxOutput", 0.08);
+      double tolerance = SmartDashboard
+          .getNumber("ApproachVisionTargetCommand.TurnPID.tolerance", 5.0);
+      double maxOutput = SmartDashboard
+          .getNumber("ApproachVisionTargetCommand.TurnPID.maxOutput", 0.08);
 
       getPIDController().setP(p);
       getPIDController().setI(i);
       getPIDController().setD(d);
       getPIDController().setAbsoluteTolerance(tolerance);
-      getPIDController().setInputRange(0,360);
+      getPIDController().setInputRange(0, 360);
       getPIDController().setOutputRange(-maxOutput, maxOutput);
     }
 
@@ -133,7 +140,9 @@ public class ApproachVisionTargetCommand extends CommandGroup {
 
       // if the target was acquired, adjust the setpoint
       if (visionProcessingResult.isTargetAcquired()) {
-        getPIDController().setSetpoint(visionProcessingResult.getHeadingWhenImageTaken() + visionProcessingResult.getDegreesOffCenter());
+        getPIDController().setSetpoint(
+            visionProcessingResult.getHeadingWhenImageTaken() + visionProcessingResult
+                .getDegreesOffCenter());
       }
 
       // periodically save an image

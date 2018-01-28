@@ -12,8 +12,7 @@ public class AutoCenterPositionCommand extends CommandGroup {
 
     // turn towards the desired side
     final String gameData = DriverStation.getInstance().getGameSpecificMessage();
-    if(gameData.charAt(0) == 'L')
-    {
+    if (gameData.charAt(0) == 'L') {
       addSequential(new TurnToHeadingCommand(315));
     } else {
       addSequential(new TurnToHeadingCommand(45));

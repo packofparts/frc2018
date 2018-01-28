@@ -21,16 +21,14 @@ import java.util.stream.Stream;
 
 public class VisionSubsystem extends Subsystem {
 
+  private static final int IMG_WIDTH = 320;
+  private static final int IMG_HEIGHT = 240;
   private final CvSink cvSink;
   private final UsbCamera usbCamera;
   private final CameraServer cameraServer;
   private final Mat frame = new Mat();
-
   private final SwitchTargetPipeline switchTargetPipeline;
   private final CratePipeline cratePipeline;
-
-  private static final int IMG_WIDTH = 320;
-  private static final int IMG_HEIGHT = 240;
 
   public VisionSubsystem() {
     cameraServer = CameraServer.getInstance();
@@ -63,18 +61,16 @@ public class VisionSubsystem extends Subsystem {
       switchTargetPipeline.process(frame);
 
       // get the bounding rect for each contour
-      List<Rect> rects = switchTargetPipeline
-          .filterContoursOutput()
-          .stream()
-          .map(contour -> Imgproc.boundingRect(contour))
-          .collect(Collectors.toList());
+      List<Rect> rects = switchTargetPipeline.filterContoursOutput().stream()
+          .map(contour -> Imgproc.boundingRect(contour)).collect(Collectors.toList());
 
       // get every combination of pairs
       Stream<PairOfRect> pairs = rects.stream()
           .flatMap(i -> rects.stream().filter(j -> !i.equals(j)).map(j -> new PairOfRect(i, j)));
 
       // get the best (lowest) scoring pair
-      Optional<PairOfRect> bestPair = pairs.min((a, b) -> scoreSwitchContourPair(b).compareTo(scoreSwitchContourPair(a)));
+      Optional<PairOfRect> bestPair = pairs
+          .min((a, b) -> scoreSwitchContourPair(b).compareTo(scoreSwitchContourPair(a)));
 
       if (bestPair.isPresent()) {
         result.setTargetAcquired(true);
@@ -82,8 +78,9 @@ public class VisionSubsystem extends Subsystem {
         // calculate how many degrees off center
         double halfWidth = frame.width() / 2;
         double pixelsOffCenter = bestPair.get().centerX() - halfWidth;
-        double percentOffCenter = pixelsOffCenter  / halfWidth;
-        double degreesOffCenter = percentOffCenter * 30; // todo: validate this years field of view for the camera
+        double percentOffCenter = pixelsOffCenter / halfWidth;
+        double degreesOffCenter =
+            percentOffCenter * 30; // todo: validate this years field of view for the camera
         result.setDegreesOffCenter(degreesOffCenter);
         result.setHeadingWhenImageTaken(heading);
       } else {
@@ -91,7 +88,8 @@ public class VisionSubsystem extends Subsystem {
       }
 
       SmartDashboard.putBoolean("VisionSubsystem.SwitchTargetAcquired", result.isTargetAcquired());
-      SmartDashboard.putNumber("VisionSubsystem.SwitchTargetDegreesOffCenter", result.getDegreesOffCenter());
+      SmartDashboard
+          .putNumber("VisionSubsystem.SwitchTargetDegreesOffCenter", result.getDegreesOffCenter());
     } catch (Exception ex) {
       System.out.println("Failed to do vision processing.");
       ex.printStackTrace();
@@ -118,7 +116,8 @@ public class VisionSubsystem extends Subsystem {
       result.setHeadingWhenImageTaken(heading);
 
       SmartDashboard.putBoolean("VisionSubsystem.CrateTargetAcquired", result.isTargetAcquired());
-      SmartDashboard.putNumber("VisionSubsystem.CrateTargetDegreesOffCenter", result.getDegreesOffCenter());
+      SmartDashboard
+          .putNumber("VisionSubsystem.CrateTargetDegreesOffCenter", result.getDegreesOffCenter());
     } catch (Exception ex) {
       System.out.println("Failed to do vision processing.");
       ex.printStackTrace();
@@ -132,8 +131,6 @@ public class VisionSubsystem extends Subsystem {
   public void saveLastImage() {
 
   }
-
-
 
 
   public Double scoreSwitchContourPair(PairOfRect pair) {

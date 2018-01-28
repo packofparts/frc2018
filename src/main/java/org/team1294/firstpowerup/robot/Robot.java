@@ -13,92 +13,91 @@ import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
 /**
- * The main class for the Robot. This handles the creation of the various
- * subsystems of the robot, and the timing of when events happen. Each robot
- * mode has an "init" and a "periodic" method. The "init" event happens one
- * time when the drivers' station (DS) starts an op-mode, and the "periodic"
- * event happens every time a packet is received from the DS (~20 ms).
+ * The main class for the Robot. This handles the creation of the various subsystems of the robot,
+ * and the timing of when events happen. Each robot mode has an "init" and a "periodic" method. The
+ * "init" event happens one time when the drivers' station (DS) starts an op-mode, and the
+ * "periodic" event happens every time a packet is received from the DS (~20 ms).
  */
 public class Robot extends IterativeRobot {
-    public static DriveSubsystem driveSubsystem;
-    public static VisionSubsystem visionSubsystem;
 
-    public static OI oi;
+  public static DriveSubsystem driveSubsystem;
+  public static VisionSubsystem visionSubsystem;
 
-    /**
-     * Constructor for Robot(). This is where
-     * {@link edu.wpi.first.wpilibj.command.Subsystem Subsystems} and the
-     * {@link OI} should be initialized.
-     */
-    public Robot() {
-        driveSubsystem = new DriveSubsystem();
-        visionSubsystem = new VisionSubsystem();
+  public static OI oi;
 
-        // OI has to be initialized AFTER the Subsystems, because the OI has
-        // Buttons which reference Commands which use the Subsystems
-        oi = new OI();
-    }
+  /**
+   * Constructor for Robot(). This is where {@link edu.wpi.first.wpilibj.command.Subsystem
+   * Subsystems} and the {@link OI} should be initialized.
+   */
+  public Robot() {
+    driveSubsystem = new DriveSubsystem();
+    visionSubsystem = new VisionSubsystem();
 
-    @Override
-    public void robotInit() {
-        SmartDashboard.putData(driveSubsystem);
+    // OI has to be initialized AFTER the Subsystems, because the OI has
+    // Buttons which reference Commands which use the Subsystems
+    oi = new OI();
+  }
 
-        SmartDashboard.putData(new ResetEncoderCommand());
-        SmartDashboard.putData(new ResetGyroCommand());
+  @Override
+  public void robotInit() {
+    SmartDashboard.putData(driveSubsystem);
 
-        SmartDashboard.putData(new DriveStraightCommand(1.0));
+    SmartDashboard.putData(new ResetEncoderCommand());
+    SmartDashboard.putData(new ResetGyroCommand());
 
-        SmartDashboard.putData(new TurnToHeadingCommand(0));
-        SmartDashboard.putData(new TurnToHeadingCommand(90));
-        SmartDashboard.putData(new TurnToHeadingCommand(180));
-        SmartDashboard.putData(new TurnToHeadingCommand(270));
+    SmartDashboard.putData(new DriveStraightCommand(1.0));
 
-        SmartDashboard.putData(new AutoCenterPositionCommand());
-    }
+    SmartDashboard.putData(new TurnToHeadingCommand(0));
+    SmartDashboard.putData(new TurnToHeadingCommand(90));
+    SmartDashboard.putData(new TurnToHeadingCommand(180));
+    SmartDashboard.putData(new TurnToHeadingCommand(270));
 
-    @Override
-    public void disabledInit() {
-        // TODO: Method stub
-    }
+    SmartDashboard.putData(new AutoCenterPositionCommand());
+  }
 
-    @Override
-    public void autonomousInit() {
-        // TODO: Method stub
-    }
+  @Override
+  public void disabledInit() {
+    // TODO: Method stub
+  }
 
-    @Override
-    public void teleopInit() {
-        // TODO: Method stub
-    }
+  @Override
+  public void autonomousInit() {
+    // TODO: Method stub
+  }
 
-    @Override
-    public void testInit() {
-        // TODO: Method stub
-    }
+  @Override
+  public void teleopInit() {
+    // TODO: Method stub
+  }
 
-    @Override
-    public void robotPeriodic() {
-        SmartDashboard.putData(Scheduler.getInstance());
-        Scheduler.getInstance().run();
-    }
+  @Override
+  public void testInit() {
+    // TODO: Method stub
+  }
 
-    @Override
-    public void disabledPeriodic() {
-        // TODO: Method stub
-    }
+  @Override
+  public void robotPeriodic() {
+    SmartDashboard.putData(Scheduler.getInstance());
+    Scheduler.getInstance().run();
+  }
 
-    @Override
-    public void autonomousPeriodic() {
-        // TODO: Method stub
-    }
+  @Override
+  public void disabledPeriodic() {
+    // TODO: Method stub
+  }
 
-    @Override
-    public void teleopPeriodic() {
-        // TODO: Method stub
-    }
+  @Override
+  public void autonomousPeriodic() {
+    // TODO: Method stub
+  }
 
-    @Override
-    public void testPeriodic() {
-        // TODO: Method stub
-    }
+  @Override
+  public void teleopPeriodic() {
+    // TODO: Method stub
+  }
+
+  @Override
+  public void testPeriodic() {
+    // TODO: Method stub
+  }
 }
