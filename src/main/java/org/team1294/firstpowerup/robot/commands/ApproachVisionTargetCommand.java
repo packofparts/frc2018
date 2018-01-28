@@ -104,14 +104,11 @@ public class ApproachVisionTargetCommand extends CommandGroup {
 
   private class TurnPIDCommand extends PIDCommand {
 
-    private final Timer timer;
     private boolean hasRunPIDOnce = false;
 
     public TurnPIDCommand() {
       super(1.0, 0, 0);
       requires(Robot.visionSubsystem);
-
-      timer = new Timer();
 
       double p = SmartDashboard.getNumber("ApproachVisionTargetCommand.TurnPID.p", 1.0);
       double i = SmartDashboard.getNumber("ApproachVisionTargetCommand.TurnPID.i", 0.0);
@@ -132,7 +129,6 @@ public class ApproachVisionTargetCommand extends CommandGroup {
 
     @Override
     protected void initialize() {
-      timer.start();
       getPIDController().setSetpoint(Robot.driveSubsystem.getHeading());
     }
 
@@ -144,12 +140,6 @@ public class ApproachVisionTargetCommand extends CommandGroup {
       // if the target was acquired, adjust the setpoint
       if (visionProcessingResult.isTargetAcquired()) {
         getPIDController().setSetpoint(visionProcessingResult.getHeadingToTurn());
-      }
-
-      // periodically save an image
-      if (timer.hasPeriodPassed(.25)) {
-        Robot.visionSubsystem.saveLastImage();
-        timer.reset();
       }
     }
 
