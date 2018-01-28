@@ -6,17 +6,39 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.Robot;
 
+import java.util.Optional;
+
 public class DriveStraightCommand extends CommandGroup {
 
   private final DriveCommand driveCommand;
   private final ForwardPIDCommand forwardPIDCommand;
   private final TurnPIDCommand turnPIDCommand;
 
+  private final Optional<Double> desiredHeading;
+
   private double forwardRate;
   private double turnRate;
 
   public DriveStraightCommand(final double distance) {
-    super("Drive straight " + distance + "m");
+    super("Drive current heading " + distance + "m");
+
+    desiredHeading = Optional.empty();
+
+    driveCommand = new DriveCommand();
+    forwardPIDCommand = new ForwardPIDCommand(distance);
+    turnPIDCommand = new TurnPIDCommand();
+
+    addParallel(driveCommand);
+    addParallel(forwardPIDCommand);
+    addParallel(turnPIDCommand);
+
+    setTimeout(15);
+  }
+
+  public DriveStraightCommand(final double distance, final double heading) {
+    super("Drive " + heading + " degrees " + distance + " meters");
+
+    desiredHeading = Optional.of(heading);
 
     driveCommand = new DriveCommand();
     forwardPIDCommand = new ForwardPIDCommand(distance);
@@ -114,7 +136,6 @@ public class DriveStraightCommand extends CommandGroup {
   public class TurnPIDCommand extends PIDCommand {
 
     private boolean hasRunPIDOnce = false;
-    private DriveStraightCommand group;
 
     public TurnPIDCommand() {
       super(1.0, 0.0, 0.0);
@@ -139,7 +160,7 @@ public class DriveStraightCommand extends CommandGroup {
 
     @Override
     protected void initialize() {
-      getPIDController().setSetpoint(Robot.driveSubsystem.getHeading());
+      getPIDController().setSetpoint(desiredHeading.orElse(Robot.driveSubsystem.getHeading()));
     }
 
     @Override

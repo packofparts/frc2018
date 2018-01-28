@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.AutoCenterPositionCommand;
+import org.team1294.firstpowerup.robot.commands.AutoSidePositionCommand;
 import org.team1294.firstpowerup.robot.commands.DriveStraightCommand;
 import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
@@ -53,6 +54,8 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putData(new TurnToHeadingCommand(270));
 
     SmartDashboard.putData(new AutoCenterPositionCommand());
+    SmartDashboard.putData(new AutoSidePositionCommand("L"));
+    SmartDashboard.putData(new AutoSidePositionCommand("R"));
   }
 
   @Override
