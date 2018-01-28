@@ -74,31 +74,31 @@ public class DriveSubsystem extends Subsystem {
         setDefaultCommand(new ArcadeDriveCommand());
     }
 
-    public double getEncoderPositionLeft(){
+    public double getEncoderPositionLeft() {
         return leftFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
-    public double getEncoderPositionRight(){
+    public double getEncoderPositionRight() {
         return rightFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
-    public double getEncoderVelocityLeft(){
+    public double getEncoderVelocityLeft() {
         return leftFront.getSelectedSensorVelocity(0) * kEncoderScale;
     }
 
-    public double getEncoderVelocityRight(){
+    public double getEncoderVelocityRight() {
         return rightFront.getSelectedSensorVelocity(0) * kEncoderScale;
     }
 
-    public double getHeading(){
+    public double getHeading() {
         return navX.getAngle() % 360;
     }
 
-    public double getTurnRate(){
+    public double getTurnRate() {
         return navX.getRate();
     }
 
-    public void resetGyro(){
+    public void resetGyro() {
         navX.reset();
     }
 
