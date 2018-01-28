@@ -114,10 +114,10 @@
   </settings>
   <codeGenerationSettings>
     <language>Java</language>
-    <className>GripPipeline</className>
+    <className>CratePipeline</className>
     <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>/Users/jxlewis/GRIP</saveDir>
-    <packageName></packageName>
+    <saveDir>/Users/jxlewis/workspace/frc/frc2018/src/main/java/org/team1294/firstpowerup/robot/vision</saveDir>
+    <packageName>org.team1294.firstpowerup.robot.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
 </grip:Pipeline>
