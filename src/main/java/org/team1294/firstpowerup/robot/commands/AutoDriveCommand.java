@@ -48,6 +48,8 @@ public class AutoDriveCommand extends CommandGroup {
     public AutoDriveCommand(final double distance, final double heading, final double velocity, final double turnRate) {
         super("AutoDriveCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
 
+        requires(Robot.driveSubsystem);
+
         autoForwardPIDCommand = new AutoForwardPIDCommand(rate -> this.forwardRate = rate, distance, velocity);
         autoTurnPIDCommand = new AutoTurnPIDCommand(output -> this.turnRate = output, heading, turnRate);
 
