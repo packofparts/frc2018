@@ -76,4 +76,12 @@ public class AutoDriveCommand extends CommandGroup {
     protected void end() {
         // do nothing
     }
+
+    public void setHeading(final double heading) {
+        autoTurnPIDCommand.setSetpoint(heading);
+    }
+
+    public void setDistance(final double distance) {
+        autoForwardPIDCommand.setSetpoint(distance);
+    }
 }

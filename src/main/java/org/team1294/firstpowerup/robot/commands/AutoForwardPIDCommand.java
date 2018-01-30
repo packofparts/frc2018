@@ -44,4 +44,8 @@ public class AutoForwardPIDCommand extends PIDCommand {
     public boolean onTarget() {
         return hasRunPIDOnce && getPIDController().onTarget();
     }
+
+    public void setSetpoint(final double distance) {
+        getPIDController().setSetpoint(distance);
+    }
 }

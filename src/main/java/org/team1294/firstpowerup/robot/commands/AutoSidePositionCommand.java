@@ -4,63 +4,77 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoSidePositionCommand extends CommandGroup {
+    private final String side;
+    private final AutoDriveCommand turnTowardsWall;
+    private final AutoDriveCommand driveTowardsWall;
+    private final AutoDriveCommand driveDownfield;
+    private final AutoDriveCommand turnTowardsDelivery;
+    private final AutoDriveCommand driveTowardsDelivery;
+    private final AutoDeliverCrateCommand deliverCrateCommand;
 
     public AutoSidePositionCommand(String side) {
-        final String gameData = DriverStation.getInstance().getGameSpecificMessage();
-        final String scaleSide = gameData.substring(1, 1);
-        final String switchSide = gameData.substring(0, 0);
+        this.side = side;
 
         // drive straight ahead far enough to make it easy to turn
-        addSequential(new AutoDriveCommand(0.1, 0, 0.5, 0.25)); // todo tune this distance
+        addSequential(new AutoDriveCommand(0.1, 0, 0.5, 0.25));
 
-        // drive towards the wall
-        if (side.equals("L")) {
-            addSequential(new AutoDriveCommand(0, 315, 0.5, 0.5));
-            addSequential(new AutoDriveCommand(0.5, 315, 0.5, 0.25)); // todo tune this distance
-        } else {
-            addSequential(new AutoDriveCommand(0, 45, 0.5, 0.5));
-            addSequential(new AutoDriveCommand(0.5, 45, 0.5, 0.25)); // todo tune this distance
-        }
+        // turn towards the wall (heading gets set in initialize)
+        turnTowardsWall = new AutoDriveCommand(0, 0, 0.5, 0.5);
+        addSequential(turnTowardsWall);
+
+        // drive towards the wall (heading gets set in initialize)
+        driveTowardsWall = new AutoDriveCommand(1, 0, 0.5, 0.25);
+        addSequential(driveTowardsWall);
 
         // turn downfield
         addSequential(new AutoDriveCommand(0, 0, 0.5, 0.5));
 
-        if (scaleSide.equals(side)) {
-            // drive downfield until abeam the scale
-            addSequential(new AutoDriveCommand(2.0, 0, 0.5, 0.25)); // todo tune this distance
+        // drive downfield until abeam the crate delivery location (distance gets set in initialize)
+        driveDownfield = new AutoDriveCommand(0, 0, 0.5, 0.25);
+        addSequential(driveDownfield);
 
-            // drive towards the scale
-            if (side.equals("L")) {
-                addSequential(new AutoDriveCommand(0, 90, 0.5, 0.5));
-                addSequential(new AutoDriveCommand(0.5, 90, 0.5, 0.25)); // todo tune this distance
-            } else {
-                addSequential(new AutoDriveCommand(0, 270, 0.5, 0.5));
-                addSequential(new AutoDriveCommand(0.5, 270, 0.5, 0.25)); // todo tune this distance
-            }
+        // turn towards the crate delivery location (heading gets set in initialize)
+        turnTowardsDelivery = new AutoDriveCommand(0, 0, 0.5, 0.5);
+        addSequential(turnTowardsDelivery);
 
-            // deliver the crate
-            // todo
-        } else if (switchSide.equals(side)) {
-            // drive downfield until abeam the switch
-            addSequential(new AutoDriveCommand(1.0, 0, 0.5, 0.25)); // todo tune this distance
+        // drive towards the crate delivery location ((heading and distance gets set in initialize)
+        driveTowardsDelivery = new AutoDriveCommand(0, 0, 0.5, 0.25);
+        addSequential(driveTowardsDelivery);
 
-            // drive towards the switch
-            if (side.equals("L")) {
-                addSequential(new AutoDriveCommand(0, 90, 0.5, 0.5));
-                addSequential(new AutoDriveCommand(0.5, 90, 0.5, 0.25)); // todo tune this distance
-            } else {
-                addSequential(new AutoDriveCommand(0, 270, 0.5, 0.5));
-                addSequential(new AutoDriveCommand(0.5, 270, 0.5, 0.25)); // todo tune this distance
-            }
-
-            // deliver the crate
-            // todo
-        } else {
-            // drive downfield until past the auto line
-            addSequential(new AutoDriveCommand(1.0, 0, 0.5, 0.25)); // todo tune this distance
-        }
-
-
+        // deliver the crate
+        deliverCrateCommand = new AutoDeliverCrateCommand();
+        addSequential(deliverCrateCommand);
     }
 
+    @Override
+    protected void initialize() {
+        final String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        final String scaleSide = gameData.substring(1, 1);
+        final String switchSide = gameData.substring(0, 0);
+
+        if (side.equals("L")) {
+            turnTowardsWall.setHeading(315);
+            driveTowardsWall.setHeading(315);
+            turnTowardsDelivery.setHeading(90);
+            driveTowardsDelivery.setHeading(90);
+        } else {
+            turnTowardsWall.setHeading(45);
+            driveTowardsWall.setHeading(45);
+            turnTowardsDelivery.setHeading(270);
+            driveTowardsDelivery.setHeading(270);
+        }
+
+        if (scaleSide.equals(side)) {
+            driveDownfield.setDistance(2.0); // todo tune this distance
+            driveTowardsDelivery.setDistance(0.5); // todo tune this distance
+        } else if (switchSide.equals(side)) {
+            driveDownfield.setDistance(1); // todo tune this distance
+            driveTowardsDelivery.setDistance(0.5); // todo tune this distance
+        } else {
+            driveDownfield.setDistance(0.5); // todo tune this distance
+            turnTowardsDelivery.setHeading(0);
+            driveTowardsDelivery.setDistance(0);
+            deliverCrateCommand.setEnabled(false);
+        }
+    }
 }
