@@ -14,32 +14,27 @@ public class DriveStraightCommand extends CommandGroup {
     private final ForwardPIDCommand forwardPIDCommand;
     private final TurnPIDCommand turnPIDCommand;
 
-    private final Optional<Double> desiredHeading;
+    private final double desiredHeading;
 
     private double forwardRate;
     private double turnRate;
 
     public DriveStraightCommand(final double distance) {
-        super("Drive current heading " + distance + "m");
-
-        desiredHeading = Optional.empty();
-
-        driveCommand = new DriveCommand();
-        forwardPIDCommand = new ForwardPIDCommand(distance);
-        turnPIDCommand = new TurnPIDCommand();
-
-        addParallel(driveCommand);
-        addParallel(forwardPIDCommand);
-        addParallel(turnPIDCommand);
-
-        setTimeout(15);
+        this(distance, Robot.driveSubsystem.getHeading());
     }
 
     public DriveStraightCommand(final double distance, final double heading) {
-        super("Drive " + heading + " degrees " + distance + " meters");
+        this(distance, heading, 1);
+    }
 
-        desiredHeading = Optional.of(heading);
+    public DriveStraightCommand(final double distance, final double heading, final double velocity) {
+        this(distance, heading, velocity, 1);
+    }
 
+    public DriveStraightCommand(final double distance, final double heading, final double velocity, final double turnRate) {
+        super("DriveStraightCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
+
+        desiredHeading = heading;
         driveCommand = new DriveCommand();
         forwardPIDCommand = new ForwardPIDCommand(distance);
         turnPIDCommand = new TurnPIDCommand();
@@ -161,12 +156,8 @@ public class DriveStraightCommand extends CommandGroup {
             getPIDController().setInputRange(0, 360);
             getPIDController().setContinuous(true);
             getPIDController().setOutputRange(-maxOutput, maxOutput);
-        }
 
-        @Override
-        protected void initialize() {
-            getPIDController()
-                .setSetpoint(desiredHeading.orElse(Robot.driveSubsystem.getHeading()));
+            getPIDController().setSetpoint(desiredHeading);
         }
 
         @Override
