@@ -12,30 +12,49 @@ public class AutoDriveCommand extends CommandGroup {
     private final ForwardPIDCommand forwardPIDCommand;
     private final TurnPIDCommand turnPIDCommand;
 
-    private final double desiredHeading;
-
     private double forwardRate;
     private double turnRate;
 
+    /**
+     * Auth drive a distance on the current heading
+     * @param distance the distance in meters to drive
+     */
     public AutoDriveCommand(final double distance) {
         this(distance, Robot.driveSubsystem.getHeading());
     }
 
+    /**
+     * Auto drive a distance and heading
+     * @param distance the distance in meters to drive
+     * @param heading the heading to drive
+     */
     public AutoDriveCommand(final double distance, final double heading) {
         this(distance, heading, 1);
     }
 
+    /**
+     * Auto drive a distance and heading with a max velocity
+     * @param distance the distance in meters to drive
+     * @param heading the heading to drive
+     * @param velocity the max velocity to drive (-1.0 to 1.0)
+     */
     public AutoDriveCommand(final double distance, final double heading, final double velocity) {
         this(distance, heading, velocity, 1);
     }
 
+    /**
+     * Auto drive a distance and heading with max velocity and turn rate
+     * @param distance the distance in meters to drive
+     * @param heading the heading to drive
+     * @param velocity the max velocity (-1.0 to 1.0)
+     * @param turnRate the max turn rate (-1.0 to 1.0)
+     */
     public AutoDriveCommand(final double distance, final double heading, final double velocity, final double turnRate) {
         super("AutoDriveCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
 
-        desiredHeading = heading;
         driveCommand = new DriveCommand();
-        forwardPIDCommand = new ForwardPIDCommand(distance);
-        turnPIDCommand = new TurnPIDCommand();
+        forwardPIDCommand = new ForwardPIDCommand(distance, velocity);
+        turnPIDCommand = new TurnPIDCommand(heading, turnRate);
 
         addParallel(driveCommand);
         addParallel(forwardPIDCommand);
@@ -82,7 +101,7 @@ public class AutoDriveCommand extends CommandGroup {
         private final double distance;
         private boolean hasRunPIDOnce = false;
 
-        public ForwardPIDCommand(final double distance) {
+        public ForwardPIDCommand(final double distance, final double maxVelocity) {
             super(1.0, 0.1, 0.0);
 
             this.distance = distance;
@@ -92,14 +111,12 @@ public class AutoDriveCommand extends CommandGroup {
             double d = SmartDashboard.getNumber("AutoDriveCommand.ForwardPID.d", 0.0);
             double tolerance = SmartDashboard
                 .getNumber("AutoDriveCommand.ForwardPID.tolerance", 0.01);
-            double maxOutput = SmartDashboard
-                .getNumber("AutoDriveCommand.ForwardPID.maxOutput", 0.5);
 
             getPIDController().setP(p);
             getPIDController().setI(i);
             getPIDController().setD(d);
             getPIDController().setAbsoluteTolerance(tolerance);
-            getPIDController().setOutputRange(-maxOutput, maxOutput);
+            getPIDController().setOutputRange(-maxVelocity, maxVelocity);
         }
 
         @Override
@@ -133,7 +150,7 @@ public class AutoDriveCommand extends CommandGroup {
 
         private boolean hasRunPIDOnce = false;
 
-        public TurnPIDCommand() {
+        public TurnPIDCommand(final double heading, final double maxRate) {
             super(1.0, 0.0, 0.0);
 
             double p = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.p", 1.0);
@@ -141,21 +158,18 @@ public class AutoDriveCommand extends CommandGroup {
             double d = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.d", 0.0);
             double tolerance = SmartDashboard
                 .getNumber("AutoDriveCommand.TurnPID.tolerance", 5.0);
-            double maxOutput = SmartDashboard
-                .getNumber("AutoDriveCommand.TurnPID.maxOutput", 0.08);
 
             getPIDController().setP(p);
             getPIDController().setI(i);
             getPIDController().setD(d);
             getPIDController().setAbsoluteTolerance(tolerance);
-            getPIDController().setOutputRange(-maxOutput, maxOutput);
+            getPIDController().setOutputRange(-maxRate, maxRate);
 
             getPIDController().setAbsoluteTolerance(tolerance);
             getPIDController().setInputRange(0, 360);
             getPIDController().setContinuous(true);
-            getPIDController().setOutputRange(-maxOutput, maxOutput);
 
-            getPIDController().setSetpoint(desiredHeading);
+            getPIDController().setSetpoint(heading);
         }
 
         @Override
