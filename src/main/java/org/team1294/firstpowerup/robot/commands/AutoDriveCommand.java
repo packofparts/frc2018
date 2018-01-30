@@ -7,6 +7,7 @@ public class AutoDriveCommand extends CommandGroup {
 
     private final AutoForwardPIDCommand autoForwardPIDCommand;
     private final AutoTurnPIDCommand autoTurnPIDCommand;
+    private boolean setHeadingInInitialize;
 
     private double forwardRate;
     private double turnRate;
@@ -16,7 +17,8 @@ public class AutoDriveCommand extends CommandGroup {
      * @param distance the distance in meters to drive
      */
     public AutoDriveCommand(final double distance) {
-        this(distance, Robot.driveSubsystem.getHeading());
+        this(distance, 0);
+        setHeadingInInitialize = true;
     }
 
     /**
@@ -47,6 +49,7 @@ public class AutoDriveCommand extends CommandGroup {
      */
     public AutoDriveCommand(final double distance, final double heading, final double velocity, final double turnRate) {
         super("AutoDriveCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
+        setHeadingInInitialize = false;
 
         requires(Robot.driveSubsystem);
 
@@ -61,7 +64,9 @@ public class AutoDriveCommand extends CommandGroup {
 
     @Override
     protected void initialize() {
-        // do nothing
+        if (setHeadingInInitialize) {
+            autoTurnPIDCommand.setSetpoint(Robot.driveSubsystem.getHeading());
+        }
     }
 
     @Override
