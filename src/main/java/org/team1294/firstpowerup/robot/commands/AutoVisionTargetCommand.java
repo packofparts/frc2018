@@ -55,4 +55,8 @@ public class AutoVisionTargetCommand extends CommandGroup {
     protected void end() {
         // do nothing
     }
+
+    public void setDistance(final double distance) {
+        autoForwardPIDCommand.setSetpoint(distance);
+    }
 }

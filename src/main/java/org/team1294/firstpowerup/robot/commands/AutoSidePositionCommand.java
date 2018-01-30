@@ -2,6 +2,7 @@ package org.team1294.firstpowerup.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoSidePositionCommand extends CommandGroup {
     private final String side;
@@ -64,14 +65,21 @@ public class AutoSidePositionCommand extends CommandGroup {
             driveTowardsDelivery.setHeading(270);
         }
 
+        // todo tune these distances
+        final double downfieldToScaleDistance = SmartDashboard.getNumber("AutoSidePositionCommand.DownfieldToScaleDistance", 2.0);
+        final double deliverToScaleDistance = SmartDashboard.getNumber("AutoSidePositionCommand.DeliverToScaleDistance", 0.5);
+        final double downfieldToSwitchDistance = SmartDashboard.getNumber("AutoSidePositionCommand.DownfieldToSwitchDistance", 1.0);
+        final double deliverToSwitchDistance = SmartDashboard.getNumber("AutoSidePositionCommand.DeliverToSwitchDistance", 0.5);
+        final double downfieldPastAutoLineDistance = SmartDashboard.getNumber("AutoSidePositionCommand.DownfieldPastAutoLineDistance", 0.5);
+
         if (scaleSide.equals(side)) {
-            driveDownfield.setDistance(2.0); // todo tune this distance
-            driveTowardsDelivery.setDistance(0.5); // todo tune this distance
+            driveDownfield.setDistance(downfieldToScaleDistance);
+            driveTowardsDelivery.setDistance(deliverToScaleDistance);
         } else if (switchSide.equals(side)) {
-            driveDownfield.setDistance(1); // todo tune this distance
-            driveTowardsDelivery.setDistance(0.5); // todo tune this distance
+            driveDownfield.setDistance(downfieldToSwitchDistance);
+            driveTowardsDelivery.setDistance(deliverToSwitchDistance);
         } else {
-            driveDownfield.setDistance(0.5); // todo tune this distance
+            driveDownfield.setDistance(downfieldPastAutoLineDistance);
             turnTowardsDelivery.setHeading(0);
             driveTowardsDelivery.setDistance(0);
             deliverCrateCommand.setEnabled(false);
