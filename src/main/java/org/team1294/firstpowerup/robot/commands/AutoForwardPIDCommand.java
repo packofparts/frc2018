@@ -15,16 +15,12 @@ public class AutoForwardPIDCommand extends PIDCommand {
 
         this.outputConsumer = outputConsumer;
 
-        double p = SmartDashboard.getNumber("AutoForwardPIDCommand.p", 1.0);
-        double i = SmartDashboard.getNumber("AutoForwardPIDCommand.i", 0.1);
-        double d = SmartDashboard.getNumber("AutoForwardPIDCommand.d", 0.0);
-        double tolerance = SmartDashboard
-            .getNumber("AutoForwardPIDCommand.tolerance", 0.01);
-
-        getPIDController().setP(p);
-        getPIDController().setI(i);
-        getPIDController().setD(d);
-        getPIDController().setAbsoluteTolerance(tolerance);
+        getPIDController().setP(SmartDashboard.getNumber("AutoForwardPIDCommand.p", 1.0));
+        getPIDController().setI(SmartDashboard.getNumber("AutoForwardPIDCommand.i", 0.1));
+        getPIDController().setD(SmartDashboard.getNumber("AutoForwardPIDCommand.d", 0.0));
+        getPIDController().setAbsoluteTolerance(SmartDashboard.getNumber("AutoForwardPIDCommand.tolerance", 0.01));
+        getPIDController().setInputRange(-1, 1);
+        getPIDController().setContinuous(false);
         getPIDController().setOutputRange(-maxVelocity, maxVelocity);
         getPIDController().setSetpoint(distance);
     }

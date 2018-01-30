@@ -30,22 +30,13 @@ public class AutoTurnPIDCommand extends PIDCommand {
 
         this.outputConsumer = outputConsumer;
 
-        double p = SmartDashboard.getNumber("AutoTurnPIDCommand.p", 1.0);
-        double i = SmartDashboard.getNumber("AutoTurnPIDCommand.i", 0.0);
-        double d = SmartDashboard.getNumber("AutoTurnPIDCommand.d", 0.0);
-        double tolerance = SmartDashboard
-            .getNumber("AutoTurnPIDCommand.tolerance", 5.0);
-
-        getPIDController().setP(p);
-        getPIDController().setI(i);
-        getPIDController().setD(d);
-        getPIDController().setAbsoluteTolerance(tolerance);
-        getPIDController().setOutputRange(-maxRate, maxRate);
-
-        getPIDController().setAbsoluteTolerance(tolerance);
+        getPIDController().setP(SmartDashboard.getNumber("AutoTurnPIDCommand.p", 1.0));
+        getPIDController().setI(SmartDashboard.getNumber("AutoTurnPIDCommand.i", 0.0));
+        getPIDController().setD(SmartDashboard.getNumber("AutoTurnPIDCommand.d", 0.0));
+        getPIDController().setAbsoluteTolerance(SmartDashboard.getNumber("AutoTurnPIDCommand.tolerance", 5.0));
         getPIDController().setInputRange(0, 360);
         getPIDController().setContinuous(true);
-
+        getPIDController().setOutputRange(-maxRate, maxRate);
         getPIDController().setSetpoint(heading);
     }
 
