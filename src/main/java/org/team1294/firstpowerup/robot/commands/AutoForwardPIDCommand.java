@@ -9,11 +9,14 @@ import java.util.function.Consumer;
 public class AutoForwardPIDCommand extends PIDCommand {
     private final Consumer<Double> outputConsumer;
     private boolean hasRunPIDOnce = false;
+    private double initialPosition = 0;
+    private final double distance;
 
     public AutoForwardPIDCommand(final Consumer<Double> outputConsumer, final double distance, final double maxVelocity) {
         super(1.0, 0.1, 0.0);
 
         this.outputConsumer = outputConsumer;
+        this.distance = distance;
 
         getPIDController().setP(SmartDashboard.getNumber("AutoForwardPIDCommand.p", 1.0));
         getPIDController().setI(SmartDashboard.getNumber("AutoForwardPIDCommand.i", 0.1));
@@ -23,6 +26,12 @@ public class AutoForwardPIDCommand extends PIDCommand {
         getPIDController().setContinuous(false);
         getPIDController().setOutputRange(-maxVelocity, maxVelocity);
         getPIDController().setSetpoint(distance);
+    }
+
+    @Override
+    protected void initialize() {
+        initialPosition = Robot.driveSubsystem.getEncoderPositionAverage();
+        getPIDController().setSetpoint(initialPosition + distance);
     }
 
     @Override
@@ -46,6 +55,6 @@ public class AutoForwardPIDCommand extends PIDCommand {
     }
 
     public void setSetpoint(final double distance) {
-        getPIDController().setSetpoint(distance);
+        getPIDController().setSetpoint(initialPosition + distance);
     }
 }
