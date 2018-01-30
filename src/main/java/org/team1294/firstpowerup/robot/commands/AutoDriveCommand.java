@@ -6,9 +6,7 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.Robot;
 
-import java.util.Optional;
-
-public class DriveStraightCommand extends CommandGroup {
+public class AutoDriveCommand extends CommandGroup {
 
     private final DriveCommand driveCommand;
     private final ForwardPIDCommand forwardPIDCommand;
@@ -19,20 +17,20 @@ public class DriveStraightCommand extends CommandGroup {
     private double forwardRate;
     private double turnRate;
 
-    public DriveStraightCommand(final double distance) {
+    public AutoDriveCommand(final double distance) {
         this(distance, Robot.driveSubsystem.getHeading());
     }
 
-    public DriveStraightCommand(final double distance, final double heading) {
+    public AutoDriveCommand(final double distance, final double heading) {
         this(distance, heading, 1);
     }
 
-    public DriveStraightCommand(final double distance, final double heading, final double velocity) {
+    public AutoDriveCommand(final double distance, final double heading, final double velocity) {
         this(distance, heading, velocity, 1);
     }
 
-    public DriveStraightCommand(final double distance, final double heading, final double velocity, final double turnRate) {
-        super("DriveStraightCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
+    public AutoDriveCommand(final double distance, final double heading, final double velocity, final double turnRate) {
+        super("AutoDriveCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
 
         desiredHeading = heading;
         driveCommand = new DriveCommand();
@@ -89,13 +87,13 @@ public class DriveStraightCommand extends CommandGroup {
 
             this.distance = distance;
 
-            double p = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.p", 1.0);
-            double i = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.i", 0.1);
-            double d = SmartDashboard.getNumber("DriveStraightCommand.ForwardPID.d", 0.0);
+            double p = SmartDashboard.getNumber("AutoDriveCommand.ForwardPID.p", 1.0);
+            double i = SmartDashboard.getNumber("AutoDriveCommand.ForwardPID.i", 0.1);
+            double d = SmartDashboard.getNumber("AutoDriveCommand.ForwardPID.d", 0.0);
             double tolerance = SmartDashboard
-                .getNumber("DriveStraightCommand.ForwardPID.tolerance", 0.01);
+                .getNumber("AutoDriveCommand.ForwardPID.tolerance", 0.01);
             double maxOutput = SmartDashboard
-                .getNumber("DriveStraightCommand.ForwardPID.maxOutput", 0.5);
+                .getNumber("AutoDriveCommand.ForwardPID.maxOutput", 0.5);
 
             getPIDController().setP(p);
             getPIDController().setI(i);
@@ -138,13 +136,13 @@ public class DriveStraightCommand extends CommandGroup {
         public TurnPIDCommand() {
             super(1.0, 0.0, 0.0);
 
-            double p = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.p", 1.0);
-            double i = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.i", 0.0);
-            double d = SmartDashboard.getNumber("DriveStraightCommand.TurnPID.d", 0.0);
+            double p = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.p", 1.0);
+            double i = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.i", 0.0);
+            double d = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.d", 0.0);
             double tolerance = SmartDashboard
-                .getNumber("DriveStraightCommand.TurnPID.tolerance", 5.0);
+                .getNumber("AutoDriveCommand.TurnPID.tolerance", 5.0);
             double maxOutput = SmartDashboard
-                .getNumber("DriveStraightCommand.TurnPID.maxOutput", 0.08);
+                .getNumber("AutoDriveCommand.TurnPID.maxOutput", 0.08);
 
             getPIDController().setP(p);
             getPIDController().setI(i);
