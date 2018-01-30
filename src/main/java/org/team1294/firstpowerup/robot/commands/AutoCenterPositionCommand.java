@@ -13,15 +13,15 @@ public class AutoCenterPositionCommand extends CommandGroup {
         // drive towards the desired side
         final String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.charAt(0) == 'L') {
-            addSequential(new TurnToHeadingCommand(315));
+            addSequential(new AutoDriveCommand(0, 315));
             addSequential(new AutoDriveCommand(1.0, 315)); // todo tune this distance
         } else {
-            addSequential(new TurnToHeadingCommand(45));
+            addSequential(new AutoDriveCommand(0, 45));
             addSequential(new AutoDriveCommand(1.0, 45)); // todo tune this distance
         }
 
         // turn towards the vision target
-        addSequential(new TurnToHeadingCommand(0));
+        addSequential(new AutoDriveCommand(0, 0));
 
         // approach the vision target
         addSequential(new AutoDriveCommand(0.5, 0));

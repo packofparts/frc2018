@@ -15,15 +15,15 @@ public class AutoSidePositionCommand extends CommandGroup {
 
         // drive towards the wall
         if (side.equals("L")) {
-            addSequential(new TurnToHeadingCommand(315));
+            addSequential(new AutoDriveCommand(0, 315));
             addSequential(new AutoDriveCommand(0.5, 315)); // todo tune this distance
         } else {
-            addSequential(new TurnToHeadingCommand(45));
+            addSequential(new AutoDriveCommand(0, 45));
             addSequential(new AutoDriveCommand(0.5, 45)); // todo tune this distance
         }
 
         // turn downfield
-        addSequential(new TurnToHeadingCommand(0));
+        addSequential(new AutoDriveCommand(0, 0));
 
         if (scaleSide.equals(side)) {
             // drive downfield until abeam the scale
@@ -31,10 +31,10 @@ public class AutoSidePositionCommand extends CommandGroup {
 
             // drive towards the scale
             if (side.equals("L")) {
-                addSequential(new TurnToHeadingCommand(90));
+                addSequential(new AutoDriveCommand(0, 90));
                 addSequential(new AutoDriveCommand(0.5, 90)); // todo tune this distance
             } else {
-                addSequential(new TurnToHeadingCommand(270));
+                addSequential(new AutoDriveCommand(0, 270));
                 addSequential(new AutoDriveCommand(0.5, 270)); // todo tune this distance
             }
 
@@ -46,10 +46,10 @@ public class AutoSidePositionCommand extends CommandGroup {
 
             // drive towards the switch
             if (side.equals("L")) {
-                addSequential(new TurnToHeadingCommand(90));
+                addSequential(new AutoDriveCommand(0, 90));
                 addSequential(new AutoDriveCommand(0.5, 90)); // todo tune this distance
             } else {
-                addSequential(new TurnToHeadingCommand(270));
+                addSequential(new AutoDriveCommand(0, 270));
                 addSequential(new AutoDriveCommand(0.5, 270)); // todo tune this distance
             }
 

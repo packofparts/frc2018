@@ -8,7 +8,6 @@ import org.team1294.firstpowerup.robot.commands.AutoDriveCommand;
 import org.team1294.firstpowerup.robot.commands.AutoSidePositionCommand;
 import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
 import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
-import org.team1294.firstpowerup.robot.commands.TurnToHeadingCommand;
 import org.team1294.firstpowerup.robot.subsystems.*;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
@@ -52,10 +51,10 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
         SmartDashboard.putData(new AutoDriveCommand(1.0));
-        SmartDashboard.putData(new TurnToHeadingCommand(0));
-        SmartDashboard.putData(new TurnToHeadingCommand(90));
-        SmartDashboard.putData(new TurnToHeadingCommand(180));
-        SmartDashboard.putData(new TurnToHeadingCommand(270));
+        SmartDashboard.putData(new AutoDriveCommand(0, 0));
+        SmartDashboard.putData(new AutoDriveCommand(0, 90));
+        SmartDashboard.putData(new AutoDriveCommand(0, 180));
+        SmartDashboard.putData(new AutoDriveCommand(0, 270));
 
         SmartDashboard.putData(new AutoCenterPositionCommand());
         SmartDashboard.putData(new AutoSidePositionCommand("L"));
