@@ -1,22 +1,18 @@
 package org.team1294.firstpowerup.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.Robot;
 
 public class AutoDriveCommand extends CommandGroup {
 
-    private final DriveCommand driveCommand;
-    private final ForwardPIDCommand forwardPIDCommand;
-    private final TurnPIDCommand turnPIDCommand;
+    private final AutoForwardPIDCommand autoForwardPIDCommand;
+    private final AutoTurnPIDCommand autoTurnPIDCommand;
 
     private double forwardRate;
     private double turnRate;
 
     /**
-     * Auth drive a distance on the current heading
+     * Auto drive a distance on the current heading
      * @param distance the distance in meters to drive
      */
     public AutoDriveCommand(final double distance) {
@@ -52,13 +48,11 @@ public class AutoDriveCommand extends CommandGroup {
     public AutoDriveCommand(final double distance, final double heading, final double velocity, final double turnRate) {
         super("AutoDriveCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
 
-        driveCommand = new DriveCommand();
-        forwardPIDCommand = new ForwardPIDCommand(distance, velocity);
-        turnPIDCommand = new TurnPIDCommand(heading, turnRate);
+        autoForwardPIDCommand = new AutoForwardPIDCommand(rate -> this.forwardRate = rate, distance, velocity);
+        autoTurnPIDCommand = new AutoTurnPIDCommand(output -> this.turnRate = output, heading, turnRate);
 
-        addParallel(driveCommand);
-        addParallel(forwardPIDCommand);
-        addParallel(turnPIDCommand);
+        addParallel(autoForwardPIDCommand);
+        addParallel(autoTurnPIDCommand);
 
         setTimeout(15);
     }
@@ -69,127 +63,17 @@ public class AutoDriveCommand extends CommandGroup {
     }
 
     @Override
-    protected void end() {
-        // do nothing
+    protected void execute() {
+        Robot.driveSubsystem.arcadeDrive(forwardRate, turnRate);
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || (forwardPIDCommand.onTarget() && turnPIDCommand.onTarget());
+        return isTimedOut() || (autoForwardPIDCommand.onTarget() && autoTurnPIDCommand.onTarget());
     }
 
-
-    private class DriveCommand extends Command {
-
-        public DriveCommand() {
-            requires(Robot.driveSubsystem);
-        }
-
-        @Override
-        protected void execute() {
-            Robot.driveSubsystem.arcadeDrive(forwardRate, turnRate);
-        }
-
-        @Override
-        protected boolean isFinished() {
-            return false;
-        }
-    }
-
-    private class ForwardPIDCommand extends PIDCommand {
-
-        private final double distance;
-        private boolean hasRunPIDOnce = false;
-
-        public ForwardPIDCommand(final double distance, final double maxVelocity) {
-            super(1.0, 0.1, 0.0);
-
-            this.distance = distance;
-
-            double p = SmartDashboard.getNumber("AutoDriveCommand.ForwardPID.p", 1.0);
-            double i = SmartDashboard.getNumber("AutoDriveCommand.ForwardPID.i", 0.1);
-            double d = SmartDashboard.getNumber("AutoDriveCommand.ForwardPID.d", 0.0);
-            double tolerance = SmartDashboard
-                .getNumber("AutoDriveCommand.ForwardPID.tolerance", 0.01);
-
-            getPIDController().setP(p);
-            getPIDController().setI(i);
-            getPIDController().setD(d);
-            getPIDController().setAbsoluteTolerance(tolerance);
-            getPIDController().setOutputRange(-maxVelocity, maxVelocity);
-        }
-
-        @Override
-        protected void initialize() {
-            getPIDController()
-                .setSetpoint(Robot.driveSubsystem.getEncoderPositionAverage() + distance);
-        }
-
-        @Override
-        protected double returnPIDInput() {
-            hasRunPIDOnce = true;
-            return Robot.driveSubsystem.getEncoderPositionAverage();
-        }
-
-        @Override
-        protected void usePIDOutput(double output) {
-            forwardRate = output;
-        }
-
-        @Override
-        protected boolean isFinished() {
-            return false;
-        }
-
-        public boolean onTarget() {
-            return hasRunPIDOnce && getPIDController().onTarget();
-        }
-    }
-
-    public class TurnPIDCommand extends PIDCommand {
-
-        private boolean hasRunPIDOnce = false;
-
-        public TurnPIDCommand(final double heading, final double maxRate) {
-            super(1.0, 0.0, 0.0);
-
-            double p = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.p", 1.0);
-            double i = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.i", 0.0);
-            double d = SmartDashboard.getNumber("AutoDriveCommand.TurnPID.d", 0.0);
-            double tolerance = SmartDashboard
-                .getNumber("AutoDriveCommand.TurnPID.tolerance", 5.0);
-
-            getPIDController().setP(p);
-            getPIDController().setI(i);
-            getPIDController().setD(d);
-            getPIDController().setAbsoluteTolerance(tolerance);
-            getPIDController().setOutputRange(-maxRate, maxRate);
-
-            getPIDController().setAbsoluteTolerance(tolerance);
-            getPIDController().setInputRange(0, 360);
-            getPIDController().setContinuous(true);
-
-            getPIDController().setSetpoint(heading);
-        }
-
-        @Override
-        protected double returnPIDInput() {
-            hasRunPIDOnce = true;
-            return Robot.driveSubsystem.getHeading();
-        }
-
-        @Override
-        protected void usePIDOutput(double output) {
-            turnRate = output;
-        }
-
-        @Override
-        protected boolean isFinished() {
-            return false;
-        }
-
-        public boolean onTarget() {
-            return hasRunPIDOnce && getPIDController().onTarget();
-        }
+    @Override
+    protected void end() {
+        // do nothing
     }
 }

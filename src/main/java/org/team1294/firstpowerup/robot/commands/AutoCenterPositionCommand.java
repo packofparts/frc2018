@@ -27,7 +27,7 @@ public class AutoCenterPositionCommand extends CommandGroup {
         addSequential(new AutoDriveCommand(0.5, 0));
 
         // engage the vision system approach
-        addSequential(new ApproachVisionTargetCommand(1.0));
+        addSequential(new AutoVisionTargetCommand(1.0));
 
         // deliver the crate
         // todo
