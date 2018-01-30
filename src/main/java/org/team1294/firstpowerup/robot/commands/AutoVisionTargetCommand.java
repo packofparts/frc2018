@@ -20,6 +20,7 @@ public class AutoVisionTargetCommand extends CommandGroup {
         super("AutoVisionTargetCommand(" + distance + ")");
 
         requires(Robot.driveSubsystem);
+        requires(Robot.visionSubsystem);
 
         autoForwardPIDCommand = new AutoForwardPIDCommand(rate -> this.forwardRate = rate, distance, 0.25);
         autoTurnPIDCommand = new AutoTurnPIDCommand(output -> this.turnRate = output, 0.25);
