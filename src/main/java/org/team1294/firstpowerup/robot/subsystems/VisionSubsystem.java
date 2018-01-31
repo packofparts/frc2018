@@ -26,6 +26,7 @@ public class VisionSubsystem extends Subsystem {
 
     private static final int IMG_WIDTH = 320;
     private static final int IMG_HEIGHT = 240;
+    private static final int FPS = 30;
     private final CvSink cvSink;
     private final CvSource cvSource;
     private final UsbCamera usbCamera;
@@ -44,7 +45,7 @@ public class VisionSubsystem extends Subsystem {
 
         usbCamera = cameraServer.startAutomaticCapture(0);
         usbCamera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-        usbCamera.setFPS(30);
+        usbCamera.setFPS(FPS);
 
         cvSink = cameraServer.getVideo(usbCamera);
         cvSource = cameraServer.putVideo("VisionSystem", IMG_WIDTH, IMG_HEIGHT);
