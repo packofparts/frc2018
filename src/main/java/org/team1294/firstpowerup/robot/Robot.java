@@ -1,7 +1,9 @@
 package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.AutoCenterPositionCommand;
 import org.team1294.firstpowerup.robot.commands.AutoDriveCommand;
@@ -28,6 +30,8 @@ public class Robot extends IterativeRobot {
 
     public static OI oi;
 
+    private SendableChooser<Command> chooser = new SendableChooser<>();
+
     /**
      * Constructor for Robot(). This is where {@link edu.wpi.first.wpilibj.command.Subsystem
      * Subsystems} and the {@link OI} should be initialized.
@@ -43,6 +47,11 @@ public class Robot extends IterativeRobot {
         // OI has to be initialized AFTER the Subsystems, because the OI has
         // Buttons which reference Commands which use the Subsystems
         oi = new OI();
+
+        chooser.addDefault("Left", new AutoSidePositionCommand("L"));
+        chooser.addObject("Center", new AutoCenterPositionCommand());
+        chooser.addObject("Right", new AutoSidePositionCommand("R"));
+        SmartDashboard.putData("Auto mode", chooser);
     }
 
     @Override
