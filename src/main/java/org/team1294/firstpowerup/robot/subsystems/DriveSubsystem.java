@@ -41,11 +41,11 @@ public class DriveSubsystem extends Subsystem {
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
                 0);
-        leftFront.setSensorPhase(true);
+        leftFront.setSensorPhase(false);
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
                 0);
-        rightFront.setSensorPhase(true);
+        rightFront.setSensorPhase(false);
 
         navX = new AHRS(SPI.Port.kMXP);
 
@@ -58,6 +58,9 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("RightTalon.p", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 10));
         SmartDashboard.putNumber("RightTalon.i", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 10));
         SmartDashboard.putNumber("RightTalon.d", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 10));
+
+        leftFront.selectProfileSlot(0, 0);
+        rightFront.selectProfileSlot(0, 0);
     }
 
     @Override
@@ -71,13 +74,21 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("Right Raw Encoder", rightFront.getSelectedSensorVelocity(0));
 
 
-        leftFront.configSetParameter(ParamEnum.eProfileParamSlot_P, SmartDashboard.getNumber("LeftTalon.p", 1.0), 0, 0, 10);
-        leftFront.configSetParameter(ParamEnum.eProfileParamSlot_I, SmartDashboard.getNumber("LeftTalon.i", 0), 0, 0, 10);
-        leftFront.configSetParameter(ParamEnum.eProfileParamSlot_D, SmartDashboard.getNumber("LeftTalon.d", 0), 0, 0, 10);
+        leftFront.config_kP(0, SmartDashboard.getNumber("LeftTalon.p", 0.5),
+                10);
+        leftFront.config_kI(0, SmartDashboard.getNumber("LeftTalon.i",
+                0.005),
+                10);
+        leftFront.config_kD(0, SmartDashboard.getNumber("LeftTalon.d", 0.0),
+                10);
 
-        rightFront.configSetParameter(ParamEnum.eProfileParamSlot_P, SmartDashboard.getNumber("RightTalon.p", 1.0), 0, 0, 10);
-        rightFront.configSetParameter(ParamEnum.eProfileParamSlot_I, SmartDashboard.getNumber("RightTalon.i", 0), 0, 0, 10);
-        rightFront.configSetParameter(ParamEnum.eProfileParamSlot_D, SmartDashboard.getNumber("RightTalon.d", 0), 0, 0, 10);
+        rightFront.config_kP(0, SmartDashboard.getNumber("RightTalon.p", 0.5),
+                10);
+        rightFront.config_kI(0, SmartDashboard.getNumber("RightTalon.i",
+                0.005),
+                10);
+        rightFront.config_kD(0, SmartDashboard.getNumber("RightTalon.d", 0.0),
+                10);
 //        SmartDashboard.putNumber("LeftTalon.p", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 0));
 //        SmartDashboard.putNumber("LeftTalon.i", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 0));
 //        SmartDashboard.putNumber("LeftTalon.d", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 0));
@@ -85,12 +96,12 @@ public class DriveSubsystem extends Subsystem {
 
     public void arcadeDrive(double forward, double turn) {
         drive.setSafetyEnabled(true);
-        drive.arcadeDrive(forward, turn);
+        drive.arcadeDrive(forward, -turn);
     }
 
     public void autoDrive(double left, double right) {
         drive.setSafetyEnabled(false);
-        leftFront.set(ControlMode.Velocity, left);
+        leftFront.set(ControlMode.Velocity, -left);
         rightFront.set(ControlMode.Velocity, right);
     }
 
