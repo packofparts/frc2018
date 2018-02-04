@@ -36,6 +36,7 @@ public class VisionSubsystem extends Subsystem {
     private final CratePipeline cratePipeline;
 
     private VisionProcessingResult visionProcessingResult;
+//    private final Thread visionThread;
 
     public VisionSubsystem() {
         switchTargetPipeline = new SwitchTargetPipeline();
@@ -52,20 +53,26 @@ public class VisionSubsystem extends Subsystem {
 
         //https://wpilib.screenstepslive
         // .com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio
-        new Thread(() -> {
-            // grab a frame from the camera
-            cvSink.grabFrame(frame);
-
-            // draw on the frame if we have a vision target
-            if (visionProcessingResult != null && visionProcessingResult.isTargetAcquired()) {
-                final Rect targetRect = visionProcessingResult.getTargetRect();
-                Imgproc
-                    .rectangle(frame, targetRect.tl(), targetRect.br(), new Scalar(0, 0, 255), 2);
-            }
-
-            // output the frame to the stream
-            cvSource.putFrame(frame);
-        }).start();
+        // grab a frame from the camera
+        // draw on the frame if we have a vision target
+        // output the frame to the stream
+//        visionThread = new Thread(() -> {
+//            // grab a frame from the camera
+//            cvSink.grabFrame(frame);
+//
+//            // draw on the frame if we have a vision target
+//            if (visionProcessingResult != null && visionProcessingResult.isTargetAcquired()) {
+//                final Rect targetRect = visionProcessingResult.getTargetRect();
+//                Imgproc
+//                    .rectangle(frame, targetRect.tl(), targetRect.br(), new Scalar(0, 0, 255), 2);
+//            }
+//
+//            // output the frame to the stream
+//            cvSource.putFrame(frame);
+//
+//            System.out.println("I was here");
+//        });
+//        visionThread.start();
     }
 
 
@@ -94,6 +101,7 @@ public class VisionSubsystem extends Subsystem {
             double heading = Robot.driveSubsystem.getHeading();
 
             // run the grip pipeline
+            cvSink.grabFrame(frame);
             switchTargetPipeline.process(frame);
 
             // get the bounding rect for each contour
@@ -173,7 +181,7 @@ public class VisionSubsystem extends Subsystem {
         // todo turn the green led ring OFF
 
         // set the brightness and exposure to bright auto
-        usbCamera.setBrightness(100);
+        //usbCamera.setBrightness(100);
         usbCamera.setExposureAuto();
     }
 
@@ -181,7 +189,7 @@ public class VisionSubsystem extends Subsystem {
         // todo turn the green led ring ON
 
         // set the brightness and exposure to dark manual
-        usbCamera.setBrightness(7);
+        //usbCamera.setBrightness(7);
         usbCamera.setExposureManual(30);
     }
 

@@ -18,20 +18,27 @@ public class AutoForwardPIDCommand extends PIDCommand {
         this.outputConsumer = outputConsumer;
         this.distance = distance;
 
-        getPIDController().setInputRange(-1, 1);
+//        getPIDController().setInputRange(-1, 1);
         getPIDController().setContinuous(false);
         getPIDController().setOutputRange(-maxVelocity, maxVelocity);
         getPIDController().setSetpoint(distance);
+
+        SmartDashboard.putNumber("AutoForwardPIDCommand.p", 0.66);
+        SmartDashboard.putNumber("AutoForwardPIDCommand.i", 2.095);
+        SmartDashboard.putNumber("AutoForwardPIDCommand.d", 1.397);
+        SmartDashboard.putNumber("AutoForwardPIDCommand.tolerance", 0.01);
+
     }
 
     @Override
     protected void initialize() {
         initialPosition = Robot.driveSubsystem.getEncoderPositionAverage();
-        getPIDController().setP(SmartDashboard.getNumber("AutoForwardPIDCommand.p", 1.0));
-        getPIDController().setI(SmartDashboard.getNumber("AutoForwardPIDCommand.i", 0.1));
-        getPIDController().setD(SmartDashboard.getNumber("AutoForwardPIDCommand.d", 0.0));
+        getPIDController().setP(SmartDashboard.getNumber("AutoForwardPIDCommand.p", 0.66));
+        getPIDController().setI(SmartDashboard.getNumber("AutoForwardPIDCommand.i", 2.095));
+        getPIDController().setD(SmartDashboard.getNumber("AutoForwardPIDCommand.d", 1.397));
         getPIDController().setAbsoluteTolerance(SmartDashboard.getNumber("AutoForwardPIDCommand.tolerance", 0.01));
         getPIDController().setSetpoint(initialPosition + distance);
+        System.out.println("I was here too");
     }
 
     @Override

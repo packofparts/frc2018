@@ -1,5 +1,6 @@
 package org.team1294.firstpowerup.robot.subsystems;
 
+import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -32,6 +33,9 @@ public class DriveSubsystem extends Subsystem {
         rightFront = new WPI_TalonSRX(RobotMap.TALON_RIGHT_FRONT);
         rightRear = new WPI_TalonSRX(RobotMap.TALON_RIGHT_REAR);
 
+        leftFront.setInverted(true);
+        leftRear.setInverted(true);
+
         leftRear.set(ControlMode.Follower, RobotMap.TALON_LEFT_FRONT);
         rightRear.set(ControlMode.Follower, RobotMap.TALON_RIGHT_FRONT);
 
@@ -41,11 +45,19 @@ public class DriveSubsystem extends Subsystem {
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
                 0);
-        rightFront.setSensorPhase(false);
+        rightFront.setSensorPhase(true);
 
         navX = new AHRS(SPI.Port.kMXP);
 
         drive = new DifferentialDrive(leftFront, rightFront);
+
+        SmartDashboard.putNumber("LeftTalon.p", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 10));
+        SmartDashboard.putNumber("LeftTalon.i", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 10));
+        SmartDashboard.putNumber("LeftTalon.d", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 10));
+
+        SmartDashboard.putNumber("RightTalon.p", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 10));
+        SmartDashboard.putNumber("RightTalon.i", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 10));
+        SmartDashboard.putNumber("RightTalon.d", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 10));
     }
 
     @Override
@@ -54,10 +66,32 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("Right Encoder", getEncoderPositionRight());
         SmartDashboard.putNumber("Average Encoder", getEncoderPositionAverage());
         SmartDashboard.putNumber("Gyro Angle", getHeading());
+
+        SmartDashboard.putNumber("Left Raw Encoder", leftFront.getSelectedSensorVelocity(0));
+        SmartDashboard.putNumber("Right Raw Encoder", rightFront.getSelectedSensorVelocity(0));
+
+
+        leftFront.configSetParameter(ParamEnum.eProfileParamSlot_P, SmartDashboard.getNumber("LeftTalon.p", 1.0), 0, 0, 10);
+        leftFront.configSetParameter(ParamEnum.eProfileParamSlot_I, SmartDashboard.getNumber("LeftTalon.i", 0), 0, 0, 10);
+        leftFront.configSetParameter(ParamEnum.eProfileParamSlot_D, SmartDashboard.getNumber("LeftTalon.d", 0), 0, 0, 10);
+
+        rightFront.configSetParameter(ParamEnum.eProfileParamSlot_P, SmartDashboard.getNumber("RightTalon.p", 1.0), 0, 0, 10);
+        rightFront.configSetParameter(ParamEnum.eProfileParamSlot_I, SmartDashboard.getNumber("RightTalon.i", 0), 0, 0, 10);
+        rightFront.configSetParameter(ParamEnum.eProfileParamSlot_D, SmartDashboard.getNumber("RightTalon.d", 0), 0, 0, 10);
+//        SmartDashboard.putNumber("LeftTalon.p", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 0));
+//        SmartDashboard.putNumber("LeftTalon.i", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 0));
+//        SmartDashboard.putNumber("LeftTalon.d", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 0));
     }
 
     public void arcadeDrive(double forward, double turn) {
+        drive.setSafetyEnabled(true);
         drive.arcadeDrive(forward, turn);
+    }
+
+    public void autoDrive(double left, double right) {
+        drive.setSafetyEnabled(false);
+        leftFront.set(ControlMode.Velocity, left);
+        rightFront.set(ControlMode.Velocity, right);
     }
 
     public void stop() {

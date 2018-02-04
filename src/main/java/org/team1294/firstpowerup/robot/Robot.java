@@ -58,15 +58,15 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(driveSubsystem);
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
-        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 1, 0.25));
+        SmartDashboard.putData(new AutoDriveCommand(-1.0, 0, 1, 0.25));
         SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.5));
+//        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
+//        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.5));
+//        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.5));
 
-        SmartDashboard.putData(new AutoCenterPositionCommand());
-        SmartDashboard.putData(new AutoSidePositionCommand("L"));
-        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+//        SmartDashboard.putData(new AutoCenterPositionCommand());
+//        SmartDashboard.putData(new AutoSidePositionCommand("L"));
+//        SmartDashboard.putData(new AutoSidePositionCommand("R"));
 
         SmartDashboard.putData(new AutoVisionTargetCommand(1.0));
 
