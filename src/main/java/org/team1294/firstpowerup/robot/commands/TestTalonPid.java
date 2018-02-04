@@ -11,7 +11,7 @@ public class TestTalonPid extends Command {
 
     @Override
     protected void execute() {
-        Robot.driveSubsystem.autoDrive(500, -500);
+        Robot.driveSubsystem.autoDrive(500, 500);
     }
 
     @Override
