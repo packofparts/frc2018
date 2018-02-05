@@ -24,6 +24,7 @@ public class DriveSubsystem extends Subsystem {
     private final WPI_TalonSRX rightRear;
     private final DifferentialDrive drive;
     private final AHRS navX;
+    public static final String ENCODER_PREFIX = "Drive/Encoders/";
 
     public DriveSubsystem() {
         super("Drivetrain Subsystem");
@@ -33,21 +34,20 @@ public class DriveSubsystem extends Subsystem {
         rightFront = new WPI_TalonSRX(RobotMap.TALON_RIGHT_FRONT);
         rightRear = new WPI_TalonSRX(RobotMap.TALON_RIGHT_REAR);
 
-        leftFront.setInverted(true);
-        leftRear.setInverted(true);
-
         leftRear.set(ControlMode.Follower, RobotMap.TALON_LEFT_FRONT);
         rightRear.set(ControlMode.Follower, RobotMap.TALON_RIGHT_FRONT);
 
-        leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
-                0);
+        leftFront.setInverted(true);
+        leftRear.setInverted(true);
+
+        leftFront.selectProfileSlot(0, 0);
+        rightFront.selectProfileSlot(0, 0);
+
+        leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         leftFront.setSensorPhase(false);
 
-        rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
-                0);
+        rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         rightFront.setSensorPhase(false);
-
-        navX = new AHRS(SPI.Port.kMXP);
 
         drive = new DifferentialDrive(leftFront, rightFront);
 
@@ -59,20 +59,20 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("RightTalon.i", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 10));
         SmartDashboard.putNumber("RightTalon.d", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 10));
 
-        leftFront.selectProfileSlot(0, 0);
-        rightFront.selectProfileSlot(0, 0);
+        navX = new AHRS(SPI.Port.kMXP);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Left Encoder", getEncoderPositionLeft());
-        SmartDashboard.putNumber("Right Encoder", getEncoderPositionRight());
-        SmartDashboard.putNumber("Average Encoder", getEncoderPositionAverage());
-        SmartDashboard.putNumber("Gyro Angle", getHeading());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Left/Pos", getEncoderPositionLeft());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Right/Pos", getEncoderPositionRight());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Avg/Pos", getEncoderPositionAverage());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Left/Vel", getEncoderVelocityLeft());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Right/Vel", getEncoderVelocityRight());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Left/VelRaw", getRawEncoderVelocityLeft());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Right/VelRaw", getRawEncoderVelocityRight());
 
-        SmartDashboard.putNumber("Left Raw Encoder", leftFront.getSelectedSensorVelocity(0));
-        SmartDashboard.putNumber("Right Raw Encoder", rightFront.getSelectedSensorVelocity(0));
-
+        SmartDashboard.putNumber("Drive/Gyro/Angle", getHeading());
 
         leftFront.config_kP(0, SmartDashboard.getNumber("LeftTalon.p", 0.5),
                 10);
@@ -89,34 +89,24 @@ public class DriveSubsystem extends Subsystem {
                 10);
         rightFront.config_kD(0, SmartDashboard.getNumber("RightTalon.d", 0.0),
                 10);
-//        SmartDashboard.putNumber("LeftTalon.p", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 0));
-//        SmartDashboard.putNumber("LeftTalon.i", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 0));
-//        SmartDashboard.putNumber("LeftTalon.d", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 0));
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(new ArcadeDriveCommand());
     }
 
     public void arcadeDrive(double forward, double turn) {
-        drive.setSafetyEnabled(true);
         drive.arcadeDrive(forward, -turn);
     }
 
     public void autoDrive(double left, double right) {
-        drive.setSafetyEnabled(false);
         leftFront.set(ControlMode.Velocity, -left);
         rightFront.set(ControlMode.Velocity, right);
     }
 
     public void stop() {
         arcadeDrive(0.0, 0.0);
-    }
-
-    public void resetEncoders() {
-        leftFront.setSelectedSensorPosition(0, 0, 0);
-        rightFront.setSelectedSensorPosition(0, 0, 0);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new ArcadeDriveCommand());
     }
 
     public double getEncoderPositionLeft() {
@@ -127,16 +117,33 @@ public class DriveSubsystem extends Subsystem {
         return rightFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
+    public double getEncoderPositionAverage() {
+        return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;
+    }
+
+    public double getRawEncoderVelocityLeft() {
+        return leftFront.getSelectedSensorVelocity(0);
+    }
+
+    public double getRawEncoderVelocityRight() {
+        return rightFront.getSelectedSensorVelocity(0);
+    }
+
     public double getEncoderVelocityLeft() {
-        return leftFront.getSelectedSensorVelocity(0) * kEncoderScale;
+        return getRawEncoderVelocityLeft() * kEncoderScale;
     }
 
     public double getEncoderVelocityRight() {
-        return rightFront.getSelectedSensorVelocity(0) * kEncoderScale;
+        return getRawEncoderVelocityRight() * kEncoderScale;
+    }
+
+    public void resetEncoders() {
+        leftFront.setSelectedSensorPosition(0, 0, 0);
+        rightFront.setSelectedSensorPosition(0, 0, 0);
     }
 
     public double getHeading() {
-        return navX.getAngle() % 360;
+        return Math.abs(navX.getAngle() % 360);
     }
 
     public double getTurnRate() {
@@ -147,8 +154,7 @@ public class DriveSubsystem extends Subsystem {
         navX.reset();
     }
 
-    public double getEncoderPositionAverage() {
-        return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;
+    public void setSafetyEnabled(boolean safetyEnabled) {
+        drive.setSafetyEnabled(safetyEnabled);
     }
-
 }

@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team1294.firstpowerup.robot.RobotMap;
-import org.team1294.firstpowerup.robot.commands.DriveClimbMotorCommand;
+//import org.team1294.firstpowerup.robot.commands.DriveClimbMotorCommand;
 
 /**
  * @author Austin Jenchi (timtim17)
@@ -28,6 +28,6 @@ public class ClimbSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new DriveClimbMotorCommand());
+//        setDefaultCommand(new DriveClimbMotorCommand());
     }
 }

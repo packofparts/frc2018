@@ -39,7 +39,8 @@ public class AutoVisionTargetCommand extends CommandGroup {
     @Override
     protected void execute() {
         // do vision processing
-        VisionProcessingResult visionProcessingResult = Robot.visionSubsystem.detectSwitch();
+        Robot.visionSubsystem.detectSwitch();
+        VisionProcessingResult visionProcessingResult = Robot.visionSubsystem.getResult();
 
         // if the target was acquired, adjust the setpoint
         if (visionProcessingResult.isTargetAcquired()) {

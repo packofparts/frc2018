@@ -36,7 +36,9 @@ public class VisionSubsystem extends Subsystem {
     private final CratePipeline cratePipeline;
 
     private VisionProcessingResult visionProcessingResult;
-//    private final Thread visionThread;
+
+    private enum CameraMode {NORMAL, VISION}
+    private CameraMode currentMode;
 
     public VisionSubsystem() {
         switchTargetPipeline = new SwitchTargetPipeline();
@@ -51,28 +53,26 @@ public class VisionSubsystem extends Subsystem {
         cvSink = cameraServer.getVideo(usbCamera);
         cvSource = cameraServer.putVideo("VisionSystem", IMG_WIDTH, IMG_HEIGHT);
 
-        //https://wpilib.screenstepslive
-        // .com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio
         // grab a frame from the camera
         // draw on the frame if we have a vision target
         // output the frame to the stream
-//        visionThread = new Thread(() -> {
-//            // grab a frame from the camera
-//            cvSink.grabFrame(frame);
-//
-//            // draw on the frame if we have a vision target
-//            if (visionProcessingResult != null && visionProcessingResult.isTargetAcquired()) {
-//                final Rect targetRect = visionProcessingResult.getTargetRect();
-//                Imgproc
-//                    .rectangle(frame, targetRect.tl(), targetRect.br(), new Scalar(0, 0, 255), 2);
-//            }
-//
-//            // output the frame to the stream
-//            cvSource.putFrame(frame);
-//
-//            System.out.println("I was here");
-//        });
-//        visionThread.start();
+        new Thread(() -> {
+            // grab a frame from the camera
+            cvSink.grabFrame(frame);
+
+            // draw on the frame if we have a vision target
+            if (visionProcessingResult != null && visionProcessingResult.isTargetAcquired()) {
+                final Rect targetRect = visionProcessingResult.getTargetRect();
+                Imgproc
+                        .rectangle(frame, targetRect.tl(), targetRect.br(), new Scalar(0, 0, 255), 2);
+            }
+
+            // output the frame to the stream
+            cvSource.putFrame(frame);
+        }).start();
+
+        setCameraNormal();
+        currentMode = CameraMode.NORMAL;
     }
 
 
@@ -81,17 +81,13 @@ public class VisionSubsystem extends Subsystem {
         setDefaultCommand(new DefaultVisionCommand());
     }
 
-    public VisionProcessingResult detectNothing() {
+    public void detectNothing() {
         // set the camera to take normal images
         setCameraNormal();
-
-        // create and return a negative result
-        final VisionProcessingResult result = new VisionProcessingResult();
-        this.visionProcessingResult = result;
-        return result;
+        visionProcessingResult = VisionProcessingResult.getEmptyResult();
     }
 
-    public VisionProcessingResult detectSwitch() {
+    public void detectSwitch() {
         VisionProcessingResult result = new VisionProcessingResult();
         try {
             // set the camera to take vision target images
@@ -106,7 +102,7 @@ public class VisionSubsystem extends Subsystem {
 
             // get the bounding rect for each contour
             List<Rect> rects = switchTargetPipeline.filterContoursOutput().stream()
-                .map(contour -> Imgproc.boundingRect(contour)).collect(Collectors.toList());
+                .map(Imgproc::boundingRect).collect(Collectors.toList());
 
             // get every combination of pairs
             Stream<PairOfRect> pairs = rects.stream().flatMap(
@@ -132,21 +128,18 @@ public class VisionSubsystem extends Subsystem {
                 result.setTargetAcquired(false);
             }
 
-            SmartDashboard
-                .putBoolean("VisionSubsystem.SwitchTargetAcquired", result.isTargetAcquired());
-            SmartDashboard.putNumber("VisionSubsystem.SwitchTargetDegreesOffCenter",
-                result.getDegreesOffCenter());
+            SmartDashboard.putBoolean("VisionSubsystem/SwitchTargetAcquired", result.isTargetAcquired());
+            SmartDashboard.putNumber("VisionSubsystem/SwitchTargetDegreesOffCenter", result.getDegreesOffCenter());
         } catch (Exception ex) {
             System.out.println("Failed to do vision processing.");
             ex.printStackTrace();
             result.setTargetAcquired(false);
         }
 
-        this.visionProcessingResult = result;
-        return result;
+        visionProcessingResult = result;
     }
 
-    public VisionProcessingResult detectCrate() {
+    public void detectCrate() {
         VisionProcessingResult result = new VisionProcessingResult();
         try {
             // set the camera to take normal images
@@ -174,25 +167,33 @@ public class VisionSubsystem extends Subsystem {
         }
 
         this.visionProcessingResult = result;
-        return result;
+    }
+
+    public VisionProcessingResult getResult() {
+        return visionProcessingResult;
     }
 
     private void setCameraNormal() {
         // todo turn the green led ring OFF
 
-        // set the brightness and exposure to bright auto
-        //usbCamera.setBrightness(100);
-        usbCamera.setExposureAuto();
+        if (currentMode != CameraMode.NORMAL) {
+            // set the brightness and exposure to bright auto
+            //usbCamera.setBrightness(100);
+            usbCamera.setExposureAuto();
+            currentMode = CameraMode.NORMAL;
+        }
     }
 
     private void setCameraForVisionTarget() {
         // todo turn the green led ring ON
 
-        // set the brightness and exposure to dark manual
-        //usbCamera.setBrightness(7);
-        usbCamera.setExposureManual(30);
+        if (currentMode != CameraMode.VISION) {
+            // set the brightness and exposure to dark manual
+            //usbCamera.setBrightness(7);
+            usbCamera.setExposureManual(30);
+            currentMode = CameraMode.VISION;
+        }
     }
-
 
     public void saveLastImage() {
         // todo save an image somehow

@@ -15,7 +15,7 @@ public class ArcadeDriveCommand extends Command {
 
     @Override
     protected void initialize() {
-        // intentionally empty
+        Robot.driveSubsystem.setSafetyEnabled(true);
     }
 
     @Override

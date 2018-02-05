@@ -3,9 +3,6 @@ package org.team1294.firstpowerup.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.team1294.firstpowerup.robot.commands.AutoDriveCommand;
-import org.team1294.firstpowerup.robot.commands.AutoVisionTargetCommand;
-import org.team1294.firstpowerup.robot.commands.DoVisionDetectSwitch;
 import org.team1294.firstpowerup.robot.commands.TestTalonPid;
 
 /**
@@ -23,10 +20,6 @@ public class OI {
 
     public OI() {
         driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
-
-//        exampleButton = new JoystickButton(driveJoystick,
-//                RobotMap.EXAMPLE_BUTTON);
-//        exampleButton.toggleWhenPressed(new ExampleCommand());
 
 //        JoystickButton aButton = new JoystickButton(driveJoystick, 1);
 //        aButton.whileHeld(new AutoDriveCommand(0, 0, 0, .75));

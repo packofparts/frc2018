@@ -10,6 +10,11 @@ public class TestTalonPid extends Command {
     }
 
     @Override
+    protected void initialize() {
+        Robot.driveSubsystem.setSafetyEnabled(false);
+    }
+
+    @Override
     protected void execute() {
         Robot.driveSubsystem.autoDrive(500, 500);
     }
