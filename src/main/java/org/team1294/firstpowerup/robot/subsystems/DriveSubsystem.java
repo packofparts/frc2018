@@ -37,11 +37,14 @@ public class DriveSubsystem extends Subsystem {
         leftRear.set(ControlMode.Follower, RobotMap.TALON_LEFT_FRONT);
         rightRear.set(ControlMode.Follower, RobotMap.TALON_RIGHT_FRONT);
 
+        leftFront.configOpenloopRamp(1, 10);
+        rightFront.configOpenloopRamp(1, 10);
+
         leftFront.setInverted(true);
         leftRear.setInverted(true);
 
-        leftFront.selectProfileSlot(0, 10);
-        rightFront.selectProfileSlot(0, 10);
+        leftFront.selectProfileSlot(0, 0);
+        rightFront.selectProfileSlot(0, 0);
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         leftFront.setSensorPhase(false);
