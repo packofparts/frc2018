@@ -5,12 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team1294.firstpowerup.robot.commands.AutoCenterPositionCommand;
-import org.team1294.firstpowerup.robot.commands.AutoDriveCommand;
-import org.team1294.firstpowerup.robot.commands.AutoSidePositionCommand;
-import org.team1294.firstpowerup.robot.commands.AutoVisionTargetCommand;
-import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
-import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
+import org.team1294.firstpowerup.robot.commands.*;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
@@ -74,6 +69,10 @@ public class Robot extends IterativeRobot {
         Robot.driveSubsystem.resetGyro();
         Robot.driveSubsystem.resetEncoders();
 //        Robot.intakeSubsystem.resetEncoders();
+
+        // In theory TeleopDriveCommand should be, by request, the default Command.
+        // However, it still needs tuning, so for now it's just an option on SD
+        SmartDashboard.putData(new TeleopDriveCommand());
     }
 
     @Override
