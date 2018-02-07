@@ -11,7 +11,7 @@ import org.team1294.firstpowerup.robot.Robot;
  *
  * @author Austin Jenchi (timtim17)
  */
-public class TeleopDriveCommand extends PIDCommand {
+public class GyroAssistDriveCommand extends PIDCommand {
     private static final double TURN_DEADBAND = 0.1;
     private static final double kP = 1.0;
     private static final double kI = 0.0;
@@ -22,8 +22,8 @@ public class TeleopDriveCommand extends PIDCommand {
 
     private TurnMode currentMode;
 
-    public TeleopDriveCommand() {
-        super("Teleop Drive Command", kP, kI, kD);
+    public GyroAssistDriveCommand() {
+        super("Gyro Assist Drive Command", kP, kI, kD);
         requires(Robot.driveSubsystem);
 
         currentMode = TurnMode.OFF;
