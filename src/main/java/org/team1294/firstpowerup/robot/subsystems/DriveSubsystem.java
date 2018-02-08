@@ -43,40 +43,11 @@ public class DriveSubsystem extends Subsystem {
         leftFront.setInverted(true);
         leftRear.setInverted(true);
 
-        leftFront.selectProfileSlot(0, 0);
-        rightFront.selectProfileSlot(0, 0);
-
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-        leftFront.setSensorPhase(false);
+        leftFront.setSensorPhase(true);
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
         rightFront.setSensorPhase(false);
-
-        /*
-         * TODO: Retune Velocity PID.
-         * This code sets the output to be within [-1, 1], like the AutoDrive command expects.
-         * That screws up the PID.
-         */
-
-        leftFront.configNominalOutputForward(0, 10);
-        leftRear.configNominalOutputForward(0, 10);
-        rightFront.configNominalOutputForward(0, 10);
-        rightRear.configNominalOutputForward(0, 10);
-
-        leftFront.configNominalOutputReverse(0, 10);
-        leftRear.configNominalOutputReverse(0, 10);
-        rightFront.configNominalOutputReverse(0, 10);
-        rightRear.configNominalOutputReverse(0, 10);
-
-        leftFront.configPeakOutputForward(1, 10);
-        leftRear.configPeakOutputForward(1, 10);
-        rightFront.configPeakOutputForward(1, 10);
-        rightRear.configPeakOutputForward(1, 10);
-
-        leftFront.configPeakOutputReverse(-1, 10);
-        leftRear.configPeakOutputReverse(-1, 10);
-        rightFront.configPeakOutputReverse(-1, 10);
-        rightRear.configPeakOutputReverse(-1, 10);
 
         drive = new DifferentialDrive(leftFront, rightFront);
 
