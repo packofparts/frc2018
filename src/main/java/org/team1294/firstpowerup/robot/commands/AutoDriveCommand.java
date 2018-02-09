@@ -48,7 +48,7 @@ public class AutoDriveCommand extends CommandGroup {
      * @param turnRate the max turn rate (-1.0 to 1.0)
      */
     public AutoDriveCommand(final double distance, final double heading, final double velocity, final double turnRate) {
-        super("AutoDriveCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
+        super(String.format("AutoDrive x = %.1f, Θ = %.0f, Δx = %.2f, ΔΘ = %.2f", distance, heading, velocity, turnRate));
         setHeadingInInitialize = false;
 
         requires(Robot.driveSubsystem);
