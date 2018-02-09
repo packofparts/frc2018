@@ -55,14 +55,13 @@ public class Robot extends IterativeRobot {
 
         SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
         SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.5));
+        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
+        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.5));
+        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.5));
 
-//        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
-//        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.5));
-//        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.5));
-
-//        SmartDashboard.putData(new AutoCenterPositionCommand());
-//        SmartDashboard.putData(new AutoSidePositionCommand("L"));
-//        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+        SmartDashboard.putData(new AutoCenterPositionCommand());
+        SmartDashboard.putData(new AutoSidePositionCommand("L"));
+        SmartDashboard.putData(new AutoSidePositionCommand("R"));
 
         SmartDashboard.putData(new AutoVisionTargetCommand(1.0));
 
@@ -73,11 +72,12 @@ public class Robot extends IterativeRobot {
         // In theory GyroAssistDriveCommand should be, by request, the default Command.
         // However, it still needs tuning, so for now it's just an option on SD
         SmartDashboard.putData(new GyroAssistDriveCommand());
+
+        SmartDashboard.putData(Scheduler.getInstance());
     }
 
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putData(Scheduler.getInstance());
         Scheduler.getInstance().run();
     }
 

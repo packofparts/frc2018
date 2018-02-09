@@ -1,6 +1,5 @@
 package org.team1294.firstpowerup.robot.subsystems;
 
-import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -17,6 +16,7 @@ import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
  */
 public class DriveSubsystem extends Subsystem {
     private static final double kEncoderScale = 0.00026093732850;
+    public static final String ENCODER_PREFIX = "Drive/Encoders/";
 
     private final WPI_TalonSRX leftFront;
     private final WPI_TalonSRX leftRear;
@@ -24,7 +24,6 @@ public class DriveSubsystem extends Subsystem {
     private final WPI_TalonSRX rightRear;
     private final DifferentialDrive drive;
     private final AHRS navX;
-    public static final String ENCODER_PREFIX = "Drive/Encoders/";
 
     public DriveSubsystem() {
         super("Drivetrain Subsystem");
@@ -34,30 +33,22 @@ public class DriveSubsystem extends Subsystem {
         rightFront = new WPI_TalonSRX(RobotMap.TALON_RIGHT_FRONT);
         rightRear = new WPI_TalonSRX(RobotMap.TALON_RIGHT_REAR);
 
-        leftRear.set(ControlMode.Follower, RobotMap.TALON_LEFT_FRONT);
-        rightRear.set(ControlMode.Follower, RobotMap.TALON_RIGHT_FRONT);
+        leftRear.follow(leftFront);
+        rightRear.follow(rightFront);
 
-        leftFront.configOpenloopRamp(1, 10);
-        rightFront.configOpenloopRamp(1, 10);
+        leftFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
+        rightFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
 
         leftFront.setInverted(true);
         leftRear.setInverted(true);
 
-        leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+        leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
         leftFront.setSensorPhase(true);
 
-        rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+        rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
         rightFront.setSensorPhase(false);
 
         drive = new DifferentialDrive(leftFront, rightFront);
-
-        SmartDashboard.putNumber("LeftTalon.p", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 10));
-        SmartDashboard.putNumber("LeftTalon.i", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 10));
-        SmartDashboard.putNumber("LeftTalon.d", leftFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 10));
-
-        SmartDashboard.putNumber("RightTalon.p", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_P, 0, 10));
-        SmartDashboard.putNumber("RightTalon.i", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_I, 0, 10));
-        SmartDashboard.putNumber("RightTalon.d", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 10));
 
         navX = new AHRS(SPI.Port.kMXP);
     }
@@ -73,22 +64,6 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber(ENCODER_PREFIX + "Right/VelRaw", getRawEncoderVelocityRight());
 
         SmartDashboard.putNumber("Drive/Gyro/Angle", getHeading());
-
-        leftFront.config_kP(0, SmartDashboard.getNumber("LeftTalon.p", 0.5),
-                0);
-        leftFront.config_kI(0, SmartDashboard.getNumber("LeftTalon.i",
-                0.005),
-                0);
-        leftFront.config_kD(0, SmartDashboard.getNumber("LeftTalon.d", 0.0),
-                0);
-
-        rightFront.config_kP(0, SmartDashboard.getNumber("RightTalon.p", 0.5),
-                0);
-        rightFront.config_kI(0, SmartDashboard.getNumber("RightTalon.i",
-                0.005),
-                0);
-        rightFront.config_kD(0, SmartDashboard.getNumber("RightTalon.d", 0.0),
-                0);
     }
 
     @Override
@@ -138,8 +113,8 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void resetEncoders() {
-        leftFront.setSelectedSensorPosition(0, 0, 0);
-        rightFront.setSelectedSensorPosition(0, 0, 0);
+        leftFront.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        rightFront.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
     public double getHeading() {

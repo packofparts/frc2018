@@ -82,11 +82,6 @@ public class AutoDriveCommand extends CommandGroup {
         return isTimedOut() || (a && b);
     }
 
-    @Override
-    protected void end() {
-        // do nothing
-    }
-
     public void setHeading(final double heading) {
         autoTurnPIDCommand.setSetpoint(heading);
     }
