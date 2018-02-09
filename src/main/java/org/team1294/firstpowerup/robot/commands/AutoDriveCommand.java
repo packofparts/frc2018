@@ -71,7 +71,7 @@ public class AutoDriveCommand extends CommandGroup {
 
     @Override
     protected void execute() {
-        Robot.driveSubsystem.arcadeDrive(forwardRate, turnRate);
+        Robot.driveSubsystem.arcadeDrive(-forwardRate, turnRate);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class AutoDriveCommand extends CommandGroup {
         boolean a = autoForwardPIDCommand.onTarget();
         boolean b = autoTurnPIDCommand.onTarget();
         System.out.printf("Forward onTarget: %b\tTurnOnTarget: %b%n", a, b);
-        return /*isTimedOut() || */(a && b);
+        return isTimedOut() || (a && b);
     }
 
     @Override

@@ -34,19 +34,13 @@ public class AutoTurnPIDCommand extends PIDCommand {
         getPIDController().setContinuous(true);
         getPIDController().setOutputRange(-maxRate, maxRate);
         getPIDController().setSetpoint(heading);
-
-        SmartDashboard.putNumber("AutoTurnPIDCommand.p", 0.1);
-        SmartDashboard.putNumber("AutoTurnPIDCommand.i", 1.33);
-        SmartDashboard.putNumber("AutoTurnPIDCommand.d", 0.886);
-        SmartDashboard.putNumber("AutoTurnPIDCommand.tolerance", 1);
+        getPIDController().setAbsoluteTolerance(0.01);
     }
 
     @Override
     protected void initialize() {
-        getPIDController().setP(SmartDashboard.getNumber("AutoTurnPIDCommand.p", 0.1));
-        getPIDController().setI(SmartDashboard.getNumber("AutoTurnPIDCommand.i", 1.33));
-        getPIDController().setD(SmartDashboard.getNumber("AutoTurnPIDCommand.d", 0.886));
-        getPIDController().setAbsoluteTolerance(SmartDashboard.getNumber("AutoTurnPIDCommand.tolerance", 5.0));
+        SmartDashboard.putData("autoturnPID", getPIDController());
+        hasRunPIDOnce = false;
     }
 
     @Override
@@ -57,6 +51,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
+        System.out.printf("gyro angle now: %.2f\terror: %.2f\toutput: %.2f%n", Robot.driveSubsystem.getHeading(), getPIDController().getError(), output);
         outputConsumer.accept(output);
     }
 

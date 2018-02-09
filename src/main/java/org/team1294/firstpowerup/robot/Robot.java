@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
         chooser.addObject("Right", new AutoSidePositionCommand("R"));
         SmartDashboard.putData("Auto mode", chooser);
 
-        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 1, 0.25));
+        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
         SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.5));
 
 //        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
