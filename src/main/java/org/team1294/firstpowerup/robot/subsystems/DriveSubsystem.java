@@ -110,16 +110,28 @@ public class DriveSubsystem extends Subsystem {
         rightFront.set(ControlMode.Velocity, right);
     }
 
+    public void tankDrive(double left, double right) {
+        drive.tankDrive(left, right);
+    }
+
     public void stop() {
         arcadeDrive(0.0, 0.0);
     }
 
     public double getEncoderPositionLeft() {
-        return leftFront.getSelectedSensorPosition(0) * kEncoderScale;
+        return getEncoderPositionLeftRaw() * kEncoderScale;
+    }
+
+    public int getEncoderPositionLeftRaw() {
+        return leftFront.getSelectedSensorPosition(0);
     }
 
     public double getEncoderPositionRight() {
-        return rightFront.getSelectedSensorPosition(0) * kEncoderScale;
+        return getEncoderPositionRightRaw() * kEncoderScale;
+    }
+
+    public int getEncoderPositionRightRaw() {
+        return rightFront.getSelectedSensorPosition(0);
     }
 
     public double getEncoderPositionAverage() {
