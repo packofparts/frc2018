@@ -16,16 +16,8 @@ import org.team1294.firstpowerup.robot.commands.TestTalonPid;
 public class OI {
     private XboxController driveJoystick;
 
-//    private Button exampleButton;
-
     public OI() {
         driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
-
-//        JoystickButton aButton = new JoystickButton(driveJoystick, 1);
-//        aButton.whileHeld(new AutoDriveCommand(0, 0, 0, .75));
-//
-//        JoystickButton bButton = new JoystickButton(driveJoystick, 2);
-//        bButton.whileHeld(new AutoDriveCommand(-1, 0, 1, 0));
 
         JoystickButton aButton = new JoystickButton(driveJoystick, 1);
         aButton.whileHeld(new TestTalonPid());
@@ -39,7 +31,7 @@ public class OI {
         return driveJoystick.getY(GenericHID.Hand.kLeft);
     }
 
-    public double getClimbY() {
-        return driveJoystick.getY(GenericHID.Hand.kRight);
-    }
+//    public double getClimbY() {
+//        return driveJoystick.getY(GenericHID.Hand.kRight);
+//    }
 }
