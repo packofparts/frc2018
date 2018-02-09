@@ -60,6 +60,11 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("RightTalon.d", rightFront.configGetParameter(ParamEnum.eProfileParamSlot_D, 0, 10));
 
         navX = new AHRS(SPI.Port.kMXP);
+
+        leftFront.configMotionAcceleration(100, 10); // TODO: Use real accel in sensor units
+        rightFront.configMotionAcceleration(100, 10);
+        leftFront.configMotionCruiseVelocity(850, 10);
+        rightFront.configMotionCruiseVelocity(850, 10);
     }
 
     @Override
@@ -156,5 +161,10 @@ public class DriveSubsystem extends Subsystem {
 
     public void setSafetyEnabled(boolean safetyEnabled) {
         drive.setSafetyEnabled(safetyEnabled);
+    }
+
+    public void talonMotionMagic(double distanceLeft, double distanceRight) {
+        leftFront.set(ControlMode.MotionMagic, distanceLeft * kEncoderScale);
+        rightFront.set(ControlMode.MotionMagic, distanceRight * kEncoderScale);
     }
 }
