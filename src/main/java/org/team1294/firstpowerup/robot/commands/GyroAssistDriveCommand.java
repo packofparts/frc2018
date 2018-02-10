@@ -12,11 +12,12 @@ import org.team1294.firstpowerup.robot.Robot;
  * @author Austin Jenchi (timtim17)
  */
 public class GyroAssistDriveCommand extends PIDCommand {
-    private static final double TURN_DEADBAND = 0.1;
-    private static final double kP = 1.0;
+    private static final double TURN_DEADBAND = 0.25;
+    private static final double kP = 0.1;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
-    private static final double kTolerance = 0.01;
+    private static final double kTolerance = 5;
+    private static final double MAX_TURN_RATE = 0.5;
 
     private enum TurnMode {OFF, ASSIST}
 
@@ -29,6 +30,9 @@ public class GyroAssistDriveCommand extends PIDCommand {
         currentMode = TurnMode.OFF;
 
         getPIDController().setAbsoluteTolerance(kTolerance);
+        getPIDController().setContinuous(true);
+        getPIDController().setInputRange(0, 360);
+        getPIDController().setOutputRange(-MAX_TURN_RATE, MAX_TURN_RATE);
         getPIDController().disable();
     }
 
@@ -40,12 +44,12 @@ public class GyroAssistDriveCommand extends PIDCommand {
     @Override
     protected void execute() {
         double joyTurnIn = Robot.oi.getDriveLeftX();
-        boolean shouldBeOn = joyTurnIn <= TURN_DEADBAND;
+        boolean shouldBeOn = Math.abs(joyTurnIn) <= TURN_DEADBAND;
 
         switch (currentMode) {
             case OFF:
+                setSetpoint(Robot.driveSubsystem.getHeading());
                 if (shouldBeOn) {
-                    setSetpoint(Robot.driveSubsystem.getHeading());
                     getPIDController().enable();
                     currentMode = TurnMode.ASSIST;
                 } else {

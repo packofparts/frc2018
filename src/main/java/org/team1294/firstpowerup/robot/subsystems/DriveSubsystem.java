@@ -39,14 +39,14 @@ public class DriveSubsystem extends Subsystem {
         leftFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
         rightFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
 
-        leftFront.setInverted(true);
-        leftRear.setInverted(true);
+        rightFront.setInverted(true);
+        rightRear.setInverted(true);
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        leftFront.setSensorPhase(true);
+        leftFront.setSensorPhase(false);
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        rightFront.setSensorPhase(false);
+        rightFront.setSensorPhase(true);
 
         drive = new DifferentialDrive(leftFront, rightFront);
 
@@ -72,7 +72,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void arcadeDrive(double forward, double turn) {
-        drive.arcadeDrive(forward, -turn);
+        drive.arcadeDrive(forward, turn);
     }
 
     public void autoDrive(double left, double right) {
@@ -85,7 +85,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getEncoderPositionLeft() {
-        return leftFront.getSelectedSensorPosition(0) * kEncoderScale;
+        return -leftFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
     public double getEncoderPositionRight() {
@@ -105,7 +105,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getEncoderVelocityLeft() {
-        return getRawEncoderVelocityLeft() * kEncoderScale;
+        return -getRawEncoderVelocityLeft() * kEncoderScale;
     }
 
     public double getEncoderVelocityRight() {

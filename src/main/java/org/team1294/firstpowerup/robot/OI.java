@@ -19,8 +19,8 @@ public class OI {
     public OI() {
         driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
 
-        JoystickButton aButton = new JoystickButton(driveJoystick, 1);
-        aButton.whileHeld(new TestTalonPid());
+//        JoystickButton aButton = new JoystickButton(driveJoystick, 1);
+//        aButton.whileHeld(new TestTalonPid());
     }
 
     public double getDriveLeftX() {
@@ -28,7 +28,7 @@ public class OI {
     }
 
     public double getDriveLeftY() {
-        return driveJoystick.getY(GenericHID.Hand.kLeft);
+        return -driveJoystick.getY(GenericHID.Hand.kLeft);
     }
 
 //    public double getClimbY() {

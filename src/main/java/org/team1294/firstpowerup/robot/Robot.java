@@ -48,22 +48,22 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
 
-        chooser.addDefault("Left", new AutoSidePositionCommand("L"));
-        chooser.addObject("Center", new AutoCenterPositionCommand());
-        chooser.addObject("Right", new AutoSidePositionCommand("R"));
-        SmartDashboard.putData("Auto mode", chooser);
+//        chooser.addDefault("Left", new AutoSidePositionCommand("L"));
+//        chooser.addObject("Center", new AutoCenterPositionCommand());
+//        chooser.addObject("Right", new AutoSidePositionCommand("R"));
+//        SmartDashboard.putData("Auto mode", chooser);
 
         SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
         SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.5));
+//        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
+//        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.5));
+//        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.5));
 
-        SmartDashboard.putData(new AutoCenterPositionCommand());
-        SmartDashboard.putData(new AutoSidePositionCommand("L"));
-        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+//        SmartDashboard.putData(new AutoCenterPositionCommand());
+//        SmartDashboard.putData(new AutoSidePositionCommand("L"));
+//        SmartDashboard.putData(new AutoSidePositionCommand("R"));
 
-        SmartDashboard.putData(new AutoVisionTargetCommand(1.0));
+//        SmartDashboard.putData(new AutoVisionTargetCommand(1.0));
 
         Robot.driveSubsystem.resetGyro();
         Robot.driveSubsystem.resetEncoders();
