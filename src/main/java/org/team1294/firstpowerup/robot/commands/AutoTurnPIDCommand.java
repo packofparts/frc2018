@@ -26,7 +26,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
      * @param maxRate the max allowed turn rate
      */
     public AutoTurnPIDCommand(final Consumer<Double> outputConsumer, final double heading, final double maxRate) {
-        super(1.0, 0.0, 0.0);
+        super(0.1, 0.0, 0.0);
 
         this.outputConsumer = outputConsumer;
 
@@ -34,7 +34,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
         getPIDController().setContinuous(true);
         getPIDController().setOutputRange(-maxRate, maxRate);
         getPIDController().setSetpoint(heading);
-        getPIDController().setAbsoluteTolerance(0.01);
+        getPIDController().setAbsoluteTolerance(5);
     }
 
     @Override
@@ -51,7 +51,6 @@ public class AutoTurnPIDCommand extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        System.out.printf("gyro angle now: %.2f\terror: %.2f\toutput: %.2f%n", Robot.driveSubsystem.getHeading(), getPIDController().getError(), output);
         outputConsumer.accept(output);
     }
 
