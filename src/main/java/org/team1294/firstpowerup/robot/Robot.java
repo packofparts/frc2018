@@ -69,10 +69,6 @@ public class Robot extends IterativeRobot {
         Robot.driveSubsystem.resetEncoders();
 //        Robot.intakeSubsystem.resetEncoders();
 
-        // In theory GyroAssistDriveCommand should be, by request, the default Command.
-        // However, it still needs tuning, so for now it's just an option on SD
-        SmartDashboard.putData(new GyroAssistDriveCommand());
-
         SmartDashboard.putData(Scheduler.getInstance());
     }
 

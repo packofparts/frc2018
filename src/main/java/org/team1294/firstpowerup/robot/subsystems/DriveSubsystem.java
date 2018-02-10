@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
+import org.team1294.firstpowerup.robot.commands.GyroAssistDriveCommand;
 
 /**
  *
@@ -68,7 +69,7 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new ArcadeDriveCommand());
+        setDefaultCommand(new GyroAssistDriveCommand());
     }
 
     public void arcadeDrive(double forward, double turn) {

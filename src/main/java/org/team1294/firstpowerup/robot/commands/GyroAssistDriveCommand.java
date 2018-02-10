@@ -44,7 +44,7 @@ public class GyroAssistDriveCommand extends PIDCommand {
     @Override
     protected void execute() {
         double joyTurnIn = Robot.oi.getDriveLeftX();
-        boolean shouldBeOn = Math.abs(joyTurnIn) <= TURN_DEADBAND;
+        boolean shouldBeOn = Math.abs(joyTurnIn) <= TURN_DEADBAND && Math.abs(Robot.driveSubsystem.getTurnRate()) < 0.1;
 
         switch (currentMode) {
             case OFF:
