@@ -1,7 +1,7 @@
 package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.team1294.firstpowerup.robot.commands.TestTalonPid;
 
@@ -14,23 +14,26 @@ import org.team1294.firstpowerup.robot.commands.TestTalonPid;
  * are pressed.
  */
 public class OI {
-    private XboxController driveJoystick;
+    private Joystick driveJoystickLeft;
+    private Joystick driveJoystickRight;
 
     public OI() {
-        driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
-
-//        JoystickButton aButton = new JoystickButton(driveJoystick, 1);
-//        aButton.whileHeld(new TestTalonPid());
+        driveJoystickLeft = new Joystick(RobotMap.JOYSTICK_DRIVE_LEFT);
+        driveJoystickRight = new Joystick(RobotMap.JOYSTICK_DRIVE_RIGHT);
     }
 
     public double getDriveLeftX() {
-        return driveJoystick.getX(GenericHID.Hand.kLeft);
+        return driveJoystickLeft.getX();
     }
 
     public double getDriveLeftY() {
-        return -driveJoystick.getY(GenericHID.Hand.kLeft);
+        return -driveJoystickLeft.getY();
     }
 
+    public double getDriveRightY() {
+        return -driveJoystickRight.getY();
+    }
+    
 //    public double getClimbY() {
 //        return driveJoystick.getY(GenericHID.Hand.kRight);
 //    }

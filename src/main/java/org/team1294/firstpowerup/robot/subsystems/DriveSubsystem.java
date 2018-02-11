@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
-import org.team1294.firstpowerup.robot.commands.GyroAssistDriveCommand;
+import org.team1294.firstpowerup.robot.commands.TankDriveCommand;
 
 /**
  *
@@ -69,11 +69,15 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new GyroAssistDriveCommand());
+        setDefaultCommand(new TankDriveCommand());
     }
 
     public void arcadeDrive(double forward, double turn) {
         drive.arcadeDrive(forward, turn);
+    }
+
+    public void tankDrive(double left, double right) {
+        drive.tankDrive(left, right);
     }
 
     public void autoDrive(double left, double right) {
@@ -88,10 +92,8 @@ public class DriveSubsystem extends Subsystem {
     public double getEncoderPositionLeft() {
         return -leftFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
-
     public double getEncoderPositionRight() {
         return rightFront.getSelectedSensorPosition(0) * kEncoderScale;
-    }
 
     public double getEncoderPositionAverage() {
         return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;
