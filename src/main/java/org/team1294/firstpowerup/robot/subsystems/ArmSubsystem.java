@@ -7,30 +7,31 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team1294.firstpowerup.robot.RobotMap;
 
 /**
- * @author Austin Jenchi (timtim17)
- */
+ * @author Abhinav Diddee (heatblast016) */
 public class ArmSubsystem extends Subsystem {
     private TalonSRX motor;
+    private TalonSRX wristmotor;
     private AnalogPotentiometer potentiometer;
-
+    private AnalogPotentiometer wrist_pot;
     public ArmSubsystem() {
         super("Arm Subsystem");
         motor = new TalonSRX(RobotMap.TALON_ARM);
+        wristmotor = new TalonSRX(RobotMap.TALON_WRIST);
+
         potentiometer = new AnalogPotentiometer(RobotMap.SENSOR_POT);
+        wrist_pot = new AnalogPotentiometer(RobotMap.WRIST_POT);
+    }
+    public void setWristangle(double angle)
+    {
+        wristmotor.set(ControlMode.Position, angle);
+    }
+    public void setArmHeight(double height) {
+        motor.set(ControlMode.PercentOutput, height);
     }
 
-    public void driveTalon(double output) {
-        motor.set(ControlMode.PercentOutput, output);
+    public double getPotOutputAngle(AnalogPotentiometer pot) {
+        return 72.0*pot.get();
     }
-
-    public void stop() {
-        driveTalon(0);
-    }
-
-    public double getPotOutput() {
-        return potentiometer.get();
-    }
-
     @Override
     public void periodic() {
         // do nothing
