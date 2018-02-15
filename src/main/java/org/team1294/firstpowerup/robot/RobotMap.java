@@ -19,6 +19,7 @@ public class RobotMap {
     public static final int TALON_INTAKE_RIGHT = 8;
 
     public static final int SENSOR_POT = 0;
+    public static final int SENSOR_INTAKE_BEAMBREAK = 0;
 
     public static final int CTRE_TIMEOUT_INIT = 10;
     public static final int CTRE_TIMEOUT_PERIODIC = 0;

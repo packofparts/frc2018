@@ -39,4 +39,9 @@ public class OI {
     public double getClimbY() {
         return gameMech.getY(GenericHID.Hand.kRight);
     }
+
+    public double getIntakeAxis() {
+        return gameMech.getTriggerAxis(GenericHID.Hand.kRight)
+                - gameMech.getTriggerAxis(GenericHID.Hand.kLeft);
+    }
 }
