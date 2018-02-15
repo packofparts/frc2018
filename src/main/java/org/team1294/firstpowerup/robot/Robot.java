@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.*;
+import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.ClimbSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
@@ -21,7 +22,7 @@ public class Robot extends IterativeRobot {
     public static DriveSubsystem driveSubsystem;
     public static VisionSubsystem visionSubsystem;
     public static ClimbSubsystem climbSubsystem;
-//    public static ArmSubsystem armSubsystem;
+    public static ArmSubsystem armSubsystem;
 //    public static IntakeSubsystem intakeSubsystem;
 
     public static OI oi;
@@ -36,7 +37,7 @@ public class Robot extends IterativeRobot {
         visionSubsystem = new VisionSubsystem();
         driveSubsystem = new DriveSubsystem();
         climbSubsystem = new ClimbSubsystem();
-//        armSubsystem = new ArmSubsystem();
+        armSubsystem = new ArmSubsystem();
 //        intakeSubsystem = new IntakeSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has
@@ -71,6 +72,8 @@ public class Robot extends IterativeRobot {
 //        Robot.intakeSubsystem.resetEncoders();
 
         SmartDashboard.putData(Scheduler.getInstance());
+
+        SetArmHeightCommand.createPresetArmHeightCommands().forEach(SmartDashboard::putData);
     }
 
     @Override

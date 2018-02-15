@@ -1,4 +1,4 @@
-package org.team1294.firspowerup.robot;
+package org.team1294.firstpowerup.robot;
 
 /**
  * A map of constants for ports and other magic numbers in the code. Other classes refer to these
@@ -15,7 +15,7 @@ public class RobotMap {
     public static final int TALON_LEFT_REAR = 4;
     public static final int TALON_CLIMB = 5;
     public static final int TALON_ARM = 6;
-    public static final int TALON_INTAKE_LEFT = 7;lic sta
+    public static final int TALON_INTAKE_LEFT = 7;
     public static final int TALON_INTAKE_RIGHT = 8;
     public static final int TALON_WRIST = 9;
     public static final int WRIST_POT = 1;

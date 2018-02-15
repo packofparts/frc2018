@@ -5,40 +5,56 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team1294.firstpowerup.robot.RobotMap;
+import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
 
 /**
  * @author Abhinav Diddee (heatblast016) */
 public class ArmSubsystem extends Subsystem {
-    private TalonSRX motor;
-    private TalonSRX wristmotor;
-    private AnalogPotentiometer potentiometer;
-    private AnalogPotentiometer wrist_pot;
+    private TalonSRX armMotor;
+    private TalonSRX wristMotor;
+    private AnalogPotentiometer armPot;
+    private AnalogPotentiometer wristPot;
     public ArmSubsystem() {
         super("Arm Subsystem");
-        motor = new TalonSRX(RobotMap.TALON_ARM);
-        wristmotor = new TalonSRX(RobotMap.TALON_WRIST);
+        armMotor = new TalonSRX(RobotMap.TALON_ARM);
+        wristMotor = new TalonSRX(RobotMap.TALON_WRIST);
 
-        potentiometer = new AnalogPotentiometer(RobotMap.SENSOR_POT);
-        wrist_pot = new AnalogPotentiometer(RobotMap.WRIST_POT);
+        armPot = new AnalogPotentiometer(RobotMap.SENSOR_POT);
+        wristPot = new AnalogPotentiometer(RobotMap.WRIST_POT);
     }
-    public void setWristangle(double angle)
+
+    public void setWristAngle(double angle)
     {
-        wristmotor.set(ControlMode.Position, angle);
+        wristMotor.set(ControlMode.Position, angle);
     }
+
     public void setArmHeight(double height) {
-        motor.set(ControlMode.PercentOutput, height);
+        armMotor.set(ControlMode.PercentOutput, height);
+    }
+
+    public void driveArmPercentOut(double percent) {
+        armMotor.set(ControlMode.PercentOutput, percent);
     }
 
     public double getPotOutputAngle(AnalogPotentiometer pot) {
         return 72.0*pot.get();
     }
-    @Override
-    public void periodic() {
-        // do nothing
-    }
 
     @Override
     protected void initDefaultCommand() {
-//        setDefaultCommand();
+        setDefaultCommand(new DriveArmWithJoystickCommand());
+    }
+
+    public void disableArmSoftLimits() {
+        armMotor.configReverseSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        armMotor.configForwardSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_PERIODIC);
+    }
+
+    public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
+        armMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        armMotor.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+
+        armMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        armMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 }

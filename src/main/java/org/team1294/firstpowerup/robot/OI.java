@@ -39,4 +39,8 @@ public class OI {
     public double getClimbY() {
         return gameMech.getY(GenericHID.Hand.kRight);
     }
+
+    public double getArmY() {
+        return gameMech.getY(GenericHID.Hand.kLeft);
+    }
 }
