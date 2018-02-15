@@ -5,7 +5,8 @@ package org.team1294.firstpowerup.robot;
  * constants (i.e. {@code RobotMap.SOME_CONSTANT}.
  */
 public class RobotMap {
-    public static final int JOYSTICK_DRIVE = 0;
+    public static final int JOYSTICK_DRIVE_LEFT = 0;
+    public static final int JOYSTICK_DRIVE_RIGHT = 1;
 
     public static final int TALON_RIGHT_FRONT = 1;
     public static final int TALON_RIGHT_REAR = 2;

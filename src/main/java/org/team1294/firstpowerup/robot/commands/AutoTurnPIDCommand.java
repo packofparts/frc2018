@@ -7,6 +7,7 @@ import org.team1294.firstpowerup.robot.Robot;
 import java.util.function.Consumer;
 
 public class AutoTurnPIDCommand extends PIDCommand {
+    public static final double ABSOLUTE_TOLERANCE = 1;
     private final Consumer<Double> outputConsumer;
     private boolean hasRunPIDOnce = false;
 
@@ -26,7 +27,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
      * @param maxRate the max allowed turn rate
      */
     public AutoTurnPIDCommand(final Consumer<Double> outputConsumer, final double heading, final double maxRate) {
-        super(0.1, 0.0, 0.0);
+        super(0.1, 0.01, 0.5);
 
         this.outputConsumer = outputConsumer;
 
@@ -34,7 +35,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
         getPIDController().setContinuous(true);
         getPIDController().setOutputRange(-maxRate, maxRate);
         getPIDController().setSetpoint(heading);
-        getPIDController().setAbsoluteTolerance(5);
+        getPIDController().setAbsoluteTolerance(ABSOLUTE_TOLERANCE);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
     }
 
     public boolean onTarget() {
-        return hasRunPIDOnce && getPIDController().onTarget();
+        return hasRunPIDOnce && getPIDController().onTarget() && Math.abs(Robot.driveSubsystem.getTurnRate()) < 0.01;
     }
 
     public void setSetpoint(double heading) {

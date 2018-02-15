@@ -21,7 +21,7 @@ public class AutoForwardPIDCommand extends PIDCommand {
         getPIDController().setContinuous(false);
         getPIDController().setOutputRange(-maxVelocity, maxVelocity);
         getPIDController().setSetpoint(distance);
-        getPIDController().setAbsoluteTolerance(0.01);
+        getPIDController().setAbsoluteTolerance(0.1);
     }
 
     @Override
