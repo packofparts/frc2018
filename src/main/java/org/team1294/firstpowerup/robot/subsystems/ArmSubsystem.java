@@ -8,12 +8,14 @@ import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
 
 /**
- * @author Abhinav Diddee (heatblast016) */
+ * @author Abhinav Diddee (heatblast016)
+ */
 public class ArmSubsystem extends Subsystem {
     private TalonSRX armMotor;
     private TalonSRX wristMotor;
     private AnalogPotentiometer armPot;
     private AnalogPotentiometer wristPot;
+
     public ArmSubsystem() {
         super("Arm Subsystem");
         armMotor = new TalonSRX(RobotMap.TALON_ARM);
@@ -23,8 +25,7 @@ public class ArmSubsystem extends Subsystem {
         wristPot = new AnalogPotentiometer(RobotMap.WRIST_POT);
     }
 
-    public void setWristAngle(double angle)
-    {
+    public void setWristAngle(double angle) {
         wristMotor.set(ControlMode.Position, angle);
     }
 
@@ -43,11 +44,6 @@ public class ArmSubsystem extends Subsystem {
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new DriveArmWithJoystickCommand());
-    }
-
-    public void disableArmSoftLimits() {
-        armMotor.configReverseSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_PERIODIC);
-        armMotor.configForwardSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
     public void setArmSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {

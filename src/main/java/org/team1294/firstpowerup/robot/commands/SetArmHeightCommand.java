@@ -32,11 +32,7 @@ public class SetArmHeightCommand extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.armSubsystem.setArmHeight(height);
-        if (reverseSoftLimit == NO_SOFT_LIMIT && forwardSoftLimit == NO_SOFT_LIMIT) {
-            Robot.armSubsystem.disableArmSoftLimits();
-        } else {
-            Robot.armSubsystem.setArmSoftLimits(reverseSoftLimit, forwardSoftLimit);
-        }
+        Robot.armSubsystem.setArmSoftLimits(reverseSoftLimit, forwardSoftLimit);
     }
 
     public static List<SetArmHeightCommand> createPresetArmHeightCommands() {
