@@ -10,12 +10,14 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
+import org.team1294.firstpowerup.robot.commands.GyroAssistDriveCommand;
 
 /**
  *
  */
 public class DriveSubsystem extends Subsystem {
     private static final double kEncoderScale = 0.00026093732850;
+    public static final String ENCODER_PREFIX = "Drive/Encoders/";
 
     private final WPI_TalonSRX leftFront;
     private final WPI_TalonSRX leftRear;
@@ -32,66 +34,92 @@ public class DriveSubsystem extends Subsystem {
         rightFront = new WPI_TalonSRX(RobotMap.TALON_RIGHT_FRONT);
         rightRear = new WPI_TalonSRX(RobotMap.TALON_RIGHT_REAR);
 
-        leftRear.set(ControlMode.Follower, RobotMap.TALON_LEFT_FRONT);
-        rightRear.set(ControlMode.Follower, RobotMap.TALON_RIGHT_FRONT);
+        leftRear.follow(leftFront);
+        rightRear.follow(rightFront);
 
-        leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
-                0);
-        leftFront.setSensorPhase(true);
+        leftFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
+        rightFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
 
-        rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,
-                0);
-        rightFront.setSensorPhase(false);
+        rightFront.setInverted(true);
+        rightRear.setInverted(true);
 
-        navX = new AHRS(SPI.Port.kMXP);
+        leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        leftFront.setSensorPhase(false);
+
+        rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        rightFront.setSensorPhase(true);
 
         drive = new DifferentialDrive(leftFront, rightFront);
+
+        navX = new AHRS(SPI.Port.kMXP);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Left Encoder", getEncoderPositionLeft());
-        SmartDashboard.putNumber("Right Encoder", getEncoderPositionRight());
-        SmartDashboard.putNumber("Average Encoder", getEncoderPositionAverage());
-        SmartDashboard.putNumber("Gyro Angle", getHeading());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Left/Pos", getEncoderPositionLeft());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Right/Pos", getEncoderPositionRight());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Avg/Pos", getEncoderPositionAverage());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Left/Vel", getEncoderVelocityLeft());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Right/Vel", getEncoderVelocityRight());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Left/VelRaw", getRawEncoderVelocityLeft());
+        SmartDashboard.putNumber(ENCODER_PREFIX + "Right/VelRaw", getRawEncoderVelocityRight());
+
+        SmartDashboard.putNumber("Drive/Gyro/Angle", getHeading());
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(new GyroAssistDriveCommand());
     }
 
     public void arcadeDrive(double forward, double turn) {
         drive.arcadeDrive(forward, turn);
     }
 
+    public void autoDrive(double left, double right) {
+        leftFront.set(ControlMode.Velocity, -left);
+        rightFront.set(ControlMode.Velocity, right);
+    }
+
     public void stop() {
         arcadeDrive(0.0, 0.0);
     }
 
-    public void resetEncoders() {
-        leftFront.setSelectedSensorPosition(0, 0, 0);
-        rightFront.setSelectedSensorPosition(0, 0, 0);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new ArcadeDriveCommand());
-    }
-
     public double getEncoderPositionLeft() {
-        return leftFront.getSelectedSensorPosition(0) * kEncoderScale;
+        return -leftFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
     public double getEncoderPositionRight() {
         return rightFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
 
+    public double getEncoderPositionAverage() {
+        return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;
+    }
+
+    public double getRawEncoderVelocityLeft() {
+        return leftFront.getSelectedSensorVelocity(0);
+    }
+
+    public double getRawEncoderVelocityRight() {
+        return rightFront.getSelectedSensorVelocity(0);
+    }
+
     public double getEncoderVelocityLeft() {
-        return leftFront.getSelectedSensorVelocity(0) * kEncoderScale;
+        return -getRawEncoderVelocityLeft() * kEncoderScale;
     }
 
     public double getEncoderVelocityRight() {
-        return rightFront.getSelectedSensorVelocity(0) * kEncoderScale;
+        return getRawEncoderVelocityRight() * kEncoderScale;
+    }
+
+    public void resetEncoders() {
+        leftFront.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        rightFront.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
     public double getHeading() {
-        return navX.getAngle() % 360;
+        return Math.abs(navX.getAngle() % 360);
     }
 
     public double getTurnRate() {
@@ -102,8 +130,7 @@ public class DriveSubsystem extends Subsystem {
         navX.reset();
     }
 
-    public double getEncoderPositionAverage() {
-        return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;
+    public void setSafetyEnabled(boolean safetyEnabled) {
+        drive.setSafetyEnabled(safetyEnabled);
     }
-
 }

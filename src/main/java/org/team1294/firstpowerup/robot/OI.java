@@ -3,6 +3,7 @@ package org.team1294.firstpowerup.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.team1294.firstpowerup.robot.commands.TestTalonPid;
 
 /**
  * The class representing the OI, or operator's interface. This class contains
@@ -15,14 +16,11 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
     private XboxController driveJoystick;
 
-//    private Button exampleButton;
-
     public OI() {
         driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
 
-//        exampleButton = new JoystickButton(driveJoystick,
-//                RobotMap.EXAMPLE_BUTTON);
-//        exampleButton.toggleWhenPressed(new ExampleCommand());
+//        JoystickButton aButton = new JoystickButton(driveJoystick, 1);
+//        aButton.whileHeld(new TestTalonPid());
     }
 
     public double getDriveLeftX() {
@@ -33,7 +31,7 @@ public class OI {
         return -driveJoystick.getY(GenericHID.Hand.kLeft);
     }
 
-    public double getClimbY() {
-        return driveJoystick.getY(GenericHID.Hand.kRight);
-    }
+//    public double getClimbY() {
+//        return driveJoystick.getY(GenericHID.Hand.kRight);
+//    }
 }

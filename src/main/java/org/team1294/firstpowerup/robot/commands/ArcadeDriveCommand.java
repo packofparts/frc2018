@@ -15,7 +15,7 @@ public class ArcadeDriveCommand extends Command {
 
     @Override
     protected void initialize() {
-        // intentionally empty
+        Robot.driveSubsystem.setSafetyEnabled(true);
     }
 
     @Override
@@ -23,9 +23,6 @@ public class ArcadeDriveCommand extends Command {
         double forward = Robot.oi.getDriveLeftY();
         double turn = Robot.oi.getDriveLeftX();
         Robot.driveSubsystem.arcadeDrive(forward, turn);
-        SmartDashboard.putNumber("Encoder Left", Robot.driveSubsystem.getEncoderVelocityLeft());
-        SmartDashboard.putNumber("Encoder Right", Robot.driveSubsystem.getEncoderVelocityRight());
-        SmartDashboard.putNumber("Heading", Robot.driveSubsystem.getHeading());
     }
 
     @Override

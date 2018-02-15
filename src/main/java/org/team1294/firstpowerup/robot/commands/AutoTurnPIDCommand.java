@@ -26,7 +26,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
      * @param maxRate the max allowed turn rate
      */
     public AutoTurnPIDCommand(final Consumer<Double> outputConsumer, final double heading, final double maxRate) {
-        super(1.0, 0.0, 0.0);
+        super(0.1, 0.0, 0.0);
 
         this.outputConsumer = outputConsumer;
 
@@ -34,14 +34,13 @@ public class AutoTurnPIDCommand extends PIDCommand {
         getPIDController().setContinuous(true);
         getPIDController().setOutputRange(-maxRate, maxRate);
         getPIDController().setSetpoint(heading);
+        getPIDController().setAbsoluteTolerance(5);
     }
 
     @Override
     protected void initialize() {
-        getPIDController().setP(SmartDashboard.getNumber("AutoTurnPIDCommand.p", 1.0));
-        getPIDController().setI(SmartDashboard.getNumber("AutoTurnPIDCommand.i", 0.0));
-        getPIDController().setD(SmartDashboard.getNumber("AutoTurnPIDCommand.d", 0.0));
-        getPIDController().setAbsoluteTolerance(SmartDashboard.getNumber("AutoTurnPIDCommand.tolerance", 5.0));
+        SmartDashboard.putData("autoturnPID", getPIDController());
+        hasRunPIDOnce = false;
     }
 
     @Override

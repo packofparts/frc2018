@@ -5,12 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team1294.firstpowerup.robot.commands.AutoCenterPositionCommand;
-import org.team1294.firstpowerup.robot.commands.AutoDriveCommand;
-import org.team1294.firstpowerup.robot.commands.AutoSidePositionCommand;
-import org.team1294.firstpowerup.robot.commands.ResetEncoderCommand;
-import org.team1294.firstpowerup.robot.commands.ResetGyroCommand;
-import org.team1294.firstpowerup.robot.subsystems.*;
+import org.team1294.firstpowerup.robot.commands.*;
+import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
 /**
@@ -23,9 +19,9 @@ public class Robot extends IterativeRobot {
 
     public static DriveSubsystem driveSubsystem;
     public static VisionSubsystem visionSubsystem;
-    public static ClimbSubsystem climbSubsystem;
-    public static ArmSubsystem armSubsystem;
-    public static IntakeSubsystem intakeSubsystem;
+//    public static ClimbSubsystem climbSubsystem;
+//    public static ArmSubsystem armSubsystem;
+//    public static IntakeSubsystem intakeSubsystem;
 
     public static OI oi;
 
@@ -38,37 +34,47 @@ public class Robot extends IterativeRobot {
     public Robot() {
         visionSubsystem = new VisionSubsystem();
         driveSubsystem = new DriveSubsystem();
-        climbSubsystem = new ClimbSubsystem();
-        armSubsystem = new ArmSubsystem();
-        intakeSubsystem = new IntakeSubsystem();
+//        climbSubsystem = new ClimbSubsystem();
+//        armSubsystem = new ArmSubsystem();
+//        intakeSubsystem = new IntakeSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has
         // Buttons which reference Commands which use the Subsystems
         oi = new OI();
-
-        chooser.addDefault("Left", new AutoSidePositionCommand("L"));
-        chooser.addObject("Center", new AutoCenterPositionCommand());
-        chooser.addObject("Right", new AutoSidePositionCommand("R"));
-        SmartDashboard.putData("Auto mode", chooser);
     }
 
     @Override
     public void robotInit() {
-        SmartDashboard.putData(driveSubsystem);
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
-        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 1, 0.25));
-        SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.5));
-        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.5));
 
-        SmartDashboard.putData(new AutoCenterPositionCommand());
-        SmartDashboard.putData(new AutoSidePositionCommand("L"));
-        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+//        chooser.addDefault("Left", new AutoSidePositionCommand("L"));
+//        chooser.addObject("Center", new AutoCenterPositionCommand());
+//        chooser.addObject("Right", new AutoSidePositionCommand("R"));
+//        SmartDashboard.putData("Auto mode", chooser);
+
+        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
+        SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.75));
+        SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.75));
+        SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.75));
+        SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.75));
+
+//        SmartDashboard.putData(new AutoCenterPositionCommand());
+//        SmartDashboard.putData(new AutoSidePositionCommand("L"));
+//        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+
+//        SmartDashboard.putData(new AutoVisionTargetCommand(1.0));
+
         Robot.driveSubsystem.resetGyro();
         Robot.driveSubsystem.resetEncoders();
-        Robot.intakeSubsystem.resetEncoders();
+//        Robot.intakeSubsystem.resetEncoders();
+
+        SmartDashboard.putData(Scheduler.getInstance());
+    }
+
+    @Override
+    public void robotPeriodic() {
+        Scheduler.getInstance().run();
     }
 
     @Override
@@ -77,7 +83,17 @@ public class Robot extends IterativeRobot {
     }
 
     @Override
+    public void disabledPeriodic() {
+        // TODO: Method stub
+    }
+
+    @Override
     public void autonomousInit() {
+        chooser.getSelected().start();
+    }
+
+    @Override
+    public void autonomousPeriodic() {
         // TODO: Method stub
     }
 
@@ -87,28 +103,12 @@ public class Robot extends IterativeRobot {
     }
 
     @Override
-    public void testInit() {
-        // TODO: Method stub
-    }
-
-    @Override
-    public void robotPeriodic() {
-        SmartDashboard.putData(Scheduler.getInstance());
-        Scheduler.getInstance().run();
-    }
-
-    @Override
-    public void disabledPeriodic() {
-        // TODO: Method stub
-    }
-
-    @Override
-    public void autonomousPeriodic() {
-        // TODO: Method stub
-    }
-
-    @Override
     public void teleopPeriodic() {
+        // TODO: Method stub
+    }
+
+    @Override
+    public void testInit() {
         // TODO: Method stub
     }
 

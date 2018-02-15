@@ -27,13 +27,11 @@ public class ClimbSubsystem extends Subsystem {
     }
 
     public void stop() {
-
         driveTalon(0);
     }
 
     @Override
     protected void initDefaultCommand() {
-
         setDefaultCommand(new DriveClimbMotorCommand());
     }
 }

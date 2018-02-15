@@ -18,10 +18,10 @@ public class IntakeSubsystem extends Subsystem {
         leftTalon = new TalonSRX(RobotMap.TALON_INTAKE_LEFT);
         rightTalon = new TalonSRX(RobotMap.TALON_INTAKE_RIGHT);
 
-        rightTalon.set(ControlMode.Follower, RobotMap.TALON_INTAKE_LEFT);
+        rightTalon.follow(leftTalon);
 
-        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-        rightTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+        leftTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        rightTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
     public void driveIntake(double output) {
@@ -42,8 +42,8 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     public void resetEncoders() {
-        leftTalon.setSelectedSensorPosition(0, 0, 0);
-        rightTalon.setSelectedSensorPosition(0, 0, 0);
+        leftTalon.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        rightTalon.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
     @Override
