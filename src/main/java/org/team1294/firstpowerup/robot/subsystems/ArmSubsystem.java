@@ -15,6 +15,17 @@ public class ArmSubsystem extends Subsystem {
     private TalonSRX wristMotor;
     private AnalogPotentiometer armPot;
     private AnalogPotentiometer wristPot;
+    private Wrist currentStatus;
+
+    private enum Wrist {
+        IN(0), OUT(10);
+
+        private final double angle;
+
+        Wrist(double angle) {
+            this.angle = angle;
+        }
+    }
 
     public ArmSubsystem() {
         super("Arm Subsystem");
@@ -23,10 +34,17 @@ public class ArmSubsystem extends Subsystem {
 
         armPot = new AnalogPotentiometer(RobotMap.SENSOR_POT);
         wristPot = new AnalogPotentiometer(RobotMap.WRIST_POT);
+
+        currentStatus = Wrist.IN;
     }
 
-    public void setWristAngle(double angle) {
-        wristMotor.set(ControlMode.Position, angle);
+    public void toggleWristDeploy() {
+        if (currentStatus == Wrist.OUT) {
+            currentStatus = Wrist.IN;
+        } else {
+            currentStatus = Wrist.OUT;
+        }
+        wristMotor.set(ControlMode.Position, currentStatus.angle);
     }
 
     public void setArmHeight(double height) {
