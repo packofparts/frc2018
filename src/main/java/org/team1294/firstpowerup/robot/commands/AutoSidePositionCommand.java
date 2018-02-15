@@ -12,6 +12,7 @@ public class AutoSidePositionCommand extends CommandGroup {
     private final AutoDriveCommand turnTowardsDelivery;
     private final AutoDriveCommand driveTowardsDelivery;
     private final AutoDeliverCrateCommand deliverCrateCommand;
+    private boolean shouldDeliverCube;
 
     public AutoSidePositionCommand(String side) {
         this.side = side;
@@ -52,6 +53,7 @@ public class AutoSidePositionCommand extends CommandGroup {
         final String gameData = DriverStation.getInstance().getGameSpecificMessage();
         final String scaleSide = gameData.substring(1, 1);
         final String switchSide = gameData.substring(0, 0);
+        shouldDeliverCube = true;
 
         if (side.equals("L")) {
             turnTowardsWall.setHeading(315);
@@ -82,7 +84,11 @@ public class AutoSidePositionCommand extends CommandGroup {
             driveDownfield.setDistance(downfieldPastAutoLineDistance);
             turnTowardsDelivery.setHeading(0);
             driveTowardsDelivery.setDistance(0);
-            deliverCrateCommand.setEnabled(false);
+            shouldDeliverCube = false;
         }
+    }
+
+    public boolean getShouldDeliverCube() {
+        return shouldDeliverCube;
     }
 }

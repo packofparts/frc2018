@@ -13,11 +13,6 @@ public class DriveClimbMotorCommand extends Command {
     }
 
     @Override
-    protected void initialize() {
-        // nothing
-    }
-
-    @Override
     protected void execute() {
         Robot.climbSubsystem.driveTalon(Robot.oi.getClimbY());
     }

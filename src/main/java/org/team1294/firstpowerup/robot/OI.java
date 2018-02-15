@@ -1,6 +1,7 @@
 package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -13,27 +14,29 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * are pressed.
  */
 public class OI {
-    private XboxController driveJoystick;
-
-//    private Button exampleButton;
+    private Joystick driveJoystickLeft;
+    private Joystick driveJoystickRight;
+    private XboxController gameMech;
 
     public OI() {
-        driveJoystick = new XboxController(RobotMap.JOYSTICK_DRIVE);
-
-//        exampleButton = new JoystickButton(driveJoystick,
-//                RobotMap.EXAMPLE_BUTTON);
-//        exampleButton.toggleWhenPressed(new ExampleCommand());
+        driveJoystickLeft = new Joystick(RobotMap.JOYSTICK_DRIVE_LEFT);
+        driveJoystickRight = new Joystick(RobotMap.JOYSTICK_DRIVE_RIGHT);
+        gameMech = new XboxController(RobotMap.JOYSTICK_GAMEMECH);
     }
 
     public double getDriveLeftX() {
-        return driveJoystick.getX(GenericHID.Hand.kLeft);
+        return driveJoystickLeft.getX();
     }
 
     public double getDriveLeftY() {
-        return -driveJoystick.getY(GenericHID.Hand.kLeft);
+        return -driveJoystickLeft.getY();
     }
 
+    public double getDriveRightY() {
+        return -driveJoystickRight.getY();
+    }
+    
     public double getClimbY() {
-        return driveJoystick.getY(GenericHID.Hand.kRight);
+        return gameMech.getY(GenericHID.Hand.kRight);
     }
 }

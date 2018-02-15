@@ -27,6 +27,7 @@ public class SwitchTargetPipeline {
 
 	//Outputs
 	private Mat blurOutput = new Mat();
+	private Mat normalizeOutput = new Mat();
 	private Mat hslThresholdOutput = new Mat();
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
@@ -42,14 +43,21 @@ public class SwitchTargetPipeline {
 		// Step Blur0:
 		Mat blurInput = source0;
 		BlurType blurType = BlurType.get("Box Blur");
-		double blurRadius = 5.405405405405405;
+		double blurRadius = 0.0;
 		blur(blurInput, blurType, blurRadius, blurOutput);
 
+		// Step Normalize0:
+		Mat normalizeInput = blurOutput;
+		int normalizeType = Core.NORM_MINMAX;
+		double normalizeAlpha = 0.0;
+		double normalizeBeta = 100.0;
+		normalize(normalizeInput, normalizeType, normalizeAlpha, normalizeBeta, normalizeOutput);
+
 		// Step HSL_Threshold0:
-		Mat hslThresholdInput = blurOutput;
-		double[] hslThresholdHue = {0.0, 91.37521222410867};
-		double[] hslThresholdSaturation = {126.12410071942446, 255.0};
-		double[] hslThresholdLuminance = {133.00359712230215, 255.0};
+		Mat hslThresholdInput = normalizeOutput;
+		double[] hslThresholdHue = {69.60431654676259, 134.15959252971138};
+		double[] hslThresholdSaturation = {0.0, 255.0};
+		double[] hslThresholdLuminance = {71.08812949640287, 255.0};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:
@@ -59,16 +67,16 @@ public class SwitchTargetPipeline {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 300.0;
-		double filterContoursMinPerimeter = 0;
-		double filterContoursMinWidth = 0;
-		double filterContoursMaxWidth = 1000;
-		double filterContoursMinHeight = 0;
-		double filterContoursMaxHeight = 1000;
+		double filterContoursMinArea = 50.0;
+		double filterContoursMinPerimeter = 0.0;
+		double filterContoursMinWidth = 0.0;
+		double filterContoursMaxWidth = 1000.0;
+		double filterContoursMinHeight = 0.0;
+		double filterContoursMaxHeight = 1000.0;
 		double[] filterContoursSolidity = {0, 100};
-		double filterContoursMaxVertices = 1000000;
-		double filterContoursMinVertices = 0;
-		double filterContoursMinRatio = 0;
+		double filterContoursMaxVertices = 1000000.0;
+		double filterContoursMinVertices = 0.0;
+		double filterContoursMinRatio = 0.0;
 		double filterContoursMaxRatio = 1.0;
 		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
 
@@ -80,6 +88,14 @@ public class SwitchTargetPipeline {
 	 */
 	public Mat blurOutput() {
 		return blurOutput;
+	}
+
+	/**
+	 * This method is a generated getter for the output of a Normalize.
+	 * @return Mat output from Normalize.
+	 */
+	public Mat normalizeOutput() {
+		return normalizeOutput;
 	}
 
 	/**
@@ -170,6 +186,18 @@ public class SwitchTargetPipeline {
 				Imgproc.bilateralFilter(input, output, -1, radius, radius);
 				break;
 		}
+	}
+
+	/**
+	 * Normalizes or remaps the values of pixels in an image.
+	 * @param input The image on which to perform the Normalize.
+	 * @param type The type of normalization.
+	 * @param a The minimum value.
+	 * @param b The maximum value.
+	 * @param output The image in which to store the output.
+	 */
+	private void normalize(Mat input, int type, double a, double b, Mat output) {
+		Core.normalize(input, output, a, b, type);
 	}
 
 	/**

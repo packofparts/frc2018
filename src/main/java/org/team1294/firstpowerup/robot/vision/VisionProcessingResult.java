@@ -4,6 +4,8 @@ import org.opencv.core.Rect;
 
 public class VisionProcessingResult {
 
+  private static final VisionProcessingResult EMPTY_RESULT = new VisionProcessingResult();
+
   private boolean targetAcquired;
   private double degreesOffCenter;
   private double headingWhenImageTaken;
@@ -47,5 +49,9 @@ public class VisionProcessingResult {
 
   public double getHeadingToTurn() {
     return headingWhenImageTaken + degreesOffCenter;
+  }
+
+  public static VisionProcessingResult getEmptyResult() {
+    return EMPTY_RESULT;
   }
 }

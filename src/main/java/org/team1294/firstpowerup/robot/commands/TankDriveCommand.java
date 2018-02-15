@@ -7,22 +7,22 @@ import org.team1294.firstpowerup.robot.Robot;
 /**
  *
  */
-public class ArcadeDriveCommand extends Command {
-    public ArcadeDriveCommand() {
-        super("Arcade Drive");
+public class TankDriveCommand extends Command {
+    public TankDriveCommand() {
+        super("Tank Drive");
         requires(Robot.driveSubsystem);
     }
 
     @Override
     protected void initialize() {
-        Robot.driveSubsystem.setSafetyEnabled(true);
+        // intentionally empty
     }
 
     @Override
     protected void execute() {
-        double forward = Robot.oi.getDriveLeftY();
-        double turn = Robot.oi.getDriveLeftX();
-        Robot.driveSubsystem.arcadeDrive(forward, turn);
+        double left = Robot.oi.getDriveLeftX();
+        double right = Robot.oi.getDriveRightY();
+        Robot.driveSubsystem.tankDrive(left, right);
     }
 
     @Override
