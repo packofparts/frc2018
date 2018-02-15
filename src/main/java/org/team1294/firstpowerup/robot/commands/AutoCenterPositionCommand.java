@@ -11,8 +11,6 @@ public class AutoCenterPositionCommand extends CommandGroup {
     private final AutoVisionTargetCommand driveTowardsVisionTargetCommand;
 
     public AutoCenterPositionCommand() {
-
-
         // drive straight ahead far enough to make it easy to turn
         addSequential(new AutoDriveCommand(0.1, 0, 0.5, 0.25));
 

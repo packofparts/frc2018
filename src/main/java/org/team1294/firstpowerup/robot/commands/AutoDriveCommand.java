@@ -48,7 +48,7 @@ public class AutoDriveCommand extends CommandGroup {
      * @param turnRate the max turn rate (-1.0 to 1.0)
      */
     public AutoDriveCommand(final double distance, final double heading, final double velocity, final double turnRate) {
-        super("AutoDriveCommand(" + heading + ", " + distance + ", " + velocity + ", " + turnRate + ")");
+        super(String.format("AutoDrive x = %.1f, angle = %.0f, vel = %.2f, turnRate = %.2f", distance, heading, velocity, turnRate));
         setHeadingInInitialize = false;
 
         requires(Robot.driveSubsystem);
@@ -76,12 +76,10 @@ public class AutoDriveCommand extends CommandGroup {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || (autoForwardPIDCommand.onTarget() && autoTurnPIDCommand.onTarget());
-    }
-
-    @Override
-    protected void end() {
-        // do nothing
+        boolean a = autoForwardPIDCommand.onTarget();
+        boolean b = autoTurnPIDCommand.onTarget();
+        System.out.printf("Forward onTarget: %b\tTurnOnTarget: %b%n", a, b);
+        return isTimedOut() || (a && b);
     }
 
     public void setHeading(final double heading) {

@@ -63,10 +63,9 @@ public class PairOfRect {
         double rect2CenterY = b.y + b.height / 2;
         score += Math.abs(rect1CenterY - rect2CenterY);
 
-        // difference between combined rect width:height ratio and the ideal of 2.05
+        // difference between combined rect width:height ratio and the ideal of 15.3 :  8 = 1.9
         double combinedRatio = getCombined().width / getCombined().height;
-        // todo figure out ideal ratio for this years vision target
-        score += Math.abs(combinedRatio - 2.05);
+        score += Math.abs(combinedRatio - 1.9);
 
         return score;
     }

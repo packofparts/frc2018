@@ -22,8 +22,8 @@ public class AutoVisionTargetCommand extends CommandGroup {
         requires(Robot.driveSubsystem);
         requires(Robot.visionSubsystem);
 
-        autoForwardPIDCommand = new AutoForwardPIDCommand(rate -> this.forwardRate = rate, distance, 0.25);
-        autoTurnPIDCommand = new AutoTurnPIDCommand(output -> this.turnRate = output, 0.25);
+        autoForwardPIDCommand = new AutoForwardPIDCommand(rate -> this.forwardRate = rate, distance, 1);
+        autoTurnPIDCommand = new AutoTurnPIDCommand(output -> this.turnRate = output, 0.75);
 
         addParallel(autoForwardPIDCommand);
         addParallel(autoTurnPIDCommand);
@@ -39,7 +39,8 @@ public class AutoVisionTargetCommand extends CommandGroup {
     @Override
     protected void execute() {
         // do vision processing
-        VisionProcessingResult visionProcessingResult = Robot.visionSubsystem.detectSwitch();
+        Robot.visionSubsystem.detectSwitch();
+        VisionProcessingResult visionProcessingResult = Robot.visionSubsystem.getResult();
 
         // if the target was acquired, adjust the setpoint
         if (visionProcessingResult.isTargetAcquired()) {
@@ -51,7 +52,7 @@ public class AutoVisionTargetCommand extends CommandGroup {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || (autoForwardPIDCommand.onTarget() && autoTurnPIDCommand.onTarget());
+        return isTimedOut(); //|| (autoForwardPIDCommand.onTarget() && autoTurnPIDCommand.onTarget());
     }
 
     @Override
