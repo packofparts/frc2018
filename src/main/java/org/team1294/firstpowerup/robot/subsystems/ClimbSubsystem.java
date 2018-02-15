@@ -18,8 +18,8 @@ public class ClimbSubsystem extends Subsystem {
     public ClimbSubsystem() {
         super("Climb subsystem");
         talon = new TalonSRX(RobotMap.TALON_CLIMB);
-        talon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 10);
-        talon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 10);
+        talon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, RobotMap.CTRE_TIMEOUT_INIT);
+        talon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
     public void driveTalon(double output) {

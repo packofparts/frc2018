@@ -92,8 +92,10 @@ public class DriveSubsystem extends Subsystem {
     public double getEncoderPositionLeft() {
         return -leftFront.getSelectedSensorPosition(0) * kEncoderScale;
     }
+
     public double getEncoderPositionRight() {
         return rightFront.getSelectedSensorPosition(0) * kEncoderScale;
+    }
 
     public double getEncoderPositionAverage() {
         return (getEncoderPositionLeft() + getEncoderPositionRight()) / 2;

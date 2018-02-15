@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.*;
+import org.team1294.firstpowerup.robot.subsystems.ClimbSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
@@ -19,7 +20,7 @@ public class Robot extends IterativeRobot {
 
     public static DriveSubsystem driveSubsystem;
     public static VisionSubsystem visionSubsystem;
-//    public static ClimbSubsystem climbSubsystem;
+    public static ClimbSubsystem climbSubsystem;
 //    public static ArmSubsystem armSubsystem;
 //    public static IntakeSubsystem intakeSubsystem;
 
@@ -34,7 +35,7 @@ public class Robot extends IterativeRobot {
     public Robot() {
         visionSubsystem = new VisionSubsystem();
         driveSubsystem = new DriveSubsystem();
-//        climbSubsystem = new ClimbSubsystem();
+        climbSubsystem = new ClimbSubsystem();
 //        armSubsystem = new ArmSubsystem();
 //        intakeSubsystem = new IntakeSubsystem();
 
