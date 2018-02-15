@@ -19,11 +19,15 @@ public class DriveClimbMotorCommand extends Command {
 
     @Override
     protected void execute() {
+
         Robot.climbSubsystem.driveTalon(Robot.oi.getClimbY());
+
+
     }
 
     @Override
     protected void end() {
+
         Robot.climbSubsystem.stop();
     }
 
