@@ -18,6 +18,7 @@ public class RobotMap {
     public static final int TALON_INTAKE_LEFT = 7;
     public static final int TALON_INTAKE_RIGHT = 8;
     public static final int TALON_WRIST = 9;
+
     public static final int WRIST_POT = 1;
     public static final int SENSOR_POT = 0;
 

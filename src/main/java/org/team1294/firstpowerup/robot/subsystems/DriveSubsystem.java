@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
+import org.team1294.firstpowerup.robot.commands.GyroAssistDriveCommand;
 import org.team1294.firstpowerup.robot.commands.TankDriveCommand;
 
 /**
@@ -40,8 +41,10 @@ public class DriveSubsystem extends Subsystem {
         leftFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
         rightFront.configOpenloopRamp(1, RobotMap.CTRE_TIMEOUT_INIT);
 
-        rightFront.setInverted(true);
-        rightRear.setInverted(true);
+        leftFront.setInverted(true);
+        leftRear.setInverted(true);
+        rightFront.setInverted(false);
+        rightRear.setInverted(false);
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
         leftFront.setSensorPhase(false);
@@ -69,7 +72,8 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new TankDriveCommand());
+//        setDefaultCommand(new TankDriveCommand());
+        setDefaultCommand(new GyroAssistDriveCommand());
     }
 
     public void arcadeDrive(double forward, double turn) {
