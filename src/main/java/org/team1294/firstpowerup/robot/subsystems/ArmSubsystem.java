@@ -55,6 +55,7 @@ public class ArmSubsystem extends Subsystem {
         armMotor.set(ControlMode.PercentOutput, percent);
     }
 
+
     public double getPotOutputAngle(AnalogPotentiometer pot) {
         return 72.0*pot.get();
     }
