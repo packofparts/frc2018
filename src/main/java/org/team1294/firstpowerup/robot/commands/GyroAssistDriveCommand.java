@@ -30,8 +30,8 @@ public class GyroAssistDriveCommand extends PIDCommand {
         currentMode = TurnMode.OFF;
 
         getPIDController().setAbsoluteTolerance(kTolerance);
-        getPIDController().setContinuous(true);
         getPIDController().setInputRange(0, 360);
+        getPIDController().setContinuous(true);
         getPIDController().setOutputRange(-MAX_TURN_RATE, MAX_TURN_RATE);
         getPIDController().disable();
     }
