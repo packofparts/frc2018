@@ -9,6 +9,7 @@ import org.team1294.firstpowerup.robot.commands.*;
 import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.ClimbSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
+import org.team1294.firstpowerup.robot.subsystems.IntakeSubsystem;
 import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
 
 /**
@@ -22,8 +23,8 @@ public class Robot extends IterativeRobot {
     public static DriveSubsystem driveSubsystem;
     public static VisionSubsystem visionSubsystem;
     public static ClimbSubsystem climbSubsystem;
+    public static IntakeSubsystem intakeSubsystem;
     public static ArmSubsystem armSubsystem;
-//    public static IntakeSubsystem intakeSubsystem;
 
     public static OI oi;
 
@@ -38,7 +39,7 @@ public class Robot extends IterativeRobot {
         driveSubsystem = new DriveSubsystem();
         climbSubsystem = new ClimbSubsystem();
         armSubsystem = new ArmSubsystem();
-//        intakeSubsystem = new IntakeSubsystem();
+        intakeSubsystem = new IntakeSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has
         // Buttons which reference Commands which use the Subsystems

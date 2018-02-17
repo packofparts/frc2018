@@ -40,6 +40,11 @@ public class OI {
         return gameMech.getY(GenericHID.Hand.kRight);
     }
 
+    public double getIntakeAxis() {
+        return gameMech.getTriggerAxis(GenericHID.Hand.kRight)
+                - gameMech.getTriggerAxis(GenericHID.Hand.kLeft);
+    }
+
     public double getArmY() {
         return gameMech.getY(GenericHID.Hand.kLeft);
     }
