@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
     private Joystick driveJoystickLeft;
-    private Joystick driveJoystickRight;
+//    private Joystick driveJoystickRight;
     private XboxController gameMech;
 
     public OI() {
         driveJoystickLeft = new Joystick(RobotMap.JOYSTICK_DRIVE_LEFT);
-        driveJoystickRight = new Joystick(RobotMap.JOYSTICK_DRIVE_RIGHT);
+//        driveJoystickRight = new Joystick(RobotMap.JOYSTICK_DRIVE_RIGHT);
         gameMech = new XboxController(RobotMap.JOYSTICK_GAMEMECH);
     }
 
@@ -33,11 +33,11 @@ public class OI {
     }
 
     public double getDriveRightY() {
-        return -driveJoystickRight.getY();
+        return 0.0;//-driveJoystickRight.getY();
     }
     
     public double getClimbY() {
-        return gameMech.getY(GenericHID.Hand.kRight);
+        return gameMech.getY(GenericHID.Hand.kLeft);
     }
 
     public double getIntakeAxis() {
@@ -46,6 +46,10 @@ public class OI {
     }
 
     public double getArmY() {
-        return gameMech.getY(GenericHID.Hand.kLeft);
+        return gameMech.getY(GenericHID.Hand.kRight);
+    }
+
+    public double getGMPOV() {
+        return gameMech.getPOV();
     }
 }

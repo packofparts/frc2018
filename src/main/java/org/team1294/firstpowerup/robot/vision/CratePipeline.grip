@@ -1,7 +1,7 @@
 <grip:Pipeline>
   <sources>
     <grip:Camera>
-      <property name="deviceNumber" value="0"/>
+      <property name="deviceNumber" value="1"/>
     </grip:Camera>
   </sources>
   <steps>
@@ -19,20 +19,20 @@
       <grip:Input step="1" socket="0"/>
       <grip:Input step="1" socket="1">
         <value>
-          <double>21.043165467625897</double>
-          <double>69.98302207130729</double>
+          <double>17.805755395683452</double>
+          <double>47.918088737201366</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="2">
         <value>
-          <double>119.24460431654676</double>
-          <double>255.0</double>
+          <double>41.24972800493785</double>
+          <double>120.07513866616986</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="3">
         <value>
-          <double>117.21287830793565</double>
-          <double>255.0</double>
+          <double>55.29741068203638</double>
+          <double>165.7935153583618</double>
         </value>
       </grip:Input>
       <grip:Output step="1" socket="0" previewed="true"/>
@@ -53,16 +53,16 @@
         <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="3">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="4">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
       <grip:Input step="3" socket="5">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="6">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
       <grip:Input step="3" socket="7">
         <value>
@@ -71,10 +71,10 @@
         </value>
       </grip:Input>
       <grip:Input step="3" socket="8">
-        <value>1000000</value>
+        <value>1000000.0</value>
       </grip:Input>
       <grip:Input step="3" socket="9">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="3" socket="10">
         <value>0.0</value>
@@ -87,20 +87,20 @@
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="1" socket="0" previewed="true"/>
-      <grip:Input step="2" socket="0"/>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="0" socket="0" previewed="true"/>
       <grip:Input step="1" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="2" socket="0" previewed="true"/>
-      <grip:Input step="3" socket="0"/>
+      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Input step="2" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="true"/>
-      <grip:Input step="0" socket="0"/>
+      <grip:Output step="2" socket="0" previewed="true"/>
+      <grip:Input step="3" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
@@ -116,7 +116,7 @@
     <language>Java</language>
     <className>CratePipeline</className>
     <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>/Users/jxlewis/workspace/frc/frc2018/src/main/java/org/team1294/firstpowerup/robot/vision</saveDir>
+    <saveDir>C:\Users\ajenc\GRIP</saveDir>
     <packageName>org.team1294.firstpowerup.robot.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>

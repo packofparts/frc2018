@@ -21,17 +21,18 @@ public class IntakeSubsystem extends Subsystem {
         super("Intake Subsystem");
         leftTalon = new TalonSRX(RobotMap.TALON_INTAKE_LEFT);
         rightTalon = new TalonSRX(RobotMap.TALON_INTAKE_RIGHT);
+        rightTalon.setInverted(true);
         beamBreak = new DigitalInput(RobotMap.SENSOR_INTAKE_BEAMBREAK);
     }
 
     public void driveIntake(double output) {
-        if (output < 0 && hasCube()) {
-            // assuming negative is in, and we already have a cube, stop the motor
-            stop();
-        } else {
+//        if (output < 0 && hasCube()) {
+//            // assuming negative is in, and we already have a cube, stop the motor
+//            stop();
+//        } else {
             leftTalon.set(ControlMode.PercentOutput, output);
             rightTalon.set(ControlMode.PercentOutput, output);
-        }
+//        }
     }
 
     public void stop() {

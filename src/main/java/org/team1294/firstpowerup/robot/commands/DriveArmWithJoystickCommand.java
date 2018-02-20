@@ -10,6 +10,8 @@ import org.team1294.firstpowerup.robot.Robot;
  * the Talon's soft limits set in {@link SetArmHeightCommand}.
  */
 public class DriveArmWithJoystickCommand extends Command {
+    private static final double DEADZONE = 0.1;
+
     public DriveArmWithJoystickCommand() {
         super("Drive arm with joystick");
         requires(Robot.armSubsystem);
@@ -17,7 +19,22 @@ public class DriveArmWithJoystickCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.armSubsystem.driveArmPercentOut(Robot.oi.getArmY());
+        double value = Robot.oi.getArmY();
+        if (Math.abs(value) < DEADZONE) {
+            Robot.armSubsystem.driveArmPercentOut(0);
+        } else {
+            Robot.armSubsystem.driveArmPercentOut(value);
+        }
+
+        // some quick code to test the wrist
+        double pov = Robot.oi.getGMPOV();
+        if (pov == 0) {
+            Robot.armSubsystem.driveWristPercentOut(0.3);
+        } else if (pov == 180) {
+            Robot.armSubsystem.driveWristPercentOut(-0.5);
+        } else {
+            Robot.armSubsystem.driveWristPercentOut(0);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -56,15 +57,15 @@ public class Robot extends IterativeRobot {
 //        chooser.addObject("Right", new AutoSidePositionCommand("R"));
 //        SmartDashboard.putData("Auto mode", chooser);
 
-        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
+//        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
         SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.75));
         SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.75));
         SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.75));
         SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.75));
 
-//        SmartDashboard.putData(new AutoCenterPositionCommand());
-//        SmartDashboard.putData(new AutoSidePositionCommand("L"));
-//        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+        SmartDashboard.putData(new AutoCenterPositionCommand());
+        SmartDashboard.putData(new AutoSidePositionCommand("L"));
+        SmartDashboard.putData(new AutoSidePositionCommand("R"));
 
 //        SmartDashboard.putData(new AutoVisionTargetCommand(1.0));
 
@@ -77,6 +78,9 @@ public class Robot extends IterativeRobot {
         SetArmHeightCommand.createPresetArmHeightCommands().forEach(SmartDashboard::putData);
 
         SmartDashboard.putData(new TankDriveCommand());
+        SmartDashboard.putData(new DoVisionDetectCube());
+        SmartDashboard.putData(new DoVisionDetectSwitch());
+        SmartDashboard.putData(new GyroAssistTankDriveCommand());
     }
 
     @Override
@@ -96,7 +100,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-        chooser.getSelected().start();
+//        chooser.getSelected().start();
     }
 
     @Override

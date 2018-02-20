@@ -9,9 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.RobotMap;
-import org.team1294.firstpowerup.robot.commands.ArcadeDriveCommand;
 import org.team1294.firstpowerup.robot.commands.GyroAssistDriveCommand;
-import org.team1294.firstpowerup.robot.commands.TankDriveCommand;
 
 /**
  *
@@ -19,6 +17,7 @@ import org.team1294.firstpowerup.robot.commands.TankDriveCommand;
 public class DriveSubsystem extends Subsystem {
     private static final double kEncoderScale = 0.00026093732850;
     public static final String ENCODER_PREFIX = "Drive/Encoders/";
+    private static final String NAVXVELOCITY_PREFIX = "Drive/Vel/";
 
     private final WPI_TalonSRX leftFront;
     private final WPI_TalonSRX leftRear;
@@ -43,18 +42,19 @@ public class DriveSubsystem extends Subsystem {
 
         leftFront.setInverted(true);
         leftRear.setInverted(true);
-        rightFront.setInverted(false);
-        rightRear.setInverted(false);
+        rightFront.setInverted(true);
+        rightRear.setInverted(true);
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
         leftFront.setSensorPhase(false);
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        rightFront.setSensorPhase(true);
+        rightFront.setSensorPhase(false);
 
         drive = new DifferentialDrive(leftFront, rightFront);
 
         navX = new AHRS(SPI.Port.kMXP);
+        SmartDashboard.putData(navX);
     }
 
     @Override
@@ -66,6 +66,10 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber(ENCODER_PREFIX + "Right/Vel", getEncoderVelocityRight());
         SmartDashboard.putNumber(ENCODER_PREFIX + "Left/VelRaw", getRawEncoderVelocityLeft());
         SmartDashboard.putNumber(ENCODER_PREFIX + "Right/VelRaw", getRawEncoderVelocityRight());
+        SmartDashboard.putNumber(NAVXVELOCITY_PREFIX + "X", navX.getVelocityX());
+        SmartDashboard.putNumber(NAVXVELOCITY_PREFIX + "Y", navX.getVelocityY());
+        SmartDashboard.putNumber(NAVXVELOCITY_PREFIX + "Z", navX.getVelocityZ());
+
 
         SmartDashboard.putNumber("Drive/Gyro/Angle", getHeading());
     }
@@ -127,7 +131,12 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getHeading() {
-        return Math.abs(navX.getAngle() % 360);
+        double heading = navX.getAngle();
+        if (heading < 0) {
+            return 360 - (Math.abs(heading) % 360);
+        } else {
+            return Math.abs(heading) % 360;
+        }
     }
 
     public double getTurnRate() {

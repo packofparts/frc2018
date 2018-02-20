@@ -17,6 +17,7 @@ import org.team1294.firstpowerup.robot.vision.PairOfRect;
 import org.team1294.firstpowerup.robot.vision.SwitchTargetPipeline;
 import org.team1294.firstpowerup.robot.vision.VisionProcessingResult;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,18 +58,20 @@ public class VisionSubsystem extends Subsystem {
         // draw on the frame if we have a vision target
         // output the frame to the stream
         new Thread(() -> {
-            // grab a frame from the camera
-            cvSink.grabFrame(frame);
+            while (!Thread.interrupted()) {
+                // grab a frame from the camera
+                cvSink.grabFrame(frame);
 
-            // draw on the frame if we have a vision target
-            if (visionProcessingResult != null && visionProcessingResult.isTargetAcquired()) {
-                final Rect targetRect = visionProcessingResult.getTargetRect();
-                Imgproc
-                        .rectangle(frame, targetRect.tl(), targetRect.br(), new Scalar(0, 0, 255), 2);
+                // draw on the frame if we have a vision target
+                if (visionProcessingResult != null && visionProcessingResult.isTargetAcquired()) {
+                    final Rect targetRect = visionProcessingResult.getTargetRect();
+                    Imgproc
+                            .rectangle(frame, targetRect.tl(), targetRect.br(), new Scalar(0, 0, 255), 2);
+                }
+
+                // output the frame to the stream
+                cvSource.putFrame(frame);
             }
-
-            // output the frame to the stream
-            cvSource.putFrame(frame);
         }).start();
 
         setCameraNormal();
@@ -151,10 +154,31 @@ public class VisionSubsystem extends Subsystem {
             // run the grip pipeline
             cratePipeline.process(frame);
 
-            // todo bunch of stuff here
-            result.setTargetAcquired(false);
-            result.setDegreesOffCenter(0);
-            result.setHeadingWhenImageTaken(heading);
+//            // todo bunch of stuff here
+//            result.setTargetAcquired(false);
+//            result.setDegreesOffCenter(0);
+//            result.setHeadingWhenImageTaken(heading);
+
+            // get the bounding rect for each contour
+            List<Rect> rects = cratePipeline.filterContoursOutput().stream()
+                    .map(Imgproc::boundingRect).collect(Collectors.toList());
+            Optional<Rect> bestRect = rects.stream().max(Comparator.comparingInt(a -> a.width));
+
+            if (bestRect.isPresent()) {
+                result.setTargetAcquired(true);
+
+                // calculate how many degrees off center
+                double halfWidth = frame.width() / 2;
+                double pixelsOffCenter = bestRect.get().x - halfWidth;
+                double percentOffCenter = pixelsOffCenter / halfWidth;
+                double degreesOffCenter =
+                        percentOffCenter * 30; // todo: validate this years field of view for the camera
+                result.setDegreesOffCenter(degreesOffCenter);
+                result.setHeadingWhenImageTaken(heading);
+                result.setTargetRect(bestRect.get());
+            } else {
+                result.setTargetAcquired(false);
+            }
 
             SmartDashboard
                 .putBoolean("VisionSubsystem.CrateTargetAcquired", result.isTargetAcquired());
