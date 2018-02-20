@@ -16,6 +16,7 @@ import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
 public class ArmSubsystem extends Subsystem {
     private TalonSRX armMotor;
     private TalonSRX wristMotor;
+    private TalonSRX extendMotor;
     private Wrist currentStatus;
 
     private enum Wrist {
@@ -32,11 +33,11 @@ public class ArmSubsystem extends Subsystem {
         super("Arm Subsystem");
         armMotor = new TalonSRX(RobotMap.TALON_ARM);
         wristMotor = new TalonSRX(RobotMap.TALON_WRIST);
-
+        extendMotor = new TalonSRX(RobotMap.TALON_ARM_EXTENSION)
         currentStatus = Wrist.IN;
 
         wristMotor.setNeutralMode(NeutralMode.Brake);
-
+        extendMotor.setNeutralMode(NeutralMode.Brake);
         armMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
@@ -56,6 +57,7 @@ public class ArmSubsystem extends Subsystem {
     public void driveArmPercentOut(double percent) {
         armMotor.set(ControlMode.PercentOutput, percent);
     }
+    public void driveExtendPercentOut(double percent) { extendMotor.set(ControlMode.PercentOutput, percent);}
 
     public void driveWristPercentOut(double percent) {
         wristMotor.set(ControlMode.PercentOutput, percent);
