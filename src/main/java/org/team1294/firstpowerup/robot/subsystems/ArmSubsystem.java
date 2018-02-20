@@ -33,7 +33,7 @@ public class ArmSubsystem extends Subsystem {
         super("Arm Subsystem");
         armMotor = new TalonSRX(RobotMap.TALON_ARM);
         wristMotor = new TalonSRX(RobotMap.TALON_WRIST);
-        extendMotor = new TalonSRX(RobotMap.TALON_ARM_EXTENSION)
+        extendMotor = new TalonSRX(RobotMap.TALON_ARM_EXTENSION);
         currentStatus = Wrist.IN;
 
         wristMotor.setNeutralMode(NeutralMode.Brake);

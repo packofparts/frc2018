@@ -44,7 +44,15 @@ public class OI {
         return gameMech.getTriggerAxis(GenericHID.Hand.kRight)
                 - gameMech.getTriggerAxis(GenericHID.Hand.kLeft);
     }
-
+    public int getBumpers() {
+        if(gameMech.getBumper(GenericHID.Hand.kRight) && !gameMech.getBumper(GenericHID.Hand.kLeft)){
+            return 1;
+        }
+        else if(!gameMech.getBumper(GenericHID.Hand.kRight) && gameMech.getBumper(GenericHID.Hand.kLeft)){
+            return 2;
+        }
+        return 0;
+    }
     public double getArmY() {
         return gameMech.getY(GenericHID.Hand.kRight);
     }
