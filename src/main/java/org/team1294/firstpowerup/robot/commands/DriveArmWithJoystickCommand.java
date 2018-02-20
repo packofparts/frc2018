@@ -32,13 +32,15 @@ public class DriveArmWithJoystickCommand extends Command {
         }
         else if(bumpervalue == 2) {
             Robot.armSubsystem.driveExtendPercentOut(0.3);
+        } else {
+            Robot.armSubsystem.driveExtendPercentOut(0);
         }
         // some quick code to test the wrist
         double pov = Robot.oi.getGMPOV();
         if (pov == 0) {
-            Robot.armSubsystem.driveWristPercentOut(0.3);
+            Robot.armSubsystem.driveWristPercentOut(1.0);
         } else if (pov == 180) {
-            Robot.armSubsystem.driveWristPercentOut(-0.5);
+            Robot.armSubsystem.driveWristPercentOut(-1.0);
         } else {
             Robot.armSubsystem.driveWristPercentOut(0);
         }

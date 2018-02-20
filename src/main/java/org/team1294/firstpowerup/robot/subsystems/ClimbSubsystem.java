@@ -32,6 +32,6 @@ public class ClimbSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-//        setDefaultCommand(new DriveClimbMotorCommand());
+        setDefaultCommand(new DriveClimbMotorCommand());
     }
 }

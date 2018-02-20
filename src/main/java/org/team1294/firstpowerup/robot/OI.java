@@ -45,10 +45,11 @@ public class OI {
                 - gameMech.getTriggerAxis(GenericHID.Hand.kLeft);
     }
     public int getBumpers() {
-        if(gameMech.getBumper(GenericHID.Hand.kRight) && !gameMech.getBumper(GenericHID.Hand.kLeft)){
+        boolean left = gameMech.getBumper(GenericHID.Hand.kLeft);
+        boolean right = gameMech.getBumper(GenericHID.Hand.kRight);
+        if(right && !left){
             return 1;
-        }
-        else if(!gameMech.getBumper(GenericHID.Hand.kRight) && gameMech.getBumper(GenericHID.Hand.kLeft)){
+        } else if(!right && left){
             return 2;
         }
         return 0;

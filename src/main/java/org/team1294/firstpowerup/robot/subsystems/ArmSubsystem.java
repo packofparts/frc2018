@@ -18,6 +18,7 @@ public class ArmSubsystem extends Subsystem {
     private TalonSRX wristMotor;
     private TalonSRX extendMotor;
     private Wrist currentStatus;
+    private AnalogPotentiometer armPot;
 
     private enum Wrist {
         IN(0), OUT(10);
@@ -27,8 +28,9 @@ public class ArmSubsystem extends Subsystem {
         Wrist(double angle) {
             this.angle = angle;
         }
-    }
 
+
+    }
     public ArmSubsystem() {
         super("Arm Subsystem");
         armMotor = new TalonSRX(RobotMap.TALON_ARM);
@@ -38,9 +40,10 @@ public class ArmSubsystem extends Subsystem {
 
         wristMotor.setNeutralMode(NeutralMode.Brake);
         extendMotor.setNeutralMode(NeutralMode.Brake);
-        armMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
-    }
+        armMotor.setNeutralMode(NeutralMode.Brake);
 
+        armPot = new AnalogPotentiometer(RobotMap.SENSOR_POT);
+    }
     public void toggleWristDeploy() {
         if (currentStatus == Wrist.OUT) {
             currentStatus = Wrist.IN;
@@ -57,15 +60,15 @@ public class ArmSubsystem extends Subsystem {
     public void driveArmPercentOut(double percent) {
         armMotor.set(ControlMode.PercentOutput, percent);
     }
+
     public void driveExtendPercentOut(double percent) { extendMotor.set(ControlMode.PercentOutput, percent);}
 
     public void driveWristPercentOut(double percent) {
         wristMotor.set(ControlMode.PercentOutput, percent);
     }
-
-//    public double getPotOutputAngle(AnalogPotentiometer pot) {
-//        return 72.0*pot.get();
-//    }
+    public double getPotOutputAngle() {
+        return 72.0*armPot.get();   // todo fix
+    }
 
     @Override
     protected void initDefaultCommand() {
@@ -82,8 +85,14 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-        int selectedSensorPosition = armMotor.getSelectedSensorPosition(0);
-//        System.out.println(selectedSensorPosition);
-        SmartDashboard.putNumber("lin pot", selectedSensorPosition);
+
+    }
+
+    public double getExtensionLength() {
+        return 0.0; // todo make this work
+    }
+
+    public double getWristAngle() {
+        return 0.0; // todo
     }
 }
