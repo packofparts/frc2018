@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.GyroAssistDriveCommand;
+import org.team1294.firstpowerup.robot.commands.TankDriveCommand;
 
 /**
  *
@@ -76,8 +77,8 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-//        setDefaultCommand(new TankDriveCommand());
-        setDefaultCommand(new GyroAssistDriveCommand());
+        setDefaultCommand(new TankDriveCommand());
+//        setDefaultCommand(new GyroAssistDriveCommand());
     }
 
     public void arcadeDrive(double forward, double turn) {
