@@ -1,17 +1,12 @@
 package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.*;
-import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.ClimbSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.IntakeSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
+import org.team1294.firstpowerup.robot.subsystems.*;
 
 /**
  * The main class for the Robot. This handles the creation of the various subsystems of the robot,
@@ -52,10 +47,11 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
 
-//        chooser.addDefault("Left", new AutoSidePositionCommand("L"));
-//        chooser.addObject("Center", new AutoCenterPositionCommand());
-//        chooser.addObject("Right", new AutoSidePositionCommand("R"));
-//        SmartDashboard.putData("Auto mode", chooser);
+        chooser.addDefault("Basic Base Line", new AutoDriveCommand(3.0));
+        chooser.addObject("Left", new AutoSidePositionCommand("L"));
+        chooser.addObject("Center", new AutoCenterPositionCommand());
+        chooser.addObject("Right", new AutoSidePositionCommand("R"));
+        SmartDashboard.putData("Auto mode", chooser);
 
 //        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
         SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.75));
@@ -100,7 +96,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-//        chooser.getSelected().start();
+        chooser.getSelected().start();
     }
 
     @Override

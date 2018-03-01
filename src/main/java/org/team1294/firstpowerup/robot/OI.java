@@ -25,8 +25,8 @@ public class OI {
 //        driveJoystickRight = new Joystick(RobotMap.JOYSTICK_DRIVE_RIGHT);
         gameMech = new XboxController(RobotMap.JOYSTICK_GAMEMECH);
 
-        JoystickButton inButton = new JoystickButton(gameMech, 0);
-        JoystickButton outButton = new JoystickButton(gameMech, 1);
+        JoystickButton inButton = new JoystickButton(gameMech, 1);
+        JoystickButton outButton = new JoystickButton(gameMech, 2);
         inButton.whileActive(new IntakeInCommand());
         outButton.whileActive(new IntakeOutCommand());
     }

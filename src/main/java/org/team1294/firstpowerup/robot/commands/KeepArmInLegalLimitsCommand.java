@@ -22,7 +22,7 @@ public class KeepArmInLegalLimitsCommand extends CommandGroup {
 
     @Override
     protected void execute() {
-        double angle = Robot.armSubsystem.getPotOutputAngle();
+        double angle = Robot.armSubsystem.getArmHeight();
         if (angle <= -69) {
 extendPID.setSetpoint(0);
 wristPID.setSetpoint(69);

@@ -7,7 +7,7 @@ import org.team1294.firstpowerup.robot.Robot;
 import java.util.function.Consumer;
 
 public class AutoTurnPIDCommand extends PIDCommand {
-    public static final double ABSOLUTE_TOLERANCE = 5;
+    public static final double ABSOLUTE_TOLERANCE = 10;
     private final Consumer<Double> outputConsumer;
     private boolean hasRunPIDOnce = false;
 
@@ -27,7 +27,7 @@ public class AutoTurnPIDCommand extends PIDCommand {
      * @param maxRate the max allowed turn rate
      */
     public AutoTurnPIDCommand(final Consumer<Double> outputConsumer, final double heading, final double maxRate) {
-        super(0.025, 0.001, 0.07);
+        super(0.025, 0.0, 0.0);
 
         this.outputConsumer = outputConsumer;
 

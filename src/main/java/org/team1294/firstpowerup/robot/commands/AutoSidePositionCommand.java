@@ -21,21 +21,21 @@ public class AutoSidePositionCommand extends CommandGroup {
 
         // drive straight ahead far enough to make it easy to turn
         addSequential(new PrintCommand("drive away from alliance wall"));
-        addSequential(new AutoDriveCommand(0.1, 0, 0.75, 0.75));
+        addSequential(new AutoDriveCommand(0.2, 0, 0.75, 0.75));
 
         // turn towards the wall (heading gets set in initialize)
-        turnTowardsWall = new AutoDriveCommand(0, 0, 0.75, 0.75);
+        turnTowardsWall = new AutoDriveCommand(0, 0, 0.6, 0.75);
         addSequential(new PrintCommand("turn towards wall"));
         addSequential(turnTowardsWall);
 
         // drive towards the wall (heading gets set in initialize)
-        driveTowardsWall = new AutoDriveCommand(1, 0, 0.75, 0.75);
+        driveTowardsWall = new AutoDriveCommand(1, 0, 0.5, 0.75);
         addSequential(new PrintCommand("drive towards wall"));
         addSequential(driveTowardsWall);
 
         // turn downfield
         addSequential(new PrintCommand("turn downfield"));
-        addSequential(new AutoDriveCommand(0, 0, 0.75, 0.75));
+        addSequential(new AutoDriveCommand(0, 0, 0.6, 0.75));
 
         // drive downfield until abeam the crate delivery location (distance gets set in initialize)
         addSequential(new PrintCommand("drive downfield"));
@@ -44,7 +44,7 @@ public class AutoSidePositionCommand extends CommandGroup {
 
         // turn towards the crate delivery location (heading gets set in initialize)
         addSequential(new PrintCommand("turn towards delivery"));
-        turnTowardsDelivery = new AutoDriveCommand(0, 0, 0.75, 0.75);
+        turnTowardsDelivery = new AutoDriveCommand(0, 0, 0.6, 0.75);
         addSequential(turnTowardsDelivery);
 
         // drive towards the crate delivery location ((heading and distance gets set in initialize)

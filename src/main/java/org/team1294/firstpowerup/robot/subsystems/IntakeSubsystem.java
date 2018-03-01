@@ -50,6 +50,6 @@ public class IntakeSubsystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-//        setDefaultCommand(new DriveIntakeWithJoystickCommand());
+        setDefaultCommand(new DriveIntakeWithJoystickCommand());
     }
 }
