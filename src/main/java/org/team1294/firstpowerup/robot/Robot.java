@@ -71,12 +71,14 @@ public class Robot extends IterativeRobot {
 
         SmartDashboard.putData(Scheduler.getInstance());
 
-        SetArmHeightCommand.createPresetArmHeightCommands().forEach(SmartDashboard::putData);
+//        SetArmHeightCommand.createPresetArmHeightCommands().forEach(SmartDashboard::putData);
 
         SmartDashboard.putData(new TankDriveCommand());
         SmartDashboard.putData(new DoVisionDetectCube());
         SmartDashboard.putData(new DoVisionDetectSwitch());
         SmartDashboard.putData(new GyroAssistTankDriveCommand());
+
+        SmartDashboard.putData(new SetArmHeightCommand(500));
     }
 
     @Override

@@ -47,7 +47,7 @@ public class DriveSubsystem extends Subsystem {
         rightRear.setInverted(true);
 
         leftFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        leftFront.setSensorPhase(false);
+        leftFront.setSensorPhase(true);
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
         rightFront.setSensorPhase(false);

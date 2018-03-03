@@ -22,6 +22,7 @@ public class IntakeSubsystem extends Subsystem {
         leftTalon = new TalonSRX(RobotMap.TALON_INTAKE_LEFT);
         rightTalon = new TalonSRX(RobotMap.TALON_INTAKE_RIGHT);
         rightTalon.setInverted(true);
+        rightTalon.follow(leftTalon);
         beamBreak = new DigitalInput(RobotMap.SENSOR_INTAKE_BEAMBREAK);
     }
 
@@ -31,7 +32,7 @@ public class IntakeSubsystem extends Subsystem {
 //            stop();
 //        } else {
             leftTalon.set(ControlMode.PercentOutput, output);
-            rightTalon.set(ControlMode.PercentOutput, output);
+//            rightTalon.set(ControlMode.PercentOutput, output);
 //        }
     }
 
