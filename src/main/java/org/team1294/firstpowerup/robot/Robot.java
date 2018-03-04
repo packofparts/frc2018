@@ -48,8 +48,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
 
-        chooser.addDefault("Basic Base Line", new AutoDriveCommand(3.0));
-        chooser.addObject("Shorter Basic Base Line", new AutoDriveCommand(1.5));
+        chooser.addObject("Basic Base Line", new AutoDriveCommand(3.0));
+        chooser.addDefault("Shorter Basic Base Line", new AutoDriveCommand(1.5));
         chooser.addObject("Do nothing", new PrintCommand("Success! Did nothing!"));
         chooser.addObject("Left", new AutoSidePositionCommand("L"));
         chooser.addObject("Center", new AutoCenterPositionCommand());
