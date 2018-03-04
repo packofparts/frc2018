@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team1294.firstpowerup.robot.Robot;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
 
@@ -14,6 +15,9 @@ import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
  * @author Abhinav Diddee (heatblast016)
  */
 public class ArmSubsystem extends Subsystem {
+    private static final double LEGAL_LOW = 0;
+    private static final double LEGAL_HIGH = 0;
+
     private TalonSRX armMotor;
     private TalonSRX wristMotor;
     private TalonSRX extendMotor;
@@ -40,13 +44,37 @@ public class ArmSubsystem extends Subsystem {
         wristMotor.setNeutralMode(NeutralMode.Brake);
         extendMotor.setNeutralMode(NeutralMode.Brake);
         armMotor.setNeutralMode(NeutralMode.Brake);
+
+        armMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        wristMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
+
+        // reset the encoders for the wrist and extend
+        // we're assuming that when the robot starts up we're in transport config.
+        // arm has a potentiometer, a scale of voltage - no need to reset
+        wristMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
     }
+
     public void toggleWristDeploy() {
         if (currentStatus == Wrist.OUT) {
-            currentStatus = Wrist.IN;
+            setWristIn();
         } else {
-            currentStatus = Wrist.OUT;
+            setWristOut();
         }
+    }
+
+    public void setWristIn() {
+        currentStatus = Wrist.IN;
+        updateWristPosition();
+    }
+
+    public void setWristOut() {
+        currentStatus = Wrist.OUT;
+        updateWristPosition();
+    }
+
+    private void updateWristPosition() {
         wristMotor.set(ControlMode.Position, currentStatus.angle);
     }
 
@@ -82,7 +110,17 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-
+        int armPos = armMotor.getSelectedSensorPosition(0);
+        int bumpervalue = Robot.oi.getBumpers();
+        if (armPos > LEGAL_LOW && armPos < LEGAL_HIGH) { // && !limitSwitchClosed) {
+//            extendMotor.set(ControlMode.PercentOutput, -0.1);
+        } else if(bumpervalue == 1) {
+            Robot.armSubsystem.driveExtendPercentOut(-0.3);
+        } else if(bumpervalue == 2) {
+            Robot.armSubsystem.driveExtendPercentOut(0.3);
+        } else {
+            Robot.armSubsystem.driveExtendPercentOut(0);
+        }
     }
 
     public double getExtensionLength() {

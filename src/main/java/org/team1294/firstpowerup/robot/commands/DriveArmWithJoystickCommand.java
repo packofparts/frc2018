@@ -26,15 +26,6 @@ public class DriveArmWithJoystickCommand extends Command {
             Robot.armSubsystem.driveArmPercentOut(value);
         }
         //testing telescoping arm
-        int bumpervalue = Robot.oi.getBumpers();
-        if(bumpervalue == 1) {
-            Robot.armSubsystem.driveExtendPercentOut(-0.3);
-        }
-        else if(bumpervalue == 2) {
-            Robot.armSubsystem.driveExtendPercentOut(0.3);
-        } else {
-            Robot.armSubsystem.driveExtendPercentOut(0);
-        }
         // some quick code to test the wrist
         double pov = Robot.oi.getGMPOV();
         if (pov == 0) {

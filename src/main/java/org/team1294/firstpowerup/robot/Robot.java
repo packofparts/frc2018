@@ -2,6 +2,7 @@ package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,9 +49,13 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetGyroCommand());
 
         chooser.addDefault("Basic Base Line", new AutoDriveCommand(3.0));
+        chooser.addObject("Shorter Basic Base Line", new AutoDriveCommand(1.5));
+        chooser.addObject("Do nothing", new PrintCommand("Success! Did nothing!"));
         chooser.addObject("Left", new AutoSidePositionCommand("L"));
         chooser.addObject("Center", new AutoCenterPositionCommand());
         chooser.addObject("Right", new AutoSidePositionCommand("R"));
+        chooser.addObject("SBBL - Left Deliver", new AutoShortSideDeliverSimple('L'));
+        chooser.addObject("SBBL - Right Deliver", new AutoShortSideDeliverSimple('R'));
         SmartDashboard.putData("Auto mode", chooser);
 
 //        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
