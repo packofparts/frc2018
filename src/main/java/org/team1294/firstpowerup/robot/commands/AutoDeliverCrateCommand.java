@@ -31,7 +31,7 @@ public class AutoDeliverCrateCommand extends ConditionalCommand {
 
         @Override
         protected void initialize() {
-            Robot.intakeSubsystem.driveIntake(-1.0);
+            Robot.intakeSubsystem.driveIntake(1.0);
         }
 
         @Override

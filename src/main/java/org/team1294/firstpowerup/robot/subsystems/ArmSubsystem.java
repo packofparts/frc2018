@@ -54,6 +54,9 @@ public class ArmSubsystem extends Subsystem {
         // arm has a potentiometer, a scale of voltage - no need to reset
         wristMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
         extendMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+
+        armMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
+        armMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
     }
 
     public void toggleWristDeploy() {
