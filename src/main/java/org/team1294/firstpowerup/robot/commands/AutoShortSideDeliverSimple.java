@@ -15,7 +15,7 @@ public class AutoShortSideDeliverSimple extends CommandGroup {
         int heading = (side == 'L') ? 90 : 270;
         addSequential(new AutoDriveCommand(1.4, 0, 0.9, 0.5));
         addSequential(new SetArmHeightCommand(840));
-        addSequential(new MoveWristUpFor1SecondInAutoCommand());
+        addSequential(new MoveWristDownFor1SecondInAutoCommand());
         addSequential(new AutoDriveCommand(0, heading, 0.5, 0.75));
         addSequential(new AutoDeliverCrateCommand());
     }

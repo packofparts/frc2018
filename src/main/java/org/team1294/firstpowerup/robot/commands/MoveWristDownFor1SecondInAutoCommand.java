@@ -6,8 +6,8 @@ import org.team1294.firstpowerup.robot.Robot;
 /**
  * @author Austin Jenchi (timtim17)
  */
-public class MoveWristUpFor1SecondInAutoCommand extends Command {
-    public MoveWristUpFor1SecondInAutoCommand() {
+public class MoveWristDownFor1SecondInAutoCommand extends Command {
+    public MoveWristDownFor1SecondInAutoCommand() {
         super("Move wrist down for 1 second (for switch auto)");
         setTimeout(1);
         requires(Robot.armSubsystem);
@@ -15,7 +15,7 @@ public class MoveWristUpFor1SecondInAutoCommand extends Command {
 
     @Override
     protected void initialize() {
-        Robot.armSubsystem.driveWristPercentOut(0.25);
+        Robot.armSubsystem.driveWristPercentOut(-0.25);
     }
 
     @Override
