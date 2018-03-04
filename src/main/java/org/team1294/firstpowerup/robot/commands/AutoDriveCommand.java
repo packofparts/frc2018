@@ -78,7 +78,7 @@ public class AutoDriveCommand extends CommandGroup {
     protected boolean isFinished() {
         boolean a = autoForwardPIDCommand.onTarget();
         boolean b = autoTurnPIDCommand.onTarget();
-        System.out.printf("Forward onTarget: %b\tTurnOnTarget: %b%n", a, b);
+//        System.out.printf("Forward onTarget: %b\tTurnOnTarget: %b%n", a, b);
         return isTimedOut() || (a && b);
     }
 

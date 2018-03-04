@@ -11,7 +11,7 @@ import org.team1294.firstpowerup.robot.Robot;
  *
  * @author Austin Jenchi (timtim17)
  */
-public class GyroAssistDriveCommand extends PIDCommand {
+public class GyroAssistTankDriveCommand extends PIDCommand {
     private static final double TURN_DEADBAND = 0.25;
     private static final double kP = 0.1;
     private static final double kI = 0.0;
@@ -23,8 +23,8 @@ public class GyroAssistDriveCommand extends PIDCommand {
 
     private TurnMode currentMode;
 
-    public GyroAssistDriveCommand() {
-        super("Gyro Assist Drive Command", kP, kI, kD);
+    public GyroAssistTankDriveCommand() {
+        super("Gyro Assist Tank Drive Command", kP, kI, kD);
         requires(Robot.driveSubsystem);
 
         currentMode = TurnMode.OFF;
@@ -43,7 +43,7 @@ public class GyroAssistDriveCommand extends PIDCommand {
 
     @Override
     protected void execute() {
-        double joyTurnIn = Robot.oi.getDriveLeftX();
+        double joyTurnIn = Robot.oi.getDriveRightY() - Robot.oi.getDriveLeftY();
         boolean shouldBeOn = Math.abs(joyTurnIn) <= TURN_DEADBAND && Math.abs(Robot.driveSubsystem.getTurnRate()) < 0.1;
 
         switch (currentMode) {
@@ -87,7 +87,7 @@ public class GyroAssistDriveCommand extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        double joyForward = Robot.oi.getDriveLeftY();
+        double joyForward = (Robot.oi.getDriveLeftY() + Robot.oi.getDriveRightY()) / 2;
         Robot.driveSubsystem.arcadeDrive(joyForward, output);
     }
 }

@@ -9,8 +9,7 @@ import java.util.function.Consumer;
 public class AutoForwardPIDCommand extends PIDCommand {
     private final Consumer<Double> outputConsumer;
     private boolean hasRunPIDOnce = false;
-    private double initialPosition = 0;
-    private final double distance;
+    private double distance;
 
     public AutoForwardPIDCommand(final Consumer<Double> outputConsumer, final double distance, final double maxVelocity) {
         super(10, 0.0, 0.0);
@@ -20,13 +19,12 @@ public class AutoForwardPIDCommand extends PIDCommand {
 
         getPIDController().setContinuous(false);
         getPIDController().setOutputRange(-maxVelocity, maxVelocity);
-        getPIDController().setSetpoint(distance);
-        getPIDController().setAbsoluteTolerance(0.1);
+        getPIDController().setAbsoluteTolerance(0.05);
     }
 
     @Override
     protected void initialize() {
-        initialPosition = Robot.driveSubsystem.getEncoderPositionAverage();
+        double initialPosition = Robot.driveSubsystem.getEncoderPositionAverage();
         getPIDController().setSetpoint(initialPosition + distance);
 
         SmartDashboard.putData("AutoForwardPID", getPIDController());
@@ -42,6 +40,7 @@ public class AutoForwardPIDCommand extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
+        System.out.printf("setpoint: %.2f, error: %.2f, sensor: %.2f%n", getPIDController().getSetpoint(), getPIDController().getError(), Robot.driveSubsystem.getHeading());
         outputConsumer.accept(output);
     }
 
@@ -55,6 +54,6 @@ public class AutoForwardPIDCommand extends PIDCommand {
     }
 
     public void setSetpoint(final double distance) {
-        getPIDController().setSetpoint(initialPosition + distance);
+        this.distance = distance;
     }
 }

@@ -2,13 +2,12 @@ package org.team1294.firstpowerup.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1294.firstpowerup.robot.commands.*;
-import org.team1294.firstpowerup.robot.subsystems.ClimbSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.DriveSubsystem;
-import org.team1294.firstpowerup.robot.subsystems.VisionSubsystem;
+import org.team1294.firstpowerup.robot.subsystems.*;
 
 /**
  * The main class for the Robot. This handles the creation of the various subsystems of the robot,
@@ -21,8 +20,8 @@ public class Robot extends IterativeRobot {
     public static DriveSubsystem driveSubsystem;
     public static VisionSubsystem visionSubsystem;
     public static ClimbSubsystem climbSubsystem;
-//    public static ArmSubsystem armSubsystem;
-//    public static IntakeSubsystem intakeSubsystem;
+    public static IntakeSubsystem intakeSubsystem;
+    public static ArmSubsystem armSubsystem;
 
     public static OI oi;
 
@@ -36,8 +35,8 @@ public class Robot extends IterativeRobot {
         visionSubsystem = new VisionSubsystem();
         driveSubsystem = new DriveSubsystem();
         climbSubsystem = new ClimbSubsystem();
-//        armSubsystem = new ArmSubsystem();
-//        intakeSubsystem = new IntakeSubsystem();
+        armSubsystem = new ArmSubsystem();
+        intakeSubsystem = new IntakeSubsystem();
 
         // OI has to be initialized AFTER the Subsystems, because the OI has
         // Buttons which reference Commands which use the Subsystems
@@ -49,20 +48,25 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
 
-//        chooser.addDefault("Left", new AutoSidePositionCommand("L"));
-//        chooser.addObject("Center", new AutoCenterPositionCommand());
-//        chooser.addObject("Right", new AutoSidePositionCommand("R"));
-//        SmartDashboard.putData("Auto mode", chooser);
+        chooser.addDefault("Basic Base Line", new AutoDriveCommand(3.0));
+        chooser.addObject("Shorter Basic Base Line", new AutoDriveCommand(1.5));
+        chooser.addObject("Do nothing", new PrintCommand("Success! Did nothing!"));
+        chooser.addObject("Left", new AutoSidePositionCommand("L"));
+        chooser.addObject("Center", new AutoCenterPositionCommand());
+        chooser.addObject("Right", new AutoSidePositionCommand("R"));
+        chooser.addObject("SBBL - Left Deliver", new AutoShortSideDeliverSimple('L'));
+        chooser.addObject("SBBL - Right Deliver", new AutoShortSideDeliverSimple('R'));
+        SmartDashboard.putData("Auto mode", chooser);
 
-        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
+//        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
         SmartDashboard.putData(new AutoDriveCommand(0, 0, 0.5, 0.75));
         SmartDashboard.putData(new AutoDriveCommand(0, 90, 0.5, 0.75));
         SmartDashboard.putData(new AutoDriveCommand(0, 180, 0.5, 0.75));
         SmartDashboard.putData(new AutoDriveCommand(0, 270, 0.5, 0.75));
 
-//        SmartDashboard.putData(new AutoCenterPositionCommand());
-//        SmartDashboard.putData(new AutoSidePositionCommand("L"));
-//        SmartDashboard.putData(new AutoSidePositionCommand("R"));
+        SmartDashboard.putData(new AutoCenterPositionCommand());
+        SmartDashboard.putData(new AutoSidePositionCommand("L"));
+        SmartDashboard.putData(new AutoSidePositionCommand("R"));
 
 //        SmartDashboard.putData(new AutoVisionTargetCommand(1.0));
 
@@ -71,6 +75,15 @@ public class Robot extends IterativeRobot {
 //        Robot.intakeSubsystem.resetEncoders();
 
         SmartDashboard.putData(Scheduler.getInstance());
+
+//        SetArmHeightCommand.createPresetArmHeightCommands().forEach(SmartDashboard::putData);
+
+        SmartDashboard.putData(new TankDriveCommand());
+        SmartDashboard.putData(new DoVisionDetectCube());
+        SmartDashboard.putData(new DoVisionDetectSwitch());
+        SmartDashboard.putData(new GyroAssistTankDriveCommand());
+
+        SmartDashboard.putData(new SetArmHeightCommand(500));
     }
 
     @Override

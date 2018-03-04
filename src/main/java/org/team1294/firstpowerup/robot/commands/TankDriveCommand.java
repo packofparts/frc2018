@@ -20,7 +20,7 @@ public class TankDriveCommand extends Command {
 
     @Override
     protected void execute() {
-        double left = Robot.oi.getDriveLeftX();
+        double left = Robot.oi.getDriveLeftY();
         double right = Robot.oi.getDriveRightY();
         Robot.driveSubsystem.tankDrive(left, right);
     }

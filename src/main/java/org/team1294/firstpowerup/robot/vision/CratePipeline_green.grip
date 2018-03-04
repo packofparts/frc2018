@@ -3,6 +3,9 @@
     <grip:Camera>
       <property name="deviceNumber" value="1"/>
     </grip:Camera>
+    <grip:Camera>
+      <property name="address" value="http://10.12.94.2:1181/stream.mjpg"/>
+    </grip:Camera>
   </sources>
   <steps>
     <grip:Step name="Blur">
@@ -19,20 +22,20 @@
       <grip:Input step="1" socket="0"/>
       <grip:Input step="1" socket="1">
         <value>
-          <double>17.805755395683452</double>
-          <double>47.918088737201366</double>
+          <double>45.32374100719424</double>
+          <double>75.56313993174062</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="2">
         <value>
-          <double>41.24972800493785</double>
-          <double>120.07513866616986</double>
+          <double>96.28569922795943</double>
+          <double>233.24232081911265</double>
         </value>
       </grip:Input>
       <grip:Input step="1" socket="3">
         <value>
-          <double>55.29741068203638</double>
-          <double>165.7935153583618</double>
+          <double>91.98805816405077</double>
+          <double>144.0358361774744</double>
         </value>
       </grip:Input>
       <grip:Output step="1" socket="0" previewed="true"/>
@@ -87,7 +90,7 @@
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Output source="1" socket="0" previewed="true"/>
       <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
@@ -115,8 +118,8 @@
   <codeGenerationSettings>
     <language>Java</language>
     <className>CratePipeline</className>
-    <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>C:\Users\ajenc\GRIP</saveDir>
+    <implementWpilibPipeline>true</implementWpilibPipeline>
+    <saveDir>C:\Users\ajenc\Documents\GitHub\frc2018\src\main\java\org\team1294\firstpowerup\robot\vision</saveDir>
     <packageName>org.team1294.firstpowerup.robot.vision</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
