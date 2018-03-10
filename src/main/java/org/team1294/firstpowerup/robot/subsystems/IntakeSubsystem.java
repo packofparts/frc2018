@@ -32,7 +32,7 @@ public class IntakeSubsystem extends Subsystem {
 //            stop();
 //        } else {
             leftTalon.set(ControlMode.PercentOutput, output);
-            rightTalon.set(ControlMode.PercentOutput, leftTalon.getMotorOutputPercent() * 0.95);
+            rightTalon.set(ControlMode.PercentOutput, leftTalon.getMotorOutputPercent() * 0.85);
 //            rightTalon.set(ControlMode.PercentOutput, output);
 //        }
     }

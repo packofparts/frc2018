@@ -15,6 +15,8 @@ public class DriveArmWithJoystickCommand extends Command {
     public DriveArmWithJoystickCommand() {
         super("Drive arm with joystick");
         requires(Robot.armSubsystem);
+        Robot.armSubsystem.setArmSoftLimits(44,770);
+//        Robot.armSubsystem.setExtendSoftLimits(0, 0);
     }
 
     @Override
@@ -24,6 +26,10 @@ public class DriveArmWithJoystickCommand extends Command {
             Robot.armSubsystem.driveArmPercentOut(0);
         } else {
             Robot.armSubsystem.driveArmPercentOut(value);
+            if(Robot.armSubsystem.getArmHeight() < 0 && Robot.armSubsystem.getArmHeight() > 0)
+            {Robot.armSubsystem.driveExtendPercentOut(-0.3);}
+            else if(Robot.armSubsystem.getArmHeight() < 0 && Robot.armSubsystem.getArmHeight() > 0)
+            {Robot.armSubsystem.driveExtendPercentOut(0.3);}
         }
         //testing telescoping arm
         // some quick code to test the wrist

@@ -17,6 +17,8 @@ public class AutoDeliverCrateCommand extends ConditionalCommand {
             return ((AutoSidePositionCommand) parent).getShouldDeliverCube();
         } else if (parent instanceof AutoShortSideDeliverSimple) {
             return ((AutoShortSideDeliverSimple) parent).shouldDeliverCube();
+        } else if (parent instanceof AutoSideDeliverSimple) {
+            return ((AutoSideDeliverSimple) parent).shouldDeliverCube();
         }
         return false;
     }
@@ -31,7 +33,7 @@ public class AutoDeliverCrateCommand extends ConditionalCommand {
 
         @Override
         protected void initialize() {
-            Robot.intakeSubsystem.driveIntake(1.0);
+            Robot.intakeSubsystem.driveIntake(-1.0);
         }
 
         @Override

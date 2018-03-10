@@ -48,6 +48,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
 
+        SmartDashboard.putData(new WaveArmSillyFunTimeCommand());
+
         chooser.addObject("Basic Base Line", new AutoDriveCommand(3.0));
         chooser.addDefault("Shorter Basic Base Line", new AutoDriveCommand(1.5));
         chooser.addObject("Do nothing", new PrintCommand("Success! Did nothing!"));
@@ -56,6 +58,8 @@ public class Robot extends IterativeRobot {
         chooser.addObject("Right", new AutoSidePositionCommand("R"));
         chooser.addObject("SBBL - Left Deliver", new AutoShortSideDeliverSimple('L'));
         chooser.addObject("SBBL - Right Deliver", new AutoShortSideDeliverSimple('R'));
+        chooser.addObject("Left Deliver", new AutoSideDeliverSimple('L'));
+        chooser.addObject("Right Deliver", new AutoSideDeliverSimple('R'));
         SmartDashboard.putData("Auto mode", chooser);
 
 //        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));

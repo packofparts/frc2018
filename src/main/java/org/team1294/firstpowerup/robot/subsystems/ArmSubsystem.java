@@ -31,8 +31,6 @@ public class ArmSubsystem extends Subsystem {
         Wrist(double angle) {
             this.angle = angle;
         }
-
-
     }
     public ArmSubsystem() {
         super("Arm Subsystem");
@@ -111,13 +109,21 @@ public class ArmSubsystem extends Subsystem {
         armMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
+    public void setExtendSoftLimits(int reverseSoftLimit, int forwardSoftLimit) {
+        extendMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        extendMotor.configReverseSoftLimitThreshold(reverseSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+
+        extendMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        extendMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
+    }
+
     @Override
     public void periodic() {
-        int armPos = armMotor.getSelectedSensorPosition(0);
         int bumpervalue = Robot.oi.getBumpers();
+        /* int armPos = armMotor.getSelectedSensorPosition(0);
         if (armPos > LEGAL_LOW && armPos < LEGAL_HIGH) { // && !limitSwitchClosed) {
-//            extendMotor.set(ControlMode.PercentOutput, -0.1);
-        } else if(bumpervalue == 1) {
+            extendMotor.set(ControlMode.PercentOutput, -0.1);
+        } else */ if(bumpervalue == 1) {
             Robot.armSubsystem.driveExtendPercentOut(-0.3);
         } else if(bumpervalue == 2) {
             Robot.armSubsystem.driveExtendPercentOut(0.3);
