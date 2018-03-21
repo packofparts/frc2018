@@ -66,7 +66,7 @@ wristPID.setSetpoint(-50);
 
         @Override
         protected double returnPIDInput() {
-            return Robot.armSubsystem.getExtensionLength();
+            return Robot.armSubsystem.getExtensionSensorValue();
         }
 
         @Override

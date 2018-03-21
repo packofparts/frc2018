@@ -45,7 +45,7 @@ public class ArmSubsystem extends Subsystem {
 
         armMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, RobotMap.CTRE_TIMEOUT_INIT);
         wristMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        extendMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         // reset the encoders for the wrist and extend
         // we're assuming that when the robot starts up we're in transport config.
@@ -62,19 +62,20 @@ public class ArmSubsystem extends Subsystem {
             setWristIn();
         } else {
             setWristOut();
-        }
     }
+}
 
     public void setWristIn() {
-        currentStatus = Wrist.IN;
-        updateWristPosition();
+            currentStatus = Wrist.IN;
+            updateWristPosition();
     }
-
     public void setWristOut() {
         currentStatus = Wrist.OUT;
         updateWristPosition();
     }
-
+        public void setExtendMotionMagic(double setpoint) {
+        extendMotor.set(ControlMode.MotionMagic, setpoint);
+    }
     private void updateWristPosition() {
         wristMotor.set(ControlMode.Position, currentStatus.angle);
     }
@@ -116,7 +117,10 @@ public class ArmSubsystem extends Subsystem {
         extendMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         extendMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
-
+    public boolean isWristIn()
+    {
+        return currentStatus == Wrist.IN;
+    }
     @Override
     public void periodic() {
         int bumpervalue = Robot.oi.getBumpers();
@@ -124,16 +128,16 @@ public class ArmSubsystem extends Subsystem {
         if (armPos > LEGAL_LOW && armPos < LEGAL_HIGH) { // && !limitSwitchClosed) {
             extendMotor.set(ControlMode.PercentOutput, -0.1);
         } else */ if(bumpervalue == 1) {
-            Robot.armSubsystem.driveExtendPercentOut(-0.3);
+            Robot.armSubsystem.driveExtendPercentOut(-0.6);
         } else if(bumpervalue == 2) {
-            Robot.armSubsystem.driveExtendPercentOut(0.3);
+            Robot.armSubsystem.driveExtendPercentOut(0.6);
         } else {
             Robot.armSubsystem.driveExtendPercentOut(0);
         }
     }
 
-    public double getExtensionLength() {
-        return 0.0; // todo make this work
+    public double getExtensionSensorValue() {
+        return extendMotor.getSelectedSensorPosition(0);
     }
 
     public double getWristAngle() {
