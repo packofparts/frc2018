@@ -55,6 +55,9 @@ public class ArmSubsystem extends Subsystem {
 
         armMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         armMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
+
+        armMotor.setNeutralMode(NeutralMode.Coast);
+        wristMotor.setNeutralMode(NeutralMode.Coast);
     }
 
     public void toggleWristDeploy() {
@@ -134,6 +137,9 @@ public class ArmSubsystem extends Subsystem {
         } else {
             Robot.armSubsystem.driveExtendPercentOut(0);
         }
+
+        SmartDashboard.putNumber("wrist enc", wristMotor.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Telescoping Encoder", extendMotor.getSelectedSensorPosition(0));
     }
 
     public double getExtensionSensorValue() {
