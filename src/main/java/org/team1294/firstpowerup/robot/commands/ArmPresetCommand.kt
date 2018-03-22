@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup
 import org.team1294.firstpowerup.robot.Robot
 
 class ArmPresetCommand(type : Int)  : CommandGroup("Arm Preset Command"){
-    private val high: Double = 87.0;
-    private val low : Double = 763.0;
+    private val high: Double = 87.0
+    private val low : Double = 763.0
     private val mid : Double = 350.0
     private val switch : Double = 618.0
     init
@@ -18,10 +18,10 @@ class ArmPresetCommand(type : Int)  : CommandGroup("Arm Preset Command"){
             {
                 //if (!Robot.armSubsystem.isWristIn)
                 //    addSequential(ToggleArmWristDeployCommand())
-                addParallel(SetArmHeightCommand(mid));
-                addSequential(extendoArmInOutCommand(true))
+                addParallel(SetArmHeightCommand(mid))
+                addSequential(ExtendoArmInOutCommand(true))
                 addParallel(SetArmHeightCommand(high))
-                addSequential(extendoArmInOutCommand(false))
+                addSequential(ExtendoArmInOutCommand(false))
             }
 
         }
@@ -30,10 +30,10 @@ class ArmPresetCommand(type : Int)  : CommandGroup("Arm Preset Command"){
             if(Robot.armSubsystem.armHeight == high) {
                // if (!Robot.armSubsystem.isWristIn)
                  //   addSequential(ToggleArmWristDeployCommand())
-                addParallel(SetArmHeightCommand(mid));
-                addSequential(extendoArmInOutCommand(true))
+                addParallel(SetArmHeightCommand(mid))
+                addSequential(ExtendoArmInOutCommand(true))
                 addParallel(SetArmHeightCommand(switch))
-                addSequential(extendoArmInOutCommand(false))
+                addSequential(ExtendoArmInOutCommand(false))
             }
             else
             {
@@ -45,15 +45,15 @@ class ArmPresetCommand(type : Int)  : CommandGroup("Arm Preset Command"){
             if(Robot.armSubsystem.armHeight == low) {}
             else if(Robot.armSubsystem.armHeight == switch) {
                 addSequential(SetArmHeightCommand(low))
-                addParallel(extendoArmInOutCommand(false))
+                addParallel(ExtendoArmInOutCommand(false))
             }
             else {
                 //if (!Robot.armSubsystem.isWristIn)
                 //  addSequential(ToggleArmWristDeployCommand())
-                addParallel(SetArmHeightCommand(mid));
-                addSequential(extendoArmInOutCommand(true))
+                addParallel(SetArmHeightCommand(mid))
+                addSequential(ExtendoArmInOutCommand(true))
                 addParallel(SetArmHeightCommand(low))
-                addSequential(extendoArmInOutCommand(false))
+                addSequential(ExtendoArmInOutCommand(false))
             }
         }
     }
