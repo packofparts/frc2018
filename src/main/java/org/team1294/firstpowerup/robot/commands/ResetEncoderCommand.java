@@ -15,5 +15,6 @@ public class ResetEncoderCommand extends InstantCommand {
     @Override
     protected void initialize() {
         Robot.driveSubsystem.resetEncoders();
+        Robot.armSubsystem.resetEncoders();
     }
 }

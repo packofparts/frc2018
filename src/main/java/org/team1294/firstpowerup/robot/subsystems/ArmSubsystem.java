@@ -59,7 +59,9 @@ public class ArmSubsystem extends Subsystem {
         armMotor.setNeutralMode(NeutralMode.Coast);
         wristMotor.setNeutralMode(NeutralMode.Coast);
     }
-
+    public void resetEncoders(){
+        extendMotor.setSelectedSensorPosition(0, 0, 0);
+    }
     public void toggleWristDeploy() {
         if (currentStatus == Wrist.OUT) {
             setWristIn();
