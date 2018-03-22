@@ -78,7 +78,8 @@ public class ArmSubsystem extends Subsystem {
         currentStatus = Wrist.OUT;
         updateWristPosition();
     }
-        public void setExtendMotionMagic(double setpoint) {
+    public void setExtendPID(double setpoint) { extendMotor.set(ControlMode.Position, setpoint);}
+    public void setExtendMotionMagic(double setpoint) {
         extendMotor.set(ControlMode.MotionMagic, setpoint);
     }
     private void updateWristPosition() {
@@ -139,7 +140,6 @@ public class ArmSubsystem extends Subsystem {
         } else {
             Robot.armSubsystem.driveExtendPercentOut(0);
         }
-
         SmartDashboard.putNumber("wrist enc", wristMotor.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Telescoping Encoder", extendMotor.getSelectedSensorPosition(0));
     }

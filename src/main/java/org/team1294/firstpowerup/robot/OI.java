@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.team1294.firstpowerup.robot.commands.ArmPresetCommand;
 import org.team1294.firstpowerup.robot.commands.IntakeInCommand;
 import org.team1294.firstpowerup.robot.commands.IntakeOutCommand;
 
@@ -17,7 +18,7 @@ import org.team1294.firstpowerup.robot.commands.IntakeOutCommand;
  */
 public class OI {
     private XboxController driveJoystickLeft;
-//    private Joystick driveJoystickRight;
+    //    private Joystick driveJoystickRight;
     private XboxController gameMech;
 
     public OI() {
@@ -25,10 +26,13 @@ public class OI {
 //        driveJoystickRight = new Joystick(RobotMap.JOYSTICK_DRIVE_RIGHT);
         gameMech = new XboxController(RobotMap.JOYSTICK_GAMEMECH);
 
-        JoystickButton inButton = new JoystickButton(gameMech, 1);
-        JoystickButton outButton = new JoystickButton(gameMech, 2);
-        inButton.whileActive(new IntakeInCommand());
-        outButton.whileActive(new IntakeOutCommand());
+        JoystickButton aButton = new JoystickButton(gameMech, 1);
+        JoystickButton bButton = new JoystickButton(gameMech, 2);
+        JoystickButton xButton = new JoystickButton(gameMech, 3);
+        JoystickButton yButton = new JoystickButton(gameMech, 4);
+        aButton.toggleWhenActive(new ArmPresetCommand(3));
+        bButton.toggleWhenActive(new ArmPresetCommand(2));
+        yButton.toggleWhenActive(new ArmPresetCommand(1));
     }
 
     public double getDriveLeftX() {
@@ -42,7 +46,7 @@ public class OI {
     public double getDriveRightY() {
         return -driveJoystickLeft.getY(GenericHID.Hand.kRight);
     }
-    
+
     public double getClimbY() {
         return gameMech.getY(GenericHID.Hand.kLeft);
     }
@@ -55,13 +59,15 @@ public class OI {
     public int getBumpers() {
         boolean left = gameMech.getBumper(GenericHID.Hand.kLeft);
         boolean right = gameMech.getBumper(GenericHID.Hand.kRight);
-        if(right && !left){
+        if (right && !left) {
             return 1;
-        } else if(!right && left){
+        } else if (!right && left) {
             return 2;
         }
         return 0;
     }
+
+
     public double getArmY() {
         return gameMech.getY(GenericHID.Hand.kRight);
     }

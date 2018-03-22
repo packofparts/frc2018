@@ -9,12 +9,12 @@ class extendoArmInOutCommand(val goingIn : Boolean) : Command("Extendo arm out c
     init {
         if(goingIn)
         {
-            Robot.armSubsystem.setExtendMotionMagic(min);
+            Robot.armSubsystem.setExtendPID(min);
             target = min;
         }
         else
         {
-            Robot.armSubsystem.setExtendMotionMagic(max);
+            Robot.armSubsystem.setExtendPID(max);
             target = max
         }
     }

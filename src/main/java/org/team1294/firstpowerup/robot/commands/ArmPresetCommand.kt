@@ -12,18 +12,8 @@ class ArmPresetCommand(type : Int)  : CommandGroup("Arm Preset Command"){
     {
         if(type == 1)
         {
-            //if(!Robot.armSubsystem.isWristIn)
-               // addSequential(ToggleArmWristDeployCommand())
-            addParallel(SetArmHeightCommand(mid))
-            addSequential( extendoArmInOutCommand(true))
-            addParallel(SetArmHeightCommand(high))
-            addSequential(extendoArmInOutCommand(false))
-            //addSequential(ToggleArmWristDeployCommand())
-        }
-        else if(type == 2)
-        {
             if(Robot.armSubsystem.armHeight == high)
-                addSequential(ToggleArmWristDeployCommand())
+            //    addSequential(ToggleArmWristDeployCommand())
             else
             {
                 //if (!Robot.armSubsystem.isWristIn)
@@ -35,7 +25,7 @@ class ArmPresetCommand(type : Int)  : CommandGroup("Arm Preset Command"){
             }
 
         }
-        else if(type == 3)
+        else if(type == 2)
         {
             if(Robot.armSubsystem.armHeight == high) {
                // if (!Robot.armSubsystem.isWristIn)
@@ -50,19 +40,20 @@ class ArmPresetCommand(type : Int)  : CommandGroup("Arm Preset Command"){
                 addSequential(SetArmHeightCommand(switch))
             }
         }
-        else if(type == 4)
+        else if(type == 3)
         {
-            if(Robot.armSubsystem.armHeight == high) {
+            if(Robot.armSubsystem.armHeight == low) {}
+            else if(Robot.armSubsystem.armHeight == switch) {
+                addSequential(SetArmHeightCommand(low))
+                addParallel(extendoArmInOutCommand(false))
+            }
+            else {
                 //if (!Robot.armSubsystem.isWristIn)
-                  //  addSequential(ToggleArmWristDeployCommand())
+                //  addSequential(ToggleArmWristDeployCommand())
                 addParallel(SetArmHeightCommand(mid));
                 addSequential(extendoArmInOutCommand(true))
                 addParallel(SetArmHeightCommand(low))
                 addSequential(extendoArmInOutCommand(false))
-            }
-            else
-            {
-                addSequential(SetArmHeightCommand(low))
             }
         }
     }
