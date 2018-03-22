@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class SetArmHeightCommand extends Command {
     private static final int NO_SOFT_LIMIT = -1;
-    private static final double TOLLERANCE = 5;
+    private static final double TOLLERANCE = 2.5;
 
     private final double height;
     private final int reverseSoftLimit;

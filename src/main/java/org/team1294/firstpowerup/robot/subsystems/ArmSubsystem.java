@@ -15,13 +15,11 @@ import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
  * @author Abhinav Diddee (heatblast016)
  */
 public class ArmSubsystem extends Subsystem {
-    private static final double LEGAL_LOW = 0;
-    private static final double LEGAL_HIGH = 0;
-
     private TalonSRX armMotor;
     private TalonSRX wristMotor;
     private TalonSRX extendMotor;
     private Wrist currentStatus;
+    private double pos;
 
     private enum Wrist {
         IN(0), OUT(10);
@@ -31,6 +29,18 @@ public class ArmSubsystem extends Subsystem {
         Wrist(double angle) {
             this.angle = angle;
         }
+
+
+    }
+    public enum Telescope {
+        IN(4023.8), OUT(-1);
+        public final double distance;
+
+        Telescope(double distance) {
+            this.distance = distance;
+        }
+
+
     }
     public ArmSubsystem() {
         super("Arm Subsystem");
@@ -51,34 +61,44 @@ public class ArmSubsystem extends Subsystem {
         // we're assuming that when the robot starts up we're in transport config.
         // arm has a potentiometer, a scale of voltage - no need to reset
         wristMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        extendMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
+//        extendMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_INIT);
 
         armMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         armMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
 
+        extendMotor.config_kP(0, 0.1, RobotMap.CTRE_TIMEOUT_INIT);
+
         armMotor.setNeutralMode(NeutralMode.Coast);
         wristMotor.setNeutralMode(NeutralMode.Coast);
+
+        pos = Telescope.IN.distance;
     }
+
     public void resetEncoders(){
         extendMotor.setSelectedSensorPosition(0, 0, 0);
     }
+
     public void toggleWristDeploy() {
         if (currentStatus == Wrist.OUT) {
             setWristIn();
         } else {
             setWristOut();
+        }
     }
-}
 
     public void setWristIn() {
             currentStatus = Wrist.IN;
             updateWristPosition();
     }
+
     public void setWristOut() {
         currentStatus = Wrist.OUT;
         updateWristPosition();
     }
-    public void setExtendPID(double setpoint) { extendMotor.set(ControlMode.Position, setpoint);}
+    public void setExtendPID(double setpoint) {
+        extendMotor.set(ControlMode.Position, setpoint);
+    }
+
     public void setExtendMotionMagic(double setpoint) {
         extendMotor.set(ControlMode.MotionMagic, setpoint);
     }
@@ -99,6 +119,7 @@ public class ArmSubsystem extends Subsystem {
     public void driveWristPercentOut(double percent) {
         wristMotor.set(ControlMode.PercentOutput, percent);
     }
+
     public double getArmHeight() {
         return armMotor.getSelectedSensorPosition(0);
     }
@@ -123,23 +144,14 @@ public class ArmSubsystem extends Subsystem {
         extendMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_PERIODIC);
         extendMotor.configForwardSoftLimitThreshold(forwardSoftLimit, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
+
     public boolean isWristIn()
     {
         return currentStatus == Wrist.IN;
     }
+
     @Override
     public void periodic() {
-        int bumpervalue = Robot.oi.getBumpers();
-        /* int armPos = armMotor.getSelectedSensorPosition(0);
-        if (armPos > LEGAL_LOW && armPos < LEGAL_HIGH) { // && !limitSwitchClosed) {
-            extendMotor.set(ControlMode.PercentOutput, -0.1);
-        } else */ if(bumpervalue == 1) {
-            Robot.armSubsystem.driveExtendPercentOut(-0.6);
-        } else if(bumpervalue == 2) {
-            Robot.armSubsystem.driveExtendPercentOut(0.6);
-        } else {
-            Robot.armSubsystem.driveExtendPercentOut(0);
-        }
         SmartDashboard.putNumber("wrist enc", wristMotor.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Telescoping Encoder", extendMotor.getSelectedSensorPosition(0));
     }
@@ -150,5 +162,18 @@ public class ArmSubsystem extends Subsystem {
 
     public double getWristAngle() {
         return 0.0; // todo
+    }
+
+    public void changeExtendPos(double change) {
+        setExtendPos(pos + change);
+    }
+
+    /**
+     * Warning: there is NO SANITY CHECKING on this value. the extension will immediately go to this value.
+     * @param newPos
+     */
+    public void setExtendPos(double newPos) {
+        pos = newPos;
+        extendMotor.set(ControlMode.Position, pos);
     }
 }

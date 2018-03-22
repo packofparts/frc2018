@@ -2,6 +2,7 @@ package org.team1294.firstpowerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.team1294.firstpowerup.robot.Robot;
+import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 
 /**
  * @author Austin Jenchi (timtim17)
@@ -11,6 +12,7 @@ import org.team1294.firstpowerup.robot.Robot;
  */
 public class DriveArmWithJoystickCommand extends Command {
     private static final double DEADZONE = 0.1;
+    private static final double POS_RATE_OF_CHANGE = 50;
 
     public DriveArmWithJoystickCommand() {
         super("Drive arm with joystick");
@@ -30,6 +32,18 @@ public class DriveArmWithJoystickCommand extends Command {
             {Robot.armSubsystem.driveExtendPercentOut(-0.3);}
             else if(Robot.armSubsystem.getArmHeight() < 0 && Robot.armSubsystem.getArmHeight() > 0)
             {Robot.armSubsystem.driveExtendPercentOut(0.3);}
+        }
+
+        int bumpervalue = Robot.oi.getBumpers();
+        /* int armPos = armMotor.getSelectedSensorPosition(0);
+        if (armPos > LEGAL_LOW && armPos < LEGAL_HIGH) { // && !limitSwitchClosed) {
+            extendMotor.set(ControlMode.PercentOutput, -0.1);
+        } else */ if(bumpervalue == 1) {
+//            driveExtendPercentOut(-0.6);
+            Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE);
+        } else if(bumpervalue == 2 && Robot.armSubsystem.getExtensionSensorValue() < ArmSubsystem.Telescope.IN.distance) {
+//            driveExtendPercentOut(0.6);
+            Robot.armSubsystem.changeExtendPos(-POS_RATE_OF_CHANGE);
         }
 
         // some quick code to test the wrist
