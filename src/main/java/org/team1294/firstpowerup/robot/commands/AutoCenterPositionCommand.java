@@ -18,14 +18,14 @@ public class AutoCenterPositionCommand extends CommandGroup {
         turnTowardsCorrectSide = new AutoDriveCommand(0, 0, 0.5, 0.5);
         addSequential(turnTowardsCorrectSide);
 
-        // drive towards the desired side (heading and distance gets set in initialize)
+        // drive towards the desired side (heading and height gets set in initialize)
         driveTowardsCorrectSide = new AutoDriveCommand(0, 0, 0.5, 0.25);
         addSequential(driveTowardsCorrectSide);
 
         // turn towards the vision target
         addSequential(new AutoDriveCommand(0, 0, 0.5, 0.5));
 
-        // engage the vision system approach (distance set in initialize)
+        // engage the vision system approach (height set in initialize)
         driveTowardsVisionTargetCommand = new AutoVisionTargetCommand(0);
         addSequential(driveTowardsVisionTargetCommand);
 
@@ -45,9 +45,9 @@ public class AutoCenterPositionCommand extends CommandGroup {
         }
 
         driveTowardsCorrectSide.setDistance(SmartDashboard
-            .getNumber("AutoCenterPositionCommand.DriveTowardsCorrectSideDistance", 1.0)); // todo tune this distance
+            .getNumber("AutoCenterPositionCommand.DriveTowardsCorrectSideDistance", 1.0)); // todo tune this height
 
         driveTowardsVisionTargetCommand.setDistance(SmartDashboard
-            .getNumber("AutoCenterPositionCommand.DriveTowardsVisionTargetDistance", 1.0)); // todo tune this distance
+            .getNumber("AutoCenterPositionCommand.DriveTowardsVisionTargetDistance", 1.0)); // todo tune this height
     }
 }

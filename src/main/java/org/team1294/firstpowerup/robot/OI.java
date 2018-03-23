@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.team1294.firstpowerup.robot.commands.IntakeInCommand;
 import org.team1294.firstpowerup.robot.commands.IntakeOutCommand;
+import org.team1294.firstpowerup.robot.commands.PresetCommand;
 import org.team1294.firstpowerup.robot.commands.SetArmHeightCommand;
+import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 
 /**
  * The class representing the OI, or operator's interface. This class contains
@@ -33,13 +35,11 @@ public class OI {
 
         JoystickButton aButton = new JoystickButton(gameMech, 1);
         JoystickButton bButton = new JoystickButton(gameMech, 2);
-        JoystickButton xButton = new JoystickButton(gameMech, 3);
         JoystickButton yButton = new JoystickButton(gameMech, 4);
 
-        aButton.toggleWhenActive(new SetArmHeightCommand(763));
-        bButton.toggleWhenActive(new SetArmHeightCommand(618));
-        xButton.toggleWhenActive(new SetArmHeightCommand(86));
-        yButton.toggleWhenActive(new SetArmHeightCommand(100));
+        aButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.FLOOR.height));
+        bButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SWITCH.height));
+        yButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SCALE.height));
     }
 
     public double getDriveLeftX() {

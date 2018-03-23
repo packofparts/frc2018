@@ -4,10 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team1294.firstpowerup.robot.Robot;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
 
@@ -29,18 +27,25 @@ public class ArmSubsystem extends Subsystem {
         Wrist(double angle) {
             this.angle = angle;
         }
-
-
     }
     public enum Telescope {
         IN(4023.8), OUT(-1);
+
         public final double distance;
 
         Telescope(double distance) {
             this.distance = distance;
         }
+    }
 
+    public enum ArmHeight {
+        SCALE(100), FLOOR(763), SWITCH(618);
 
+        public final int height;
+
+        ArmHeight(int height) {
+            this.height = height;
+        }
     }
     public ArmSubsystem() {
         super("Arm Subsystem");
@@ -73,7 +78,6 @@ public class ArmSubsystem extends Subsystem {
 
         pos = Telescope.IN.distance;
     }
-
     public void resetEncoders(){
         extendMotor.setSelectedSensorPosition(0, 0, 0);
     }
@@ -95,6 +99,7 @@ public class ArmSubsystem extends Subsystem {
         currentStatus = Wrist.OUT;
         updateWristPosition();
     }
+
     public void setExtendPID(double setpoint) {
         extendMotor.set(ControlMode.Position, setpoint);
     }
@@ -102,10 +107,10 @@ public class ArmSubsystem extends Subsystem {
     public void setExtendMotionMagic(double setpoint) {
         extendMotor.set(ControlMode.MotionMagic, setpoint);
     }
+
     private void updateWristPosition() {
         wristMotor.set(ControlMode.Position, currentStatus.angle);
     }
-
     public void setArmHeight(double height) {
         armMotor.set(ControlMode.Position, height);
     }
@@ -175,5 +180,9 @@ public class ArmSubsystem extends Subsystem {
     public void setExtendPos(double newPos) {
         pos = newPos;
         extendMotor.set(ControlMode.Position, pos);
+    }
+
+    public int getTelescopePIDError() {
+        return extendMotor.getClosedLoopError(0);
     }
 }

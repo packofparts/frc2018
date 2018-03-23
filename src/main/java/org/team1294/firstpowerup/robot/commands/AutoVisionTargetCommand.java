@@ -13,8 +13,8 @@ public class AutoVisionTargetCommand extends CommandGroup {
     private double turnRate;
 
     /**
-     * Auto drive a distance towards the vision target
-     * @param distance the distance in meters to drive
+     * Auto drive a height towards the vision target
+     * @param distance the height in meters to drive
      */
     public AutoVisionTargetCommand(double distance) {
         super("AutoVisionTargetCommand(" + distance + ")");
