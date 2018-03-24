@@ -42,7 +42,7 @@ public class DriveArmWithJoystickCommand extends Command {
 //            driveExtendPercentOut(0.6);
             Robot.armSubsystem.changeExtendPos(-POS_RATE_OF_CHANGE);
         } else {
-            double joystick = Robot.oi.getGameMechLeftY();
+            double joystick = -Robot.oi.getGameMechLeftY();
             if (Math.abs(joystick) > DEADZONE) {
                 Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE * joystick);
             }

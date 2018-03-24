@@ -1,8 +1,6 @@
 package org.team1294.firstpowerup.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -77,6 +75,11 @@ public class ArmSubsystem extends Subsystem {
         wristMotor.setNeutralMode(NeutralMode.Coast);
 
         pos = Telescope.IN.distance;
+
+        extendMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, RobotMap.CTRE_TIMEOUT_INIT);
     }
     public void resetEncoders(){
         extendMotor.setSelectedSensorPosition(0, 0, 0);
