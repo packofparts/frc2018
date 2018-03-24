@@ -19,7 +19,6 @@ public class Robot extends IterativeRobot {
 
     public static DriveSubsystem driveSubsystem;
     public static VisionSubsystem visionSubsystem;
-    public static ClimbSubsystem climbSubsystem;
     public static IntakeSubsystem intakeSubsystem;
     public static ArmSubsystem armSubsystem;
 
@@ -34,7 +33,6 @@ public class Robot extends IterativeRobot {
     public Robot() {
         visionSubsystem = new VisionSubsystem();
         driveSubsystem = new DriveSubsystem();
-        climbSubsystem = new ClimbSubsystem();
         armSubsystem = new ArmSubsystem();
         intakeSubsystem = new IntakeSubsystem();
 

@@ -54,7 +54,7 @@ public class OI {
         return -driveJoystickLeft.getY(GenericHID.Hand.kRight);
     }
     
-    public double getClimbY() {
+    public double getGameMechLeftY() {
         return gameMech.getY(GenericHID.Hand.kLeft);
     }
 

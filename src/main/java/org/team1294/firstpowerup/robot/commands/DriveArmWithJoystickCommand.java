@@ -35,15 +35,17 @@ public class DriveArmWithJoystickCommand extends Command {
         }
 
         int bumpervalue = Robot.oi.getBumpers();
-        /* int armPos = armMotor.getSelectedSensorPosition(0);
-        if (armPos > LEGAL_LOW && armPos < LEGAL_HIGH) { // && !limitSwitchClosed) {
-            extendMotor.set(ControlMode.PercentOutput, -0.1);
-        } else */ if(bumpervalue == 1) {
+        if(bumpervalue == 1) {
 //            driveExtendPercentOut(-0.6);
             Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE);
         } else if(bumpervalue == 2 && Robot.armSubsystem.getExtensionSensorValue() < ArmSubsystem.Telescope.IN.distance) {
 //            driveExtendPercentOut(0.6);
             Robot.armSubsystem.changeExtendPos(-POS_RATE_OF_CHANGE);
+        } else {
+            double joystick = Robot.oi.getGameMechLeftY();
+            if (Math.abs(joystick) > DEADZONE) {
+                Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE * joystick);
+            }
         }
 
         // some quick code to test the wrist
