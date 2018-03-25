@@ -122,6 +122,9 @@ public class ArmSubsystem extends Subsystem {
     public void setArmHeight(double height) {
         armMotor.set(ControlMode.Position, height);
     }
+    public void setArmMotionMagic(double height) {
+        armMotor.set(ControlMode.MotionMagic, height);
+    }
     public void driveArmPercentOut(double percent) {
         armMotor.set(ControlMode.PercentOutput, percent);
     }
@@ -195,7 +198,17 @@ public class ArmSubsystem extends Subsystem {
         pos = newPos;
 //        extendMotor.set(ControlMode.Position, pos);
     }
+    public void setHeightMotionProfile(int acceleration,int cruise) {
+        armMotor.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
+        armMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
 
+    }
+
+    public void setExtendMotionProfile(int acceleration,int cruise) {
+        extendMotor.configMotionAcceleration(acceleration, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configMotionCruiseVelocity(cruise, RobotMap.CTRE_TIMEOUT_INIT);
+
+    }
     public int getTelescopePIDError() {
         return extendMotor.getClosedLoopError(0);
     }
