@@ -17,8 +17,6 @@ public class DriveArmWithJoystickCommand extends Command {
     public DriveArmWithJoystickCommand() {
         super("Drive arm with joystick");
         requires(Robot.armSubsystem);
-        Robot.armSubsystem.setArmSoftLimits(44,770);
-//        Robot.armSubsystem.setExtendSoftLimits(0, 0);
     }
 
     @Override
@@ -36,15 +34,18 @@ public class DriveArmWithJoystickCommand extends Command {
 
         int bumpervalue = Robot.oi.getBumpers();
         if(bumpervalue == 1) {
-//            driveExtendPercentOut(-0.6);
-            Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE);
-        } else if(bumpervalue == 2 && Robot.armSubsystem.getExtensionSensorValue() < ArmSubsystem.Telescope.IN.distance) {
-//            driveExtendPercentOut(0.6);
-            Robot.armSubsystem.changeExtendPos(-POS_RATE_OF_CHANGE);
+            Robot.armSubsystem.driveExtendPercentOut(-0.6);
+//            Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE);
+        } else if(bumpervalue == 2/* && Robot.armSubsystem.getExtensionSensorValue() < ArmSubsystem.Telescope.IN.distance*/) {
+            Robot.armSubsystem.driveExtendPercentOut(0.6);
+//            Robot.armSubsystem.changeExtendPos(-POS_RATE_OF_CHANGE);
         } else {
             double joystick = -Robot.oi.getGameMechLeftY();
             if (Math.abs(joystick) > DEADZONE) {
-                Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE * joystick);
+                Robot.armSubsystem.driveExtendPercentOut(0.6 * POS_RATE_OF_CHANGE);
+//                Robot.armSubsystem.changeExtendPos(POS_RATE_OF_CHANGE * joystick);
+            } else {
+                Robot.armSubsystem.driveExtendPercentOut(0);
             }
         }
 

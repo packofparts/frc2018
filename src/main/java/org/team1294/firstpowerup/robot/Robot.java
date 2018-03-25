@@ -85,7 +85,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new DoVisionDetectSwitch());
         SmartDashboard.putData(new GyroAssistTankDriveCommand());
 
-        SmartDashboard.putData(new SetArmHeightCommand(500));
+        Robot.armSubsystem.resetEncoders();
     }
 
     @Override

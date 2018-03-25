@@ -40,6 +40,10 @@ public class OI {
         aButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.FLOOR.height));
         bButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SWITCH.height));
         yButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SCALE.height));
+
+//        aButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.FLOOR.height));
+//        bButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.SWITCH.height));
+//        yButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.SCALE.height));
     }
 
     public double getDriveLeftX() {

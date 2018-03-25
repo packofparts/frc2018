@@ -11,6 +11,12 @@ import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 public class PresetCommand extends CommandGroup {
     private final int height;
 
+    @Override
+    protected void initialize() {
+        super.initialize();
+        Robot.armSubsystem.setWristIn();
+    }
+
     public PresetCommand(int height) {
         super("Preset command");
         this.height = height;

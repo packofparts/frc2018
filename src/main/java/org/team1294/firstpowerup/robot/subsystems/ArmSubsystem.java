@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team1294.firstpowerup.robot.Robot;
 import org.team1294.firstpowerup.robot.RobotMap;
 import org.team1294.firstpowerup.robot.commands.DriveArmWithJoystickCommand;
 
@@ -18,7 +19,7 @@ public class ArmSubsystem extends Subsystem {
     private double pos;
 
     private enum Wrist {
-        IN(0), OUT(10);
+        IN(99), OUT(-1);
 
         private final double angle;
 
@@ -27,7 +28,7 @@ public class ArmSubsystem extends Subsystem {
         }
     }
     public enum Telescope {
-        IN(4023.8), OUT(-1);
+        IN(0), OUT(97);
 
         public final double distance;
 
@@ -37,7 +38,7 @@ public class ArmSubsystem extends Subsystem {
     }
 
     public enum ArmHeight {
-        SCALE(100), FLOOR(763), SWITCH(618);
+        SCALE(404), FLOOR(994), SWITCH(892);
 
         public final int height;
 
@@ -69,20 +70,23 @@ public class ArmSubsystem extends Subsystem {
         armMotor.config_kP(0, 1, RobotMap.CTRE_TIMEOUT_INIT);
         armMotor.config_kI(0, 0.01, RobotMap.CTRE_TIMEOUT_INIT);
 
-        extendMotor.config_kP(0, 0.1, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.config_kP(0, 1.0, RobotMap.CTRE_TIMEOUT_INIT);
 
         armMotor.setNeutralMode(NeutralMode.Coast);
         wristMotor.setNeutralMode(NeutralMode.Coast);
 
         pos = Telescope.IN.distance;
 
-        extendMotor.configForwardSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_INIT);
-        extendMotor.configReverseSoftLimitEnable(true, RobotMap.CTRE_TIMEOUT_INIT);
         extendMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, RobotMap.CTRE_TIMEOUT_INIT);
         extendMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configReverseSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_INIT);
+        extendMotor.configForwardSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_INIT);
+        setArmSoftLimits(44,1016);
     }
+
     public void resetEncoders(){
-        extendMotor.setSelectedSensorPosition(0, 0, 0);
+        extendMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
+        wristMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
     }
 
     public void toggleWristDeploy() {
@@ -181,8 +185,15 @@ public class ArmSubsystem extends Subsystem {
      * @param newPos
      */
     public void setExtendPos(double newPos) {
+        if (newPos < pos) {
+            extendMotor.set(ControlMode.PercentOutput, -0.2);
+        } else if (newPos > pos) {
+            extendMotor.set(ControlMode.PercentOutput, 0.2);
+        } else {
+            extendMotor.set(ControlMode.PercentOutput, 0);
+        }
         pos = newPos;
-        extendMotor.set(ControlMode.Position, pos);
+//        extendMotor.set(ControlMode.Position, pos);
     }
 
     public int getTelescopePIDError() {
