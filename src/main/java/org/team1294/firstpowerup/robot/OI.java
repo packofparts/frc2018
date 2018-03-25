@@ -4,10 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.team1294.firstpowerup.robot.commands.IntakeInCommand;
-import org.team1294.firstpowerup.robot.commands.IntakeOutCommand;
-import org.team1294.firstpowerup.robot.commands.PresetCommand;
-import org.team1294.firstpowerup.robot.commands.SetArmHeightCommand;
+import org.team1294.firstpowerup.robot.commands.*;
 import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 
 /**
@@ -35,11 +32,13 @@ public class OI {
 
         JoystickButton aButton = new JoystickButton(gameMech, 1);
         JoystickButton bButton = new JoystickButton(gameMech, 2);
+        JoystickButton xButton = new JoystickButton(gameMech, 3);
         JoystickButton yButton = new JoystickButton(gameMech, 4);
 
         aButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.FLOOR.height));
         bButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SWITCH.height));
         yButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SCALE.height));
+        xButton.whenActive(new ToggleArmWristDeployCommand());
 
 //        aButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.FLOOR.height));
 //        bButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.SWITCH.height));

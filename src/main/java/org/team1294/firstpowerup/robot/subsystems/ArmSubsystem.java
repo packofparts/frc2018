@@ -19,24 +19,24 @@ public class ArmSubsystem extends Subsystem {
     private double pos;
 
     private enum Wrist {
-        IN(99), OUT(-1);
+        IN(408), OUT(191);
 
         private final double angle;
 
         Wrist(double angle) {
             this.angle = angle;
         }
+
     }
     public enum Telescope {
         IN(0), OUT(97);
-
         public final double distance;
 
         Telescope(double distance) {
             this.distance = distance;
         }
-    }
 
+    }
     public enum ArmHeight {
         SCALE(404), FLOOR(994), SWITCH(892);
 
@@ -45,13 +45,14 @@ public class ArmSubsystem extends Subsystem {
         ArmHeight(int height) {
             this.height = height;
         }
+
     }
     public ArmSubsystem() {
         super("Arm Subsystem");
         armMotor = new TalonSRX(RobotMap.TALON_ARM);
         wristMotor = new TalonSRX(RobotMap.TALON_WRIST);
         extendMotor = new TalonSRX(RobotMap.TALON_ARM_EXTENSION);
-        currentStatus = Wrist.IN;
+        currentStatus = Wrist.OUT;
 
         wristMotor.setNeutralMode(NeutralMode.Brake);
         extendMotor.setNeutralMode(NeutralMode.Brake);
@@ -83,7 +84,6 @@ public class ArmSubsystem extends Subsystem {
         extendMotor.configForwardSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_INIT);
         setArmSoftLimits(44,1016);
     }
-
     public void resetEncoders(){
         extendMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
         wristMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
@@ -118,10 +118,10 @@ public class ArmSubsystem extends Subsystem {
     private void updateWristPosition() {
         wristMotor.set(ControlMode.Position, currentStatus.angle);
     }
+
     public void setArmHeight(double height) {
         armMotor.set(ControlMode.Position, height);
     }
-
     public void driveArmPercentOut(double percent) {
         armMotor.set(ControlMode.PercentOutput, percent);
     }
@@ -198,5 +198,9 @@ public class ArmSubsystem extends Subsystem {
 
     public int getTelescopePIDError() {
         return extendMotor.getClosedLoopError(0);
+    }
+
+    public int getWristError() {
+        return wristMotor.getClosedLoopError(0);
     }
 }

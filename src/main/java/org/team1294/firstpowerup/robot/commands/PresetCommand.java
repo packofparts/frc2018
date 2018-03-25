@@ -2,6 +2,7 @@ package org.team1294.firstpowerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import org.team1294.firstpowerup.robot.Robot;
 import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 
@@ -26,6 +27,12 @@ public class PresetCommand extends CommandGroup {
             @Override
             protected boolean condition() {
                 return height == ArmSubsystem.ArmHeight.FLOOR.height;
+            }
+        });
+        addSequential(new InstantCommand() {
+            @Override
+            protected void initialize() {
+                Robot.armSubsystem.setWristOut();
             }
         });
         requires(Robot.armSubsystem);
