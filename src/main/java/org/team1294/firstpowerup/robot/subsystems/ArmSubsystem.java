@@ -19,7 +19,7 @@ public class ArmSubsystem extends Subsystem {
     private double pos;
 
     private enum Wrist {
-        IN(408), OUT(191);
+        IN(181), OUT(99);
 
         private final double angle;
 
@@ -83,6 +83,7 @@ public class ArmSubsystem extends Subsystem {
         extendMotor.configReverseSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_INIT);
         extendMotor.configForwardSoftLimitEnable(false, RobotMap.CTRE_TIMEOUT_INIT);
         setArmSoftLimits(44,1016);
+        wristMotor.configAllowableClosedloopError(0, 10, RobotMap.CTRE_TIMEOUT_INIT);
     }
     public void resetEncoders(){
         extendMotor.setSelectedSensorPosition(0, 0, RobotMap.CTRE_TIMEOUT_PERIODIC);
@@ -116,6 +117,7 @@ public class ArmSubsystem extends Subsystem {
     }
 
     private void updateWristPosition() {
+        SmartDashboard.putNumber("Wrist Angle trying", currentStatus.angle);
         wristMotor.set(ControlMode.Position, currentStatus.angle);
     }
 
@@ -169,6 +171,7 @@ public class ArmSubsystem extends Subsystem {
     public void periodic() {
         SmartDashboard.putNumber("wrist enc", wristMotor.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Telescoping Encoder", extendMotor.getSelectedSensorPosition(0));
+        SmartDashboard.putString("wrist mode", currentStatus.toString());
     }
 
     public double getExtensionSensorValue() {

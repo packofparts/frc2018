@@ -13,6 +13,7 @@ public class ToggleArmWristDeployCommand extends Command {
     public ToggleArmWristDeployCommand() {
         super("Toggle wrist");
         requires(Robot.armSubsystem);
+        setTimeout(3);
     }
 
     @Override
@@ -22,6 +23,7 @@ public class ToggleArmWristDeployCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return Math.abs(Robot.armSubsystem.getWristError()) < TOLLERANCE;
+        return true;
+//        return Math.abs(Robot.armSubsystem.getWristError()) < TOLLERANCE || isTimedOut();
     }
 }

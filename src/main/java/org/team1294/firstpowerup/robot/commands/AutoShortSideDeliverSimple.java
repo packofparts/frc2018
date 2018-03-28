@@ -14,7 +14,7 @@ public class AutoShortSideDeliverSimple extends CommandGroup {
         super("SBBL deliver cube to " + side);
         this.side = side;
         int heading = (side == 'L') ? 90 : 270;
-        addSequential(new AutoDriveCommand(1.5, 0, 0.9, 0.5));
+        addSequential(new AutoDriveCommand(1.4, 0, 0.9, 0.5));
         addSequential(new SetArmHeightCommand(ArmSubsystem.ArmHeight.SWITCH.height));
         addSequential(new MoveWristUpFor1SecondInAutoCommand());
         addSequential(new AutoDriveCommand(0, heading, 0.5, 0.75));
