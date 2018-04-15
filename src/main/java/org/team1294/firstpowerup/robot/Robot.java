@@ -19,7 +19,6 @@ public class Robot extends IterativeRobot {
 
     public static DriveSubsystem driveSubsystem;
     public static VisionSubsystem visionSubsystem;
-    public static ClimbSubsystem climbSubsystem;
     public static IntakeSubsystem intakeSubsystem;
     public static ArmSubsystem armSubsystem;
 
@@ -34,7 +33,6 @@ public class Robot extends IterativeRobot {
     public Robot() {
         visionSubsystem = new VisionSubsystem();
         driveSubsystem = new DriveSubsystem();
-        climbSubsystem = new ClimbSubsystem();
         armSubsystem = new ArmSubsystem();
         intakeSubsystem = new IntakeSubsystem();
 
@@ -48,14 +46,18 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new ResetEncoderCommand());
         SmartDashboard.putData(new ResetGyroCommand());
 
-        chooser.addDefault("Basic Base Line", new AutoDriveCommand(3.0));
-        chooser.addObject("Shorter Basic Base Line", new AutoDriveCommand(1.5));
+        SmartDashboard.putData(new WaveArmSillyFunTimeCommand());
+
+        chooser.addObject("Basic Base Line", new AutoDriveCommand(3.0));
+        chooser.addDefault("Shorter Basic Base Line", new AutoDriveCommand(1.5));
         chooser.addObject("Do nothing", new PrintCommand("Success! Did nothing!"));
         chooser.addObject("Left", new AutoSidePositionCommand("L"));
         chooser.addObject("Center", new AutoCenterPositionCommand());
         chooser.addObject("Right", new AutoSidePositionCommand("R"));
         chooser.addObject("SBBL - Left Deliver", new AutoShortSideDeliverSimple('L'));
         chooser.addObject("SBBL - Right Deliver", new AutoShortSideDeliverSimple('R'));
+        chooser.addObject("Left Deliver", new AutoSideDeliverSimple('L'));
+        chooser.addObject("Right Deliver", new AutoSideDeliverSimple('R'));
         SmartDashboard.putData("Auto mode", chooser);
 
 //        SmartDashboard.putData(new AutoDriveCommand(1.0, 0, 0.5, 0.25));
@@ -83,7 +85,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(new DoVisionDetectSwitch());
         SmartDashboard.putData(new GyroAssistTankDriveCommand());
 
-        SmartDashboard.putData(new SetArmHeightCommand(500));
+        Robot.armSubsystem.resetEncoders();
     }
 
     @Override

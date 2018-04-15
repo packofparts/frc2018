@@ -50,7 +50,7 @@ public class DriveSubsystem extends Subsystem {
         leftFront.setSensorPhase(true);
 
         rightFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, RobotMap.CTRE_TIMEOUT_INIT);
-        rightFront.setSensorPhase(false);
+        rightFront.setSensorPhase(true);
 
         drive = new DifferentialDrive(leftFront, rightFront);
 

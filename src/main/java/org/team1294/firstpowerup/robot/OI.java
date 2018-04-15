@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.team1294.firstpowerup.robot.commands.IntakeInCommand;
-import org.team1294.firstpowerup.robot.commands.IntakeOutCommand;
+import org.team1294.firstpowerup.robot.commands.*;
+import org.team1294.firstpowerup.robot.subsystems.ArmSubsystem;
 
 /**
  * The class representing the OI, or operator's interface. This class contains
@@ -25,10 +25,24 @@ public class OI {
 //        driveJoystickRight = new Joystick(RobotMap.JOYSTICK_DRIVE_RIGHT);
         gameMech = new XboxController(RobotMap.JOYSTICK_GAMEMECH);
 
-        JoystickButton inButton = new JoystickButton(gameMech, 1);
-        JoystickButton outButton = new JoystickButton(gameMech, 2);
-        inButton.whileActive(new IntakeInCommand());
-        outButton.whileActive(new IntakeOutCommand());
+//        JoystickButton inButton = new JoystickButton(gameMech, 1);
+//        JoystickButton outButton = new JoystickButton(gameMech, 2);
+//        inButton.whileActive(new IntakeInCommand());
+//        outButton.whileActive(new IntakeOutCommand());
+
+        JoystickButton aButton = new JoystickButton(gameMech, 1);
+        JoystickButton bButton = new JoystickButton(gameMech, 2);
+        JoystickButton xButton = new JoystickButton(gameMech, 3);
+        JoystickButton yButton = new JoystickButton(gameMech, 4);
+
+//        aButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.FLOOR.height));
+//        bButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SWITCH.height));
+//        yButton.toggleWhenActive(new PresetCommand(ArmSubsystem.ArmHeight.SCALE.height));
+        xButton.toggleWhenActive(new ToggleArmWristDeployCommand());
+
+        aButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.FLOOR.height));
+        bButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.SWITCH.height));
+        yButton.toggleWhenActive(new SetArmHeightCommand(ArmSubsystem.ArmHeight.SCALE.height));
     }
 
     public double getDriveLeftX() {
@@ -43,7 +57,7 @@ public class OI {
         return -driveJoystickLeft.getY(GenericHID.Hand.kRight);
     }
     
-    public double getClimbY() {
+    public double getGameMechLeftY() {
         return gameMech.getY(GenericHID.Hand.kLeft);
     }
 

@@ -1,8 +1,19 @@
+
+buildscript {
+    ext.kotlin_version = '1.2.30'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 plugins {
     id 'idea'
     id 'eclipse'
-    id 'jaci.openrio.gradle.GradleRIO' version '2018.02.17'
+    id 'jaci.openrio.gradle.GradleRIO' version '2018.03.06'
     id 'java'
+    id "org.jetbrains.kotlin.jvm" version "1.2.30"
 }
 
 def TEAM = 1294
@@ -11,11 +22,15 @@ def ROBOT_CLASS = 'org.team1294.firstpowerup.robot.Robot'
 wpi {
     ctreVersion = '5.2.2.0'
 }
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 jar {
@@ -27,6 +42,7 @@ deploy {
     targets {
         target('roborio', jaci.openrio.gradle.frc.RoboRIO) {
             team = TEAM
+            addresses << "10.12.94.2"
         }
     }
     artifacts {
@@ -38,4 +54,15 @@ deploy {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.2.1'
+}
+apply plugin: 'kotlin'
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }

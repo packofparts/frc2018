@@ -37,7 +37,7 @@ public class AutoSidePositionCommand extends CommandGroup {
         addSequential(new PrintCommand("turn downfield"));
         addSequential(new AutoDriveCommand(0, 0, 0.6, 0.75));
 
-        // drive downfield until abeam the crate delivery location (distance gets set in initialize)
+        // drive downfield until abeam the crate delivery location (height gets set in initialize)
         addSequential(new PrintCommand("drive downfield"));
         driveDownfield = new AutoDriveCommand(0, 0, 0.75, 0.75);
         addSequential(driveDownfield);
@@ -47,7 +47,7 @@ public class AutoSidePositionCommand extends CommandGroup {
         turnTowardsDelivery = new AutoDriveCommand(0, 0, 0.6, 0.75);
         addSequential(turnTowardsDelivery);
 
-        // drive towards the crate delivery location ((heading and distance gets set in initialize)
+        // drive towards the crate delivery location ((heading and height gets set in initialize)
         addSequential(new PrintCommand("drive towards delivery"));
         driveTowardsDelivery = new AutoDriveCommand(0, 0, 0.75, 0.75);
         addSequential(driveTowardsDelivery);

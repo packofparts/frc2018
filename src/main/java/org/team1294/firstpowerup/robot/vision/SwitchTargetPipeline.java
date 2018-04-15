@@ -218,7 +218,7 @@ public class SwitchTargetPipeline implements VisionPipeline {
 	}
 
 	/**
-	 * Sets the values of pixels in a binary image to their distance to the nearest black pixel.
+	 * Sets the values of pixels in a binary image to their height to the nearest black pixel.
 	 * @param input The image on which to perform the Distance Transform.
 	 * @param type The Transform.
 	 * @param maskSize the size of the mask.

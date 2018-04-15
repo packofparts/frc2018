@@ -17,6 +17,8 @@ public class AutoDeliverCrateCommand extends ConditionalCommand {
             return ((AutoSidePositionCommand) parent).getShouldDeliverCube();
         } else if (parent instanceof AutoShortSideDeliverSimple) {
             return ((AutoShortSideDeliverSimple) parent).shouldDeliverCube();
+        } else if (parent instanceof AutoSideDeliverSimple) {
+            return ((AutoSideDeliverSimple) parent).shouldDeliverCube();
         }
         return false;
     }

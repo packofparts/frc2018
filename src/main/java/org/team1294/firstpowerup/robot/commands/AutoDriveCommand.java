@@ -13,8 +13,8 @@ public class AutoDriveCommand extends CommandGroup {
     private double turnRate;
 
     /**
-     * Auto drive a distance on the current heading
-     * @param distance the distance in meters to drive
+     * Auto drive a height on the current heading
+     * @param distance the height in meters to drive
      */
     public AutoDriveCommand(final double distance) {
         this(distance, 0);
@@ -22,8 +22,8 @@ public class AutoDriveCommand extends CommandGroup {
     }
 
     /**
-     * Auto drive a distance and heading
-     * @param distance the distance in meters to drive
+     * Auto drive a height and heading
+     * @param distance the height in meters to drive
      * @param heading the heading to drive
      */
     public AutoDriveCommand(final double distance, final double heading) {
@@ -31,8 +31,8 @@ public class AutoDriveCommand extends CommandGroup {
     }
 
     /**
-     * Auto drive a distance and heading with a max velocity
-     * @param distance the distance in meters to drive
+     * Auto drive a height and heading with a max velocity
+     * @param distance the height in meters to drive
      * @param heading the heading to drive
      * @param velocity the max velocity to drive (-1.0 to 1.0)
      */
@@ -41,8 +41,8 @@ public class AutoDriveCommand extends CommandGroup {
     }
 
     /**
-     * Auto drive a distance and heading with max velocity and turn rate
-     * @param distance the distance in meters to drive
+     * Auto drive a height and heading with max velocity and turn rate
+     * @param distance the height in meters to drive
      * @param heading the heading to drive
      * @param velocity the max velocity (-1.0 to 1.0)
      * @param turnRate the max turn rate (-1.0 to 1.0)

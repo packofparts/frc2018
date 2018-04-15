@@ -7,7 +7,7 @@ import org.team1294.firstpowerup.robot.Robot;
 import java.util.function.Consumer;
 
 public class AutoTurnPIDCommand extends PIDCommand {
-    public static final double ABSOLUTE_TOLERANCE = 10;
+    public static final double ABSOLUTE_TOLERANCE = 20;
     private final Consumer<Double> outputConsumer;
     private boolean hasRunPIDOnce = false;
 
